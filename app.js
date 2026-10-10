@@ -255,6 +255,25 @@
     attemptPlay();
     heroVideo.addEventListener("canplay", attemptPlay, { once: true });
     heroVideo.addEventListener("loadeddata", attemptPlay, { once: true });
+
+    // Auto-pause video when scrolled away from hero section to save phone battery & GPU
+    const heroSection = document.getElementById("section1");
+    if (heroSection && "IntersectionObserver" in window) {
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (heroVideo.paused && !document.hidden) {
+              attemptPlay();
+            }
+          } else {
+            if (!heroVideo.paused) {
+              heroVideo.pause();
+            }
+          }
+        });
+      }, { threshold: 0.05 });
+      heroObserver.observe(heroSection);
+    }
   }
 
   if (btnUploadVideo && videoFileInput) {
@@ -981,14 +1000,19 @@
 
         const absDiff = Math.abs(diff);
 
-        // Hide cards too far back
-        if (absDiff > 2.8) {
+        const isMobile = window.innerWidth <= 768;
+        const maxVisibleDiff = isMobile ? 1.6 : 2.8;
+
+        // Hide cards too far back (completely cull offscreen cards on mobile to reduce GPU draw calls)
+        if (absDiff > maxVisibleDiff) {
           card.style.opacity = "0";
           card.style.pointerEvents = "none";
           card.style.visibility = "hidden";
+          card.style.display = "none";
           return;
         }
 
+        card.style.display = "block";
         card.style.visibility = "visible";
 
         // Non-linear horizontal placement: cards separate cleanly without overlapping center
