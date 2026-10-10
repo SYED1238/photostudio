@@ -1,0 +1,19 @@
+{
+  "name": "glowinn-luxury-landing-page",
+  "version": "1.0.0",
+  "description": "Glowinn Haute Botanical Cosmetics Landing Page with Animated Video Background",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve -l 3001 .",
+    "start": "npx serve -l 3001 .",
+    "sync-videos": "node scripts/sync-drive-videos.js"
+  },
+  "keywords": [
+    "cosmetics",
+    "luxury",
+    "landing-page",
+    "animated-video"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

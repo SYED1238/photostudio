@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>GreaterPhoto &times; FRAMEHAUS — Atelier Masterpiece Gallery</title>
+  <meta name="description"
+    content="GreaterPhoto Luxury Photography Platform & FRAMEHAUS Atelier Gallery. Featuring cinematic masterclasses, fine-art photographs and motion works in pure masonry arrangement.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dfad5e' stroke-width='1.8'><circle cx='12' cy='12' r='10'/><path d='m14.31 8 5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16 3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94'/></svg>">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="gallery.css">
+</head>
+
+<body class="greater-gallery-body">
+
+  <!-- =========================================================================
+       FIRST PAGE: GREATERPHOTO HERO MASTERPIECE (Kept exactly as it is)
+       ========================================================================= -->
+  <div class="first-page-showcase">
+    <!-- Floating Top Navigation Bar (GreaterPhoto) -->
+    <header class="gp-navbar" id="gpNavbar">
+      <div class="gp-nav-inner">
+        <!-- Brand Logo with Aperture Blades -->
+        <a href="/" class="gp-brand-link" title="GreaterPhoto / FRAMEHAUS Atelier">
+          <div class="gp-logo-aperture">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+              <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+              <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+              <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+              <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+              <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+            </svg>
+          </div>
+          <div class="gp-brand-text">
+            <span class="gp-brand-title">GreaterPhoto</span>
+          </div>
+        </a>
+
+        <!-- Nav Links & Actions -->
+        <nav class="gp-nav-menu">
+          <ul class="gp-nav-links">
+            <li><a href="#gallerySection" class="gp-nav-item">Photographers</a></li>
+            <li><a href="#gallerySection" class="gp-nav-item">Classes</a></li>
+            <li><a href="#gallerySection" class="gp-nav-item">Workshops</a></li>
+            <li><a href="/" class="gp-nav-item gp-nav-subtle">← Atelier</a></li>
+          </ul>
+
+          <div class="gp-nav-actions">
+            <!-- Search Input -->
+            <div class="gallery-search-wrap" id="gallerySearchWrap">
+              <span class="search-input-icon">🔍</span>
+              <input type="text" id="gallerySearchInput" class="gallery-search-input" placeholder="Search photos..." />
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Cinematic Panoramic Hero Section -->
+    <section class="gp-hero-masterpiece" id="gpHeroSection">
+      <!-- Background Image Showcase Layer with Smooth Dissolve Transitions -->
+      <div class="hero-bg-container" id="heroBgContainer">
+        <div class="hero-bg-image hero-bg-active" id="heroBgSlide"
+          style="background-image: url('../public/images/gallery/hero_perfect_composition.jpg');"></div>
+      </div>
+
+      <!-- Scrim Vignette Gradients -->
+      <div class="hero-scrim-overlay"></div>
+
+      <!-- Hero Centerpiece Content -->
+      <div class="hero-center-content">
+        <!-- Glowing Circular Play Button -->
+        <button type="button" class="hero-play-circle" id="heroPlayBtn" aria-label="Play Masterclass Preview"
+          title="Watch Masterclass Reel">
+          <div class="hero-play-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <polygon points="6 4 20 12 6 20 6 4"></polygon>
+            </svg>
+          </div>
+          <span class="hero-play-glow"></span>
+        </button>
+
+        <!-- Artist Subtitle -->
+        <div class="hero-artist-subtitle" id="heroArtistText">
+          &mdash; ELIA LOCARDI &mdash;
+        </div>
+
+        <!-- Master Editorial Serif Headline -->
+        <h1 class="hero-master-title" id="heroTitleText">
+          Perfect Composition
+        </h1>
+      </div>
+    </section>
+  </div>
+
+  <!-- =========================================================================
+       OTHER SECTION: THE GALLERY HOW IT WAS BEFORE
+       (DSLR Backdrop, Atmospheric Blur, Pure Masonry Full-Image Cards with Squircle Curves)
+       ========================================================================= -->
+  <section class="gallery-viewport" id="gallerySection">
+    <!-- Atmospheric Background Blur Layer over DSLR Camera Backdrop -->
+    <div class="gallery-bg-backdrop"></div>
+
+    <!-- Gallery Section Header -->
+    <div class="gallery-section-intro">
+      <div class="gallery-intro-badge">
+        <span class="sync-dot-live"></span>
+        <span>ATELIER ARCHIVE &bull; MASTERPIECE COLLECTION</span>
+      </div>
+      <h2 class="gallery-intro-title">Curated Studio Archive</h2>
+      <p class="gallery-intro-sub">Natural aspect-ratio full-bleed photographs and motion reels with squircle curves and atmospheric studio blur.</p>
+
+      <!-- Media Filter Controls (Photos & Videos) -->
+      <div class="gallery-filter-bar" id="galleryFilterBar">
+        <button type="button" class="filter-tab-pill filter-tab-active" data-filter="image" id="btnFilterImages">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Photos</span>
+          <span class="filter-count-badge" id="countImages">58</span>
+        </button>
+        <button type="button" class="filter-tab-pill" data-filter="video" id="btnFilterVideos">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 5 21 5 3"/></svg>
+          <span>Videos</span>
+          <span class="filter-count-badge" id="countVideos">18</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Area: Masonry Arrangement of Full Image Cards with Squircle Curves -->
+    <main class="gallery-content-wrap">
+      <div class="gallery-masonry-grid" id="bentoGalleryGrid">
+        <!-- Live full-image photo cards dynamically distributed by gallery.js into balanced columns -->
+      </div>
+    </main>
+
+    <!-- Floating Bottom Left Widget (Stacked Avatars matching Reference) -->
+    <div class="gallery-floating-corner-left">
+      <div class="corner-avatar-pill">
+        <div class="corner-avatar"><img src="../public/images/avatar_director.jpg" alt="Julian"></div>
+        <div class="corner-avatar"><img src="../public/images/avatar_client.jpg" alt="Elena"></div>
+      </div>
+    </div>
+
+    <!-- Floating Bottom Center Dock (Photographer Team & View Controls) -->
+    <footer class="gallery-bottom-dock">
+      <div class="bottom-avatars-cluster">
+        <div class="bottom-avatar-item"><img src="../public/images/avatar_director.jpg" alt="Julian Vane" /></div>
+        <div class="bottom-avatar-item"><img src="../public/images/avatar_client.jpg" alt="Elena Rostova" /></div>
+        <div class="bottom-avatar-item"><img src="../public/images/studio_showcase_1.jpg" alt="Marcus" /></div>
+        <div class="bottom-avatar-item avatar-badge-plus" id="bottomBadgeCount">+58</div>
+      </div>
+      <span class="bottom-dock-text" id="bottomPhotoCount">Loading Atelier Collection...</span>
+      <div class="bottom-dock-divider"></div>
+      <button type="button" class="bottom-dock-action-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});">
+        <span>↑ Top</span>
+      </button>
+    </footer>
+
+    <!-- Floating Bottom Right Widget (Atelier Link & Ambience Audio Controls) -->
+    <div class="gallery-floating-corner-right">
+      <button type="button" class="corner-action-circle" onclick="window.location.href='/'" title="Atelier Studio Experience">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </button>
+      <button type="button" class="corner-action-circle corner-action-active" id="btnAudioToggleGallery" title="Studio Ambience Audio">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- High-Definition Lightbox Modal -->
+  <div class="lightbox-modal" id="lightboxModal" aria-hidden="true">
+    <div class="lightbox-dialog">
+      <button type="button" class="lightbox-close-btn" id="lightboxClose" title="Close Lightbox">&times;</button>
+      <button type="button" class="lightbox-nav-btn lightbox-prev" id="lightboxPrev" title="Previous Item">‹</button>
+      <button type="button" class="lightbox-nav-btn lightbox-next" id="lightboxNext" title="Next Item">›</button>
+
+      <div class="lightbox-media-container" id="lightboxMediaContainer">
+        <img id="lightboxImg" src="" alt="Studio Photo Preview" class="lightbox-image" referrerpolicy="no-referrer" />
+        <video id="lightboxVideo" class="lightbox-video" controls playsinline controlsList="nodownload noplaybackrate" style="display:none;"></video>
+      </div>
+
+      <div class="lightbox-caption-bar">
+        <div class="lightbox-title" id="lightboxTitle">Media Preview</div>
+        <div class="lightbox-meta" id="lightboxMeta">Original Resolution</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="gallery.js" defer></script>
+</body>
+
+</html>

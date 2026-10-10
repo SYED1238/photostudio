@@ -1,0 +1,7 @@
+{
+  "public": ".",
+  "rewrites": [
+    { "source": "/studio-gallery", "destination": "/studio-gallery/index.html" },
+    { "source": "/studio-gallery/**", "destination": "/studio-gallery/index.html" }
+  ]
+}
