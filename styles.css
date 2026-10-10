@@ -69,11 +69,19 @@ body {
 
 /* Touch-action and GPU Layer Optimization for Jitter-Free 60fps Mobile Scrolling */
 .journal-3d-stage,
-.journal-3d-carousel,
-.showcase-main-card,
-.experiences-cards-row {
+.journal-3d-carousel {
+  touch-action: pan-y pinch-zoom;
+}
+
+.showcase-main-card {
   touch-action: pan-y;
 }
+
+.experiences-cards-row {
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
 
 .bg-video-element,
 .ambient-canvas,
@@ -1488,9 +1496,10 @@ body {
   left: 0;
   width: 440px;
   height: 350px;
-  transform-style: preserve-3d;
   will-change: transform, opacity;
   transition: filter 0.28s ease;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .journal-book-spread {
@@ -1501,8 +1510,8 @@ body {
   overflow: hidden;
   box-shadow: 0 24px 50px rgba(8, 12, 18, 0.65), 0 4px 12px rgba(0, 0, 0, 0.4);
   background: #1c222c;
-  transform-style: preserve-3d;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .journal-card:hover .journal-book-spread {
@@ -1579,19 +1588,19 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Realistic Ground Drop Shadow beneath each card */
+/* Realistic Ground Drop Shadow beneath each card (Flat blur eliminates 3D polygon artifacting) */
 .journal-card-shadow {
   position: absolute;
-  bottom: -32px;
-  left: 7%;
-  right: 7%;
-  height: 34px;
+  bottom: -20px;
+  left: 8%;
+  right: 8%;
+  height: 22px;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(10, 14, 20, 0.75) 0%, rgba(10, 14, 20, 0) 70%);
+  background: radial-gradient(ellipse at center, rgba(10, 14, 20, 0.65) 0%, rgba(10, 14, 20, 0) 70%);
   filter: blur(8px);
-  transform: rotateX(80deg);
   pointer-events: none;
   z-index: -1;
+  opacity: 0.6;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
@@ -3691,9 +3700,10 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   padding: 16px 8px 24px 8px;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
   cursor: grab;
@@ -4518,7 +4528,10 @@ body {
   }
   .experiences-cards-row {
     gap: 16px;
-    padding: 12px 2px 20px 2px;
+    padding: 12px 14px 20px 14px;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
   }
   .experience-card {
     flex: 0 0 205px;
@@ -4602,5 +4615,40 @@ body {
   }
   .booking-glass-panel {
     padding: 24px 16px 28px 16px;
+  }
+}
+
+/* Mobile Smoothness & GPU Layer Enhancements */
+@media (max-width: 768px) {
+  .navbar,
+  .mobile-drawer,
+  .feature-card,
+  .stat-badge,
+  .floating-media-toolbar .toolbar-pill,
+  .journal-header-bar,
+  .journal-bottom-dock,
+  .journal-active-meta-pill,
+  .s3-team-glass-card,
+  .s3-director-glass,
+  .showcase-morph-card,
+  .booking-glass-panel {
+    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  .journal-card,
+  .experience-card,
+  .showcase-morph-card {
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  .journal-card-shadow {
+    display: none !important;
+  }
+
+  html, body {
+    -webkit-overflow-scrolling: touch;
   }
 }

@@ -221,6 +221,42 @@
     }
   }
 
+  /* ==========================================================================
+     Robust Background Video Autoplay Engine (Mobile iOS / Android Ready)
+     ========================================================================== */
+  function initHeroVideoAutoplay() {
+    if (!heroVideo) return;
+
+    heroVideo.muted = true;
+    heroVideo.defaultMuted = true;
+    heroVideo.playsInline = true;
+    heroVideo.setAttribute("muted", "");
+    heroVideo.setAttribute("playsinline", "");
+    heroVideo.setAttribute("webkit-playsinline", "");
+
+    const attemptPlay = () => {
+      if (!heroVideo.paused) return;
+      const playPromise = heroVideo.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          const unlock = () => {
+            heroVideo.play().catch(() => {});
+            window.removeEventListener("touchstart", unlock);
+            window.removeEventListener("click", unlock);
+            window.removeEventListener("scroll", unlock);
+          };
+          window.addEventListener("touchstart", unlock, { passive: true, once: true });
+          window.addEventListener("click", unlock, { passive: true, once: true });
+          window.addEventListener("scroll", unlock, { passive: true, once: true });
+        });
+      }
+    };
+
+    attemptPlay();
+    heroVideo.addEventListener("canplay", attemptPlay, { once: true });
+    heroVideo.addEventListener("loadeddata", attemptPlay, { once: true });
+  }
+
   if (btnUploadVideo && videoFileInput) {
     btnUploadVideo.addEventListener("click", () => videoFileInput.click());
     videoFileInput.addEventListener("change", (e) => {
@@ -306,9 +342,9 @@
     const goldSprite = createGlowSprite(216, 190, 151);
     const whiteSprite = createGlowSprite(255, 255, 255);
 
-    // Responsive particle count: lightweight on mobile, elegant on desktop
+    // Responsive particle count: disabled on mobile (< 768px) to eliminate 100% of GPU/CPU lag
     const isMobile = window.innerWidth < 768;
-    const particleCount = isMobile ? 12 : 22;
+    const particleCount = isMobile ? 0 : 22;
     const particles = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -328,7 +364,7 @@
     }
 
     function renderParticles() {
-      if (!isCanvasActive) return;
+      if (!isCanvasActive || particleCount === 0) return;
       ctx.clearRect(0, 0, width, height);
 
       for (let i = 0; i < particleCount; i++) {
@@ -353,6 +389,7 @@
     }
 
     function startCanvas() {
+      if (particleCount === 0) return;
       if (!isCanvasActive) {
         isCanvasActive = true;
         if (!animationFrameId) animationFrameId = requestAnimationFrame(renderParticles);
@@ -555,7 +592,7 @@
         location: "📍 Seville & Andalusia, Spain",
         date: "Summer Solstice 2026",
         badge: "Spain Edition · Vol. 01",
-        img: "public/spread_1.jpg",
+        img: "/public/spread_1.jpg",
         transcript:
           "\"Sunsets, sangria (mom approved), and enough wrong turns to make Google Maps cry. Moving to Spain with the family was a full-on adventure—proof that even fluent Spanish can't save you from tourist brain.\"",
         tags: ["#TravelJournal", "#SpainMemories", "#Editorial", "#RooftopSunsets"],
@@ -566,7 +603,7 @@
         location: "📍 Costa Brava & Tossa de Mar Castle",
         date: "July 14, 2026",
         badge: "Coastal Expedition · Vol. 02",
-        img: "public/spread_2.jpg",
+        img: "/public/spread_2.jpg",
         transcript:
           "\"35mm Photobooth strips and sea breeze. Except one castle was my pick: cue a 2-hour hike in the blazing sun, with my entire family questioning my life choices—only to find out there was a direct bus.\"",
         tags: ["#CastleHike", "#35mmFilm", "#Photobooth", "#Mediterranean"],
@@ -577,7 +614,7 @@
         location: "📍 Parque de María Luisa, Seville",
         date: "July 20, 2026",
         badge: "Nostalgia · Vol. 03",
-        img: "public/spread_3.jpg",
+        img: "/public/spread_3.jpg",
         transcript:
           "\"Golden afternoon shade under blooming jacaranda trees. Filming family laughter on the vintage handycam monitor. Golden hour light filtering through purple petals.\"",
         tags: ["#Handycam", "#FamilyPortraits", "#Jacaranda", "#GoldenHour"],
@@ -588,7 +625,7 @@
         location: "📍 Málaga Cathedral Courtyard",
         date: "July 28, 2026",
         badge: "Sanctuary · Vol. 04",
-        img: "public/spread_4.jpg",
+        img: "/public/spread_4.jpg",
         transcript:
           "\"A sundress, a cathedral, and maybe a hint of sunstroke! Soaring limestone arches whispering centuries of Andalusian history.\"",
         tags: ["#CathedralArches", "#Málaga", "#GothicArchitecture", "#SundressSeason"],
@@ -599,7 +636,7 @@
         location: "📍 Castillo de Colomares",
         date: "August 3, 2026",
         badge: "High Altitude · Vol. 05",
-        img: "public/spread_5.jpg",
+        img: "/public/spread_5.jpg",
         transcript:
           "\"Leaning on mom... because even sightseeing has a stamina limit! Looking out dramatically from a castle tower, because main character energy requires altitude.\"",
         tags: ["#MainCharacterEnergy", "#Colomares", "#CastleViews", "#Wanderlust"],
@@ -610,7 +647,7 @@
         location: "📍 Sierra Nevada Foothills",
         date: "August 11, 2026",
         badge: "Terra · Vol. 06",
-        img: "public/spread_6.jpg",
+        img: "/public/spread_6.jpg",
         transcript:
           "\"Lord, I'm here in an olive field, sweaty and sunburnt. If this doesn't impress someone's mom, I don't know what will. 200-year-old olive trees stretching toward the Mediterranean horizon.\"",
         tags: ["#OliveGroves", "#Andalusia", "#BotanicalEarth", "#SummerHeat"],
@@ -621,7 +658,7 @@
         location: "📍 Nerja Balcón de Europa",
         date: "August 19, 2026",
         badge: "Coastline · Vol. 07",
-        img: "public/spread_7.jpg",
+        img: "/public/spread_7.jpg",
         transcript:
           "\"Scaled the cliffs, conquered the castle... now where's my gelato? Sitting on the sun-warmed whitewashed terrace watching turquoise waves crash.\"",
         tags: ["#Nerja", "#BalconDeEuropa", "#TurquoiseSea", "#GelatoHunt"],
@@ -632,7 +669,7 @@
         location: "📍 Barrio Santa Cruz, Seville",
         date: "August 26, 2026",
         badge: "Duende · Vol. 08",
-        img: "public/spread_8.jpg",
+        img: "/public/spread_8.jpg",
         transcript:
           "\"Cobblestone alleys scented with sweet orange blossoms. Floating polaroid prints, rhythmic flamenco heels echoing in the plaza, and tapas till midnight.\"",
         tags: ["#Flamenco", "#SevilleNights", "#Polaroids", "#OrangeBlossom"],
@@ -656,13 +693,33 @@
     function getGeometry() {
       const w = window.innerWidth;
       if (w <= 480) {
-        return { cardWidth: 280, radiusX: 180, radiusZ: 90, rotateYAngle: 24 };
+        return {
+          cardWidth: 275,
+          spacing: Math.min(235, Math.max(195, w * 0.62)),
+          depthZ: 140,
+          rotateAngle: 12
+        };
       } else if (w <= 768) {
-        return { cardWidth: 320, radiusX: 240, radiusZ: 120, rotateYAngle: 22 };
+        return {
+          cardWidth: 320,
+          spacing: 285,
+          depthZ: 155,
+          rotateAngle: 14
+        };
       } else if (w <= 1024) {
-        return { cardWidth: 380, radiusX: 300, radiusZ: 145, rotateYAngle: 21 };
+        return {
+          cardWidth: 380,
+          spacing: 340,
+          depthZ: 170,
+          rotateAngle: 16
+        };
       } else {
-        return { cardWidth: 440, radiusX: 380, radiusZ: 170, rotateYAngle: 20 };
+        return {
+          cardWidth: 440,
+          spacing: 395,
+          depthZ: 190,
+          rotateAngle: 18
+        };
       }
     }
 
@@ -863,7 +920,7 @@
       const total = spreads.length;
       if (total === 0) return;
 
-      const { radiusX, radiusZ, rotateYAngle } = getGeometry();
+      const { spacing, depthZ, rotateAngle } = getGeometry();
 
       if (!isDragging) {
         const diffOffset = targetOffset - currentOffset;
@@ -871,10 +928,10 @@
           currentOffset = targetOffset;
           dragVelocity = 0;
         } else {
-          currentOffset += diffOffset * 0.12;
+          currentOffset += diffOffset * 0.14;
           if (Math.abs(dragVelocity) > 0.001) {
             targetOffset += dragVelocity;
-            dragVelocity *= 0.88;
+            dragVelocity *= 0.86;
           }
         }
       }
@@ -925,7 +982,7 @@
         const absDiff = Math.abs(diff);
 
         // Hide cards too far back
-        if (absDiff > 3.8) {
+        if (absDiff > 2.8) {
           card.style.opacity = "0";
           card.style.pointerEvents = "none";
           card.style.visibility = "hidden";
@@ -934,19 +991,30 @@
 
         card.style.visibility = "visible";
 
-        // Concave cylindrical arc geometry:
-        const angleRad = diff * (rotateYAngle * (Math.PI / 180));
-        const x = Math.sin(angleRad) * radiusX;
-        const z = (Math.cos(angleRad) - 1) * radiusZ * 1.35 - absDiff * 38;
-        const rotY = -diff * rotateYAngle;
+        // Non-linear horizontal placement: cards separate cleanly without overlapping center
+        const sign = diff < 0 ? -1 : 1;
+        const x = sign * Math.pow(absDiff, 0.94) * spacing;
 
-        const scale = Math.max(0.68, 1 - absDiff * 0.075);
-        const opacity = Math.max(0.2, 1 - absDiff * 0.18);
-        const zIndex = Math.round(100 - absDiff * 15);
+        // Depth Z: Active center card elevated at +25px forward.
+        // Side cards pushed back deep (-depthZ) so forward edges can NEVER intersect active card.
+        const z = -Math.pow(absDiff, 1.15) * depthZ + (absDiff < 0.25 ? 25 : 0);
+
+        // Rotation: Tilted inward toward viewer (concave panoramic arc)
+        const rotY = -sign * Math.min(rotateAngle * 1.4, Math.pow(absDiff, 0.75) * rotateAngle);
+
+        // Scale: active card 1.0, neighbors gracefully contracted
+        const scale = Math.max(0.68, 1 - absDiff * 0.12);
+
+        // Opacity: Center 1.0, neighbors 0.72, far cards 0.25
+        const opacity = Math.max(0.15, 1 - absDiff * 0.28);
+
+        // Z-Index: Center card strictly dominates
+        const zIndex = Math.round(100 - absDiff * 25);
 
         card.style.transform = `translate3d(${x.toFixed(1)}px, 0px, ${z.toFixed(1)}px) rotateY(${rotY.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
         card.style.opacity = opacity.toFixed(2);
         card.style.zIndex = zIndex;
+        card.style.pointerEvents = absDiff < 0.4 ? "auto" : "none";
 
         // Center card highlights
         if (absDiff < 0.35) {
@@ -968,14 +1036,21 @@
     // Pointer Drag & Swipe Interaction with Inertia & Smart Touch Disambiguation
     let startY = 0;
     let isTouchGestureDecided = false;
+    let hasDraggedCarousel = false;
 
     function onPointerDown(e) {
-      if (e.target.closest(".journal-nav-arrow") || e.target.closest(".journal-dock-btn")) return;
+      if (
+        e.target.closest(".journal-nav-arrow") ||
+        e.target.closest(".journal-dock-btn") ||
+        e.target.closest(".journal-active-meta-pill")
+      ) return;
+
       isDragging = true;
+      hasDraggedCarousel = false;
       isTouchGestureDecided = false;
       const touch = e.touches ? e.touches[0] : null;
-      startX = touch ? touch.clientX : e.clientX || 0;
-      startY = touch ? touch.clientY : e.clientY || 0;
+      startX = touch ? touch.clientX : (e.clientX || 0);
+      startY = touch ? touch.clientY : (e.clientY || 0);
       lastDragX = startX;
       dragStartOffset = currentOffset;
       dragVelocity = 0;
@@ -986,30 +1061,36 @@
     function onPointerMove(e) {
       if (!isDragging) return;
       const touch = e.touches ? e.touches[0] : null;
-      const clientX = touch ? touch.clientX : e.clientX || 0;
-      const clientY = touch ? touch.clientY : e.clientY || 0;
+      const clientX = touch ? touch.clientX : (e.clientX || 0);
+      const clientY = touch ? touch.clientY : (e.clientY || 0);
+
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+
+      if (Math.abs(dx) > 6) {
+        hasDraggedCarousel = true;
+      }
 
       // On touch devices, check if user is scrolling vertically or swiping carousel horizontally
       if (touch && !isTouchGestureDecided) {
-        const dx = Math.abs(clientX - startX);
-        const dy = Math.abs(clientY - startY);
-        if (dx > 7 || dy > 7) {
+        if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) {
+          // Native vertical scroll: release dragging and snap to nearest integer!
+          isDragging = false;
           isTouchGestureDecided = true;
-          if (dy > dx) {
-            // User is scrolling the page vertically! Release dragging for silky smooth native page scrolling.
-            isDragging = false;
-            carousel.style.cursor = "grab";
-            return;
-          }
+          carousel.style.cursor = "grab";
+          targetOffset = Math.round(currentOffset);
+          requestCarouselUpdate();
+          return;
+        } else if (Math.abs(dx) > 8) {
+          isTouchGestureDecided = true;
         }
       }
 
-      const { cardWidth } = getGeometry();
-      const dx = clientX - startX;
-      dragVelocity = (lastDragX - clientX) * 0.008;
+      const { spacing } = getGeometry();
+      dragVelocity = (lastDragX - clientX) / spacing;
       lastDragX = clientX;
 
-      currentOffset = dragStartOffset - dx / (cardWidth * 0.88);
+      currentOffset = dragStartOffset - dx / spacing;
       targetOffset = currentOffset;
       requestCarouselUpdate();
     }
@@ -1020,7 +1101,9 @@
       carousel.style.cursor = "grab";
 
       // Fling and Snap to nearest card
-      targetOffset = Math.round(targetOffset + dragVelocity * 2.5);
+      const fling = Math.max(-1.2, Math.min(1.2, dragVelocity * 3.2));
+      targetOffset = Math.round(currentOffset + fling);
+      dragVelocity = 0;
       requestCarouselUpdate();
 
       if (isAutoPlaying) {
@@ -1035,7 +1118,8 @@
 
     carousel.addEventListener("touchstart", onPointerDown, { passive: true });
     window.addEventListener("touchmove", onPointerMove, { passive: true });
-    window.addEventListener("touchend", onPointerUp);
+    window.addEventListener("touchend", onPointerUp, { passive: true });
+    window.addEventListener("touchcancel", onPointerUp, { passive: true });
 
     // Mouse wheel only rotates gallery when cursor is directly hovering over the carousel
     let wheelThrottle = 0;
@@ -1087,6 +1171,10 @@
 
     // Clicking individual card
     carousel.addEventListener("click", (e) => {
+      if (hasDraggedCarousel) {
+        hasDraggedCarousel = false;
+        return;
+      }
       const card = e.target.closest(".journal-card");
       if (!card) return;
       const idx = parseInt(card.getAttribute("data-index"), 10);
@@ -1100,8 +1188,9 @@
         openSpreadModal(idx);
       } else {
         // Flanking card clicked: smoothly rotate to center!
-        targetOffset += diff;
+        targetOffset += Math.round(diff);
         playPaperFlipSound();
+        requestCarouselUpdate();
       }
     });
 
@@ -1747,10 +1836,39 @@
     const scrubberTrack = document.getElementById("expScrubberTrack");
     const scrubberThumb = document.getElementById("expScrubberThumb");
 
+    // Touch drag tracking for mobile side-scrolling disambiguation
+    let hasDraggedExp = false;
+    let expTouchStartX = 0;
+    let expTouchStartY = 0;
+
+    if (cardsRow) {
+      cardsRow.addEventListener("touchstart", (e) => {
+        if (e.touches && e.touches[0]) {
+          expTouchStartX = e.touches[0].clientX;
+          expTouchStartY = e.touches[0].clientY;
+          hasDraggedExp = false;
+        }
+      }, { passive: true });
+
+      cardsRow.addEventListener("touchmove", (e) => {
+        if (e.touches && e.touches[0]) {
+          const dx = Math.abs(e.touches[0].clientX - expTouchStartX);
+          if (dx > 7) {
+            hasDraggedExp = true;
+          }
+        }
+      }, { passive: true });
+    }
+
     // Click on any Experience card or notched round arrow button
     const expCards = document.querySelectorAll(".experience-card");
     expCards.forEach((card) => {
       card.addEventListener("click", (e) => {
+        if (hasDraggedExp) {
+          hasDraggedExp = false;
+          return;
+        }
+
         // Switch active highlight
         expCards.forEach((c) => c.classList.remove("is-active"));
         card.classList.add("is-active");
@@ -1760,12 +1878,15 @@
           shootTypeSelect.value = service;
         }
 
-        // Scroll to reservation section
+        // Scroll to reservation section only when tapping the round action button or deliberate tap
+        const isRoundBtn = Boolean(e.target.closest(".exp-round-btn"));
         const s6 = document.getElementById("section6");
-        if (s6) {
+        if (s6 && isRoundBtn) {
           s6.scrollIntoView({ behavior: "smooth" });
+          showToast(`Selected "${service}" — Complete your reservation below`);
+        } else {
+          showToast(`Selected "${service}"`);
         }
-        showToast(`Selected "${service}" — Complete your reservation below`);
       });
     });
 
@@ -1787,6 +1908,22 @@
       window.addEventListener("resize", updateScrubber);
       setTimeout(updateScrubber, 300);
 
+      // Touch scrubber drag & scrub
+      function handleScrub(clientX) {
+        const rect = scrubberTrack.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const maxScroll = cardsRow.scrollWidth - cardsRow.clientWidth;
+        cardsRow.scrollLeft = ratio * maxScroll;
+      }
+
+      scrubberTrack.addEventListener("touchstart", (e) => {
+        if (e.touches && e.touches[0]) handleScrub(e.touches[0].clientX);
+      }, { passive: true });
+
+      scrubberTrack.addEventListener("touchmove", (e) => {
+        if (e.touches && e.touches[0]) handleScrub(e.touches[0].clientX);
+      }, { passive: true });
+
       // Click on scrubber track to scroll row
       scrubberTrack.addEventListener("click", (e) => {
         const rect = scrubberTrack.getBoundingClientRect();
@@ -1800,11 +1937,10 @@
       let isDragging = false;
       let startX = 0;
       let startScrollLeft = 0;
-      let hasDragged = false;
 
       cardsRow.addEventListener("mousedown", (e) => {
         isDragging = true;
-        hasDragged = false;
+        hasDraggedExp = false;
         startX = e.pageX - cardsRow.offsetLeft;
         startScrollLeft = cardsRow.scrollLeft;
         cardsRow.style.cursor = "grabbing";
@@ -1824,7 +1960,7 @@
         const x = e.pageX - cardsRow.offsetLeft;
         const walk = (x - startX) * 1.4;
         if (Math.abs(walk) > 6) {
-          hasDragged = true;
+          hasDraggedExp = true;
         }
         cardsRow.scrollLeft = startScrollLeft - walk;
       });
@@ -1949,8 +2085,10 @@
     route();
   }
 
-  // Initialize on DOMContentLoaded
+  // Initialize on DOMContentLoaded and immediately
+  initHeroVideoAutoplay();
   window.addEventListener("DOMContentLoaded", () => {
+    initHeroVideoAutoplay();
     initAmbientCanvas();
     initJournalGallery();
     initStudioShowcaseSlider();
