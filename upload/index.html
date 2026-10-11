@@ -1268,16 +1268,14 @@
 
       // 2. Gallery Folder Creation
       async function createGalleryFolder() {
-        const name = galleryNameInput.value.trim();
+        let name = galleryNameInput.value.trim();
+        if (!name) {
+          name = state.detectedFolder || ('Shoot_' + new Date().toISOString().slice(0, 10));
+          galleryNameInput.value = name;
+        }
         const category = galleryCategorySelect.value;
         const shootDate = galleryDateInput.value;
         const notes = galleryNotesInput.value.trim();
-
-        if (!name) {
-          alert('Please enter a Gallery / Shoot Name first.');
-          galleryNameInput.focus();
-          return null;
-        }
 
         btnCreateFolder.disabled = true;
         btnCreateFolder.innerHTML = '<span>Creating Drive Folder...</span>';
@@ -1378,6 +1376,9 @@
           if (!detectedRootFolder) {
             showToast(`Added ${addedCount} file${addedCount > 1 ? 's' : ''} to queue`);
           }
+
+          // Instantly begin uploading to Google Drive as soon as folder is selected
+          startUploadProcess();
         }
       }
 
@@ -1862,13 +1863,12 @@
       }
 
       // Upload Controls
-      btnStartUpload.addEventListener('click', async () => {
-        if (state.queue.length === 0) {
-          alert('Please add files or folders to upload first.');
+      async function startUploadProcess() {
+        if (state.queue.length === 0 || state.isUploading) {
           return;
         }
 
-        // If no active gallery folder yet, prompt or create one
+        // Automatically create or verify gallery folder in Google Drive
         if (!state.activeFolderId) {
           const folderId = await createGalleryFolder();
           if (!folderId) return;
@@ -1878,7 +1878,9 @@
         state.isPaused = false;
         updateTotalProgress();
         processNextUploads();
-      });
+      }
+
+      btnStartUpload.addEventListener('click', startUploadProcess);
 
       btnPauseResume.addEventListener('click', () => {
         if (!state.isUploading) return;
