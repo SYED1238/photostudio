@@ -3,6 +3,8 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/upload", "destination": "/upload.html" },
+    { "source": "/upload/", "destination": "/upload.html" },
     { "source": "/studio-gallery", "destination": "/studio-gallery/index.html" },
     { "source": "/studio-gallery/", "destination": "/studio-gallery/index.html" }
   ]

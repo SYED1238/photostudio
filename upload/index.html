@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Files — FRAMEHAUS Atelier Studio Vault</title>
+  <meta name="description"
+    content="Upload and organize large photography and videography shoots directly into FRAMEHAUS Google Drive Vault with high-speed resumable uploads.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8be97' stroke-width='1.8'><rect x='3' y='3' width='18' height='18' rx='3'/><circle cx='12' cy='12' r='3.5'/><line x1='8.5' y1='3' x2='8.5' y2='5.5'/></svg>">
+
+  <!-- Typography matching main site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    /* ==========================================================================
+       Dedicated Upload Portal Styles (Pure Glassmorphism & Lightweight Vanilla CSS)
+       ========================================================================== */
+    .upload-page-body {
+      background-color: var(--color-bg, #070b08);
+      color: var(--text-primary, #ffffff);
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Subtle Studio Glow */
+    .upload-bg-glow {
+      position: fixed;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(216, 190, 151, 0.08) 0%, rgba(16, 22, 18, 0.02) 60%, transparent 80%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .upload-container {
+      position: relative;
+      z-index: 10;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 24px 20px 80px 20px;
+    }
+
+    /* Header Nav Bar */
+    .upload-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 32px;
+    }
+
+    .upload-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary, #ffffff);
+    }
+
+    .upload-brand-name {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: 15px;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+    }
+
+    .upload-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-portal-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-full, 9999px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-portal-back:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* Page Intro */
+    .upload-intro {
+      margin-bottom: 30px;
+    }
+
+    .upload-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full, 9999px);
+      background: rgba(216, 190, 151, 0.12);
+      border: 1px solid rgba(216, 190, 151, 0.28);
+      color: var(--accent-gold, #d8be97);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .upload-title {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: clamp(28px, 4.5vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .upload-subtitle {
+      font-size: 15px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.65));
+      max-width: 620px;
+      line-height: 1.5;
+    }
+
+    /* Destination & Status Pill Bar */
+    .destination-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(16, 22, 18, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-card, 18px);
+      padding: 16px 22px;
+      margin-bottom: 28px;
+    }
+
+    .dest-info-col {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dest-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold, #d8be97);
+    }
+
+    .dest-label {
+      font-size: 11px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.5));
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .dest-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .dest-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+
+    .status-connected {
+      background: rgba(46, 213, 115, 0.12);
+      border: 1px solid rgba(46, 213, 115, 0.3);
+      color: #2ed573;
+    }
+
+    .status-setup-needed {
+      background: rgba(255, 171, 0, 0.12);
+      border: 1px solid rgba(255, 171, 0, 0.3);
+      color: #ffab00;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* Passcode Gate Bar */
+    .passcode-gate-card {
+      background: rgba(20, 26, 22, 0.7);
+      border: 1px solid rgba(216, 190, 151, 0.25);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .passcode-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .passcode-input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 13.5px;
+      font-family: inherit;
+      outline: none;
+      width: 190px;
+    }
+
+    .passcode-input:focus {
+      border-color: var(--accent-gold, #d8be97);
+    }
+
+    .btn-unlock-passcode {
+      background: var(--accent-gold, #d8be97);
+      color: #070b08;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-unlock-passcode:hover {
+      opacity: 0.9;
+    }
+
+    /* Gallery Creation Section */
+    .gallery-create-card {
+      background: rgba(16, 22, 18, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-card, 18px);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .section-headline {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-hint {
+      font-size: 13px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.6));
+      margin-bottom: 18px;
+    }
+
+    .gallery-form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+    }
+
+    .portal-input,
+    .portal-select {
+      background: rgba(8, 12, 10, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 11px 14px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .portal-input:focus,
+    .portal-select:focus {
+      border-color: var(--accent-gold, #d8be97);
+      box-shadow: 0 0 12px rgba(216, 190, 151, 0.15);
+    }
+
+    .portal-select option {
+      background: #0f1511;
+      color: #fff;
+    }
+
+    .gallery-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-create-folder {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-create-folder:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .folder-status-pill {
+      font-size: 13px;
+      color: var(--accent-gold, #d8be97);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Drag and Drop Zone */
+    .dropzone-card {
+      background: rgba(16, 22, 18, 0.45);
+      border: 2px dashed rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-sheet, 24px);
+      padding: 44px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      margin-bottom: 28px;
+    }
+
+    .dropzone-card.dragover {
+      border-color: var(--accent-gold, #d8be97);
+      background: rgba(216, 190, 151, 0.06);
+      transform: scale(1.006);
+    }
+
+    .dropzone-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold, #d8be97);
+      margin-bottom: 16px;
+    }
+
+    .dropzone-title {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .dropzone-desc {
+      font-size: 14px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.6));
+      margin-bottom: 22px;
+    }
+
+    .dropzone-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-browse {
+      background: var(--text-primary, #ffffff);
+      color: #070b08;
+      border: none;
+      padding: 11px 24px;
+      border-radius: var(--radius-full, 9999px);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-browse:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .btn-browse-folder {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      padding: 11px 22px;
+      border-radius: var(--radius-full, 9999px);
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-browse-folder:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .dropzone-formats-hint {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--text-subtle, rgba(255, 255, 255, 0.42));
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Overall Progress Summary Dock */
+    .progress-dock {
+      background: rgba(16, 22, 18, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: var(--radius-card, 18px);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: none; /* Shown when files are queued */
+    }
+
+    .progress-dock.active {
+      display: block;
+    }
+
+    .dock-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .dock-stats-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .dock-percent {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent-gold, #d8be97);
+    }
+
+    .dock-metrics {
+      font-size: 13px;
+      color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+    }
+
+    .dock-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-dock-cta {
+      background: var(--accent-gold, #d8be97);
+      color: #070b08;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(216, 190, 151, 0.25);
+    }
+
+    .btn-dock-cta:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-dock-cta:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-dock-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-dock-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    /* Overall Progress Bar Track */
+    .progress-bar-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d8be97 0%, #f1d8b7 100%);
+      border-radius: 9999px;
+      transition: width 0.15s ease-out;
+    }
+
+    /* File Queue List */
+    .queue-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .queue-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .queue-count-badge {
+      font-size: 12px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.55));
+    }
+
+    .queue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .queue-item {
+      background: rgba(16, 22, 18, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+
+    .queue-item.success {
+      border-color: rgba(46, 213, 115, 0.3);
+    }
+
+    .queue-item.failed {
+      border-color: rgba(255, 71, 87, 0.35);
+    }
+
+    .queue-item.uploading {
+      border-color: rgba(216, 190, 151, 0.35);
+    }
+
+    .item-main-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .item-file-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .item-file-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .item-names-wrap {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .item-filename {
+      font-size: 13.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+    }
+
+    .item-filemeta {
+      font-size: 11.5px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.5));
+      margin-top: 2px;
+    }
+
+    .item-status-col {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .item-status-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .item-status-text.pending { color: var(--text-muted, rgba(255, 255, 255, 0.5)); }
+    .item-status-text.uploading { color: var(--accent-gold, #d8be97); }
+    .item-status-text.success { color: #2ed573; }
+    .item-status-text.failed { color: #ff4757; }
+    .item-status-text.paused { color: #ffab00; }
+
+    .btn-item-action {
+      background: transparent;
+      border: none;
+      color: var(--text-muted, rgba(255, 255, 255, 0.5));
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .btn-item-action:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-item-action.retry {
+      color: var(--accent-gold, #d8be97);
+    }
+
+    .item-progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .item-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-gold, #d8be97);
+      border-radius: 4px;
+      transition: width 0.15s ease-out;
+    }
+
+    .queue-item.success .item-progress-fill {
+      background: #2ed573;
+    }
+
+    .queue-item.failed .item-progress-fill {
+      background: #ff4757;
+    }
+
+    /* Setup Guide Drawer / Modal */
+    .setup-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .setup-modal.open {
+      display: flex;
+    }
+
+    .setup-card {
+      background: #0f1511;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .setup-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-gold, #d8be97);
+      color: #070b08;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .code-badge {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: monospace;
+      font-size: 12.5px;
+      margin-top: 8px;
+      color: var(--accent-gold, #d8be97);
+      user-select: all;
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body class="upload-page-body">
+
+  <div class="upload-bg-glow"></div>
+
+  <div class="upload-container">
+
+    <!-- Top Navigation Header -->
+    <header class="upload-nav-header">
+      <a href="/" class="upload-brand-link" title="Return to FRAMEHAUS Home">
+        <!-- Brand Camera Aperture Icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="3" />
+          <circle cx="12" cy="12" r="3.5" />
+          <line x1="8.5" y1="3" x2="8.5" y2="5.5" />
+        </svg>
+        <span class="upload-brand-name">FRAMEHAUS</span>
+      </a>
+
+      <div class="upload-nav-actions">
+        <a href="/" class="btn-portal-back">
+          <span>← Back to Studio</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Title & Description -->
+    <section class="upload-intro">
+      <div class="upload-badge">Google Drive Direct Portal</div>
+      <h1 class="upload-title">Upload Files</h1>
+      <p class="upload-subtitle">
+        Upload and organize high-resolution wedding shoots, RAW galleries, and cinema video archives directly into Google Drive.
+      </p>
+    </section>
+
+    <!-- Destination Information Card -->
+    <section class="destination-card" id="destinationCard">
+      <div class="dest-info-col">
+        <div class="dest-icon-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="dest-label">Configured Destination</div>
+          <div class="dest-name" id="destinationName">FRAMEHAUS Studio Vault</div>
+        </div>
+      </div>
+
+      <div id="statusContainer">
+        <div class="dest-status-badge status-connected" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">Checking Google Drive Connection...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Passcode Gate (Displayed only if UPLOAD_PASSCODE is configured in environment) -->
+    <div class="passcode-gate-card" id="passcodeGate" style="display:none;">
+      <div>
+        <h4 style="font-size:14px;font-weight:600;margin-bottom:2px;">🔒 Access Authorization Required</h4>
+        <p style="font-size:12.5px;color:rgba(255,255,255,0.6);">Please enter the studio upload passcode to unlock the portal.</p>
+      </div>
+      <div class="passcode-input-wrap">
+        <input type="password" id="passcodeInput" class="passcode-input" placeholder="Enter Passcode..." />
+        <button type="button" class="btn-unlock-passcode" id="btnUnlockPasscode">Unlock</button>
+      </div>
+    </div>
+
+    <!-- Gallery / Shoot Creation Form -->
+    <section class="gallery-create-card" id="gallerySection">
+      <div class="section-headline">
+        <span>📁 Gallery &amp; Shoot Information</span>
+      </div>
+      <p class="section-hint">
+        Create a dedicated Google Drive folder for this shoot. All uploaded files will be stored cleanly inside this gallery.
+      </p>
+
+      <div class="gallery-form-grid">
+        <div class="form-field">
+          <label for="galleryName">Gallery / Client Shoot Name *</label>
+          <input type="text" id="galleryName" class="portal-input" placeholder="e.g. Julian &amp; Elena Wedding, Autumn Lookbook" required />
+        </div>
+
+        <div class="form-field">
+          <label for="galleryCategory">Category *</label>
+          <select id="galleryCategory" class="portal-select">
+            <option value="Wedding" selected>Wedding</option>
+            <option value="Pre-Wedding">Pre-Wedding</option>
+            <option value="Engagement">Engagement</option>
+            <option value="Portrait">Portrait</option>
+            <option value="Event">Event</option>
+            <option value="Birthday">Birthday</option>
+            <option value="Commercial / Editorial">Commercial / Editorial</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="galleryDate">Shoot Date (Optional)</label>
+          <input type="date" id="galleryDate" class="portal-input" />
+        </div>
+      </div>
+
+      <div class="form-field" style="margin-bottom:12px;">
+        <label for="galleryNotes">Optional Notes / Shoot Description</label>
+        <input type="text" id="galleryNotes" class="portal-input" placeholder="e.g. Ceremony + Reception coverage, Sony A7IV + FX3 footage" />
+      </div>
+
+      <div class="gallery-action-row">
+        <button type="button" class="btn-create-folder" id="btnCreateFolder">
+          <span>Create Folder in Google Drive</span>
+        </button>
+
+        <div class="folder-status-pill" id="activeFolderStatus" style="display:none;">
+          <span>✓ Active Target:</span>
+          <strong id="activeFolderName">None</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- File Selection & Drag-and-Drop Area -->
+    <section class="dropzone-card" id="dropzone">
+      <div class="dropzone-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+        </svg>
+      </div>
+
+      <h3 class="dropzone-title">Drag &amp; Drop Photography &amp; Video Files</h3>
+      <p class="dropzone-desc">Select individual files or drag an entire folder from your computer</p>
+
+      <div class="dropzone-buttons">
+        <button type="button" class="btn-browse" id="btnBrowseFiles">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Browse Files</span>
+        </button>
+
+        <button type="button" class="btn-browse-folder" id="btnBrowseFolder">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Select Entire Folder</span>
+        </button>
+      </div>
+
+      <p class="dropzone-formats-hint">
+        Direct Google Drive resumable streaming supports unlimited gigabytes. Compatible with RAW (.cr2, .cr3, .nef, .arw, .dng), JPEG, PNG, ProRes/MP4, and ZIP archives.
+      </p>
+
+      <!-- Hidden Native File Inputs -->
+      <input type="file" id="fileInput" multiple style="display:none;" />
+      <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none;" />
+    </section>
+
+    <!-- Progress & Overall Controls Summary Dock -->
+    <section class="progress-dock" id="progressDock">
+      <div class="dock-top-row">
+        <div class="dock-stats-group">
+          <div class="dock-percent" id="totalPercent">0%</div>
+          <div class="dock-metrics">
+            <div><strong id="totalUploadedBytes">0 MB</strong> of <strong id="totalAllBytes">0 MB</strong></div>
+            <div style="color:rgba(255,255,255,0.5);font-size:12px;" id="totalFileCounts">0 of 0 files uploaded</div>
+          </div>
+        </div>
+
+        <div class="dock-controls-group">
+          <button type="button" class="btn-dock-cta" id="btnStartUpload">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="btnStartUploadText">Start Upload</span>
+          </button>
+          <button type="button" class="btn-dock-secondary" id="btnPauseResume" style="display:none;">Pause</button>
+          <button type="button" class="btn-dock-secondary" id="btnCancelAll">Cancel All</button>
+          <button type="button" class="btn-dock-secondary" id="btnClearCompleted" style="display:none;">Clear Completed</button>
+          <button type="button" class="btn-dock-secondary" id="btnRetryFailed" style="display:none;color:#ff6b81;">Retry Failed</button>
+        </div>
+      </div>
+
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="totalProgressFill"></div>
+      </div>
+    </section>
+
+    <!-- Queue List Container -->
+    <section id="queueSection" style="display:none;">
+      <div class="queue-header-row">
+        <h3 class="queue-title">Upload Queue</h3>
+        <span class="queue-count-badge" id="queueBadge">0 items</span>
+      </div>
+
+      <div class="queue-list" id="queueList"></div>
+    </section>
+
+  </div>
+
+  <!-- Setup Guidance Modal (For initial Google Drive OAuth configuration) -->
+  <div class="setup-modal" id="setupModal">
+    <div class="setup-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+        <div>
+          <span class="upload-badge">Admin Configuration</span>
+          <h2 style="font-size:22px;margin-top:6px;">Google Drive Integration Setup</h2>
+        </div>
+        <button type="button" id="btnCloseSetup" style="background:transparent;border:none;color:#fff;font-size:24px;cursor:pointer;">&times;</button>
+      </div>
+
+      <div class="setup-step">
+        <div class="step-badge">1</div>
+        <div>
+          <h4 style="font-size:15px;margin-bottom:4px;">Google Cloud OAuth Credentials</h4>
+          <p style="font-size:13px;color:rgba(255,255,255,0.65);">
+            Google Drive API and OAuth 2.0 Web Client configured. Authorized Redirect URI:
+          </p>
+          <div class="code-badge" id="oauthRedirectUriCode">https://photostudio.auralisstudio.xyz/api/auth/google/callback</div>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <div class="step-badge">2</div>
+        <div>
+          <h4 style="font-size:15px;margin-bottom:4px;">Authorize Your Google Account</h4>
+          <p style="font-size:13px;color:rgba(255,255,255,0.65);">
+            Click below to open the Google consent screen. Authorize your Google account with Drive permissions to retrieve your <code>GOOGLE_REFRESH_TOKEN</code>:
+          </p>
+          <button type="button" id="btnStartOAuthFlow" class="btn-dock-cta" style="margin-top:10px;">
+            <span>Authorize Google Account ↗</span>
+          </button>
+          <div id="oauthTokenDisplay" style="display:none;margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <div class="step-badge">3</div>
+        <div>
+          <h4 style="font-size:15px;margin-bottom:4px;">Environment Variables</h4>
+          <p style="font-size:13px;color:rgba(255,255,255,0.65);">
+            Add these to your Vercel Project Settings (or local <code>.env</code> file):
+          </p>
+          <div class="code-badge">
+            GOOGLE_CLIENT_ID=...<br>
+            GOOGLE_CLIENT_SECRET=...<br>
+            GOOGLE_REFRESH_TOKEN=...<br>
+            GOOGLE_DRIVE_FOLDER_ID=...<br>
+            UPLOAD_PASSCODE=... (optional)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="portalToast" style="position:fixed;bottom:24px;right:24px;background:#151c17;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;box-shadow:0 12px 30px rgba(0,0,0,0.6);z-index:9999;opacity:0;pointer-events:none;transition:opacity 0.25s ease;">
+  </div>
+
+  <!-- =========================================================================
+       Lightweight Client-Side Resumable Upload Engine (Direct to Google Drive)
+       ========================================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      // State Management
+      const state = {
+        configured: false,
+        hasPasscode: false,
+        passcode: localStorage.getItem('fh_upload_passcode') || '',
+        activeFolderId: null,
+        activeFolderName: '',
+        queue: [], // Array of { id, file, path, status, progress, sessionUrl, uploadedBytes, totalBytes, xhr, retries }
+        isUploading: false,
+        isPaused: false,
+        activeUploadCount: 0,
+        maxConcurrency: 2,
+        chunkSize: 5 * 1024 * 1024 // 5 MB chunks (multiples of 256 KB)
+      };
+
+      // DOM Elements
+      const destinationNameEl = document.getElementById('destinationName');
+      const statusBadge = document.getElementById('statusBadge');
+      const statusText = document.getElementById('statusText');
+      const passcodeGate = document.getElementById('passcodeGate');
+      const passcodeInput = document.getElementById('passcodeInput');
+      const btnUnlockPasscode = document.getElementById('btnUnlockPasscode');
+
+      const galleryNameInput = document.getElementById('galleryName');
+      const galleryCategorySelect = document.getElementById('galleryCategory');
+      const galleryDateInput = document.getElementById('galleryDate');
+      const galleryNotesInput = document.getElementById('galleryNotes');
+      const btnCreateFolder = document.getElementById('btnCreateFolder');
+      const activeFolderStatus = document.getElementById('activeFolderStatus');
+      const activeFolderNameEl = document.getElementById('activeFolderName');
+
+      const dropzone = document.getElementById('dropzone');
+      const btnBrowseFiles = document.getElementById('btnBrowseFiles');
+      const btnBrowseFolder = document.getElementById('btnBrowseFolder');
+      const fileInput = document.getElementById('fileInput');
+      const folderInput = document.getElementById('folderInput');
+
+      const progressDock = document.getElementById('progressDock');
+      const totalPercentEl = document.getElementById('totalPercent');
+      const totalProgressFill = document.getElementById('totalProgressFill');
+      const totalUploadedBytesEl = document.getElementById('totalUploadedBytes');
+      const totalAllBytesEl = document.getElementById('totalAllBytes');
+      const totalFileCountsEl = document.getElementById('totalFileCounts');
+      const btnStartUpload = document.getElementById('btnStartUpload');
+      const btnStartUploadText = document.getElementById('btnStartUploadText');
+      const btnPauseResume = document.getElementById('btnPauseResume');
+      const btnCancelAll = document.getElementById('btnCancelAll');
+      const btnClearCompleted = document.getElementById('btnClearCompleted');
+      const btnRetryFailed = document.getElementById('btnRetryFailed');
+
+      const queueSection = document.getElementById('queueSection');
+      const queueList = document.getElementById('queueList');
+      const queueBadge = document.getElementById('queueBadge');
+
+      const setupModal = document.getElementById('setupModal');
+      const btnCloseSetup = document.getElementById('btnCloseSetup');
+      const btnStartOAuthFlow = document.getElementById('btnStartOAuthFlow');
+      const oauthRedirectUriCode = document.getElementById('oauthRedirectUriCode');
+      const oauthTokenDisplay = document.getElementById('oauthTokenDisplay');
+      const portalToast = document.getElementById('portalToast');
+
+      function showToast(msg, duration = 3500) {
+        portalToast.textContent = msg;
+        portalToast.style.opacity = '1';
+        setTimeout(() => { portalToast.style.opacity = '0'; }, duration);
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes || bytes <= 0) return '0 B';
+        const k = 1024;
+        const dm = 1;
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+      }
+
+      // 1. Initial Configuration Check
+      async function checkConfig() {
+        try {
+          const res = await fetch('/api/upload/config', {
+            headers: { 'X-Upload-Passcode': state.passcode }
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+
+          state.configured = data.configured;
+          state.hasPasscode = data.hasPasscode;
+          destinationNameEl.textContent = data.destinationName || 'FRAMEHAUS Studio Vault';
+
+          if (data.hasPasscode && !state.passcode) {
+            passcodeGate.style.display = 'flex';
+          } else {
+            passcodeGate.style.display = 'none';
+          }
+
+          if (data.configured) {
+            statusBadge.className = 'dest-status-badge status-connected';
+            statusText.textContent = 'Connected to Google Drive';
+          } else {
+            statusBadge.className = 'dest-status-badge status-setup-needed';
+            statusText.textContent = `Setup Required (${data.missingVars.join(', ')})`;
+            statusBadge.style.cursor = 'pointer';
+            statusBadge.title = 'Click to open Google Drive setup guide';
+            statusBadge.onclick = openSetupModal;
+          }
+        } catch (err) {
+          statusBadge.className = 'dest-status-badge status-setup-needed';
+          statusText.textContent = 'API Unavailable: Check deployment';
+        }
+      }
+
+      // Passcode Gate Action
+      if (btnUnlockPasscode) {
+        btnUnlockPasscode.addEventListener('click', () => {
+          const val = passcodeInput.value.trim();
+          if (!val) return;
+          state.passcode = val;
+          localStorage.setItem('fh_upload_passcode', val);
+          passcodeGate.style.display = 'none';
+          showToast('Passcode saved!');
+          checkConfig();
+        });
+      }
+
+      // Setup Modal Controls
+      function openSetupModal() {
+        if (oauthRedirectUriCode) {
+          oauthRedirectUriCode.textContent = window.location.origin + '/upload?oauth_callback=true';
+        }
+        setupModal.classList.add('open');
+      }
+
+      if (btnCloseSetup) {
+        btnCloseSetup.addEventListener('click', () => setupModal.classList.remove('open'));
+      }
+
+      if (btnStartOAuthFlow) {
+        btnStartOAuthFlow.addEventListener('click', async () => {
+          try {
+            const redirectUri = window.location.origin + '/upload?oauth_callback=true';
+            const res = await fetch(`/api/upload/oauth-auth-url?redirect_uri=${encodeURIComponent(redirectUri)}`);
+            const data = await res.json();
+            if (data.authUrl) {
+              window.location.href = data.authUrl;
+            } else {
+              alert(data.error || 'Failed to generate OAuth URL. Check GOOGLE_CLIENT_ID in server environment.');
+            }
+          } catch (e) {
+            alert('Error starting OAuth: ' + e.message);
+          }
+        });
+      }
+
+      // Handle OAuth Redirect Callback if present in URL
+      async function handleOAuthCallback() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const isCallback = urlParams.get('oauth_callback');
+
+        if (isCallback && code) {
+          openSetupModal();
+          oauthTokenDisplay.style.display = 'block';
+          oauthTokenDisplay.innerHTML = '<em>Exchanging authorization code for refresh token...</em>';
+
+          try {
+            const redirectUri = window.location.origin + '/upload?oauth_callback=true';
+            const res = await fetch(`/api/upload/oauth-callback?code=${encodeURIComponent(code)}&redirect_uri=${encodeURIComponent(redirectUri)}`);
+            const data = await res.json();
+
+            if (data.refreshToken) {
+              oauthTokenDisplay.innerHTML = `
+                <div style="color:#2ed573;font-weight:600;margin-bottom:6px;">✓ Authorized successfully!</div>
+                <div style="font-size:12px;margin-bottom:4px;">Add this to your Vercel Environment Variables:</div>
+                <div class="code-badge">GOOGLE_REFRESH_TOKEN=${data.refreshToken}</div>
+              `;
+            } else {
+              oauthTokenDisplay.innerHTML = `<div style="color:#ffab00;">${data.error || data.warning}</div>`;
+            }
+          } catch (err) {
+            oauthTokenDisplay.innerHTML = `<div style="color:#ff4757;">Error: ${err.message}</div>`;
+          }
+        }
+      }
+
+      // 2. Gallery Folder Creation
+      async function createGalleryFolder() {
+        const name = galleryNameInput.value.trim();
+        const category = galleryCategorySelect.value;
+        const shootDate = galleryDateInput.value;
+        const notes = galleryNotesInput.value.trim();
+
+        if (!name) {
+          alert('Please enter a Gallery / Shoot Name first.');
+          galleryNameInput.focus();
+          return null;
+        }
+
+        btnCreateFolder.disabled = true;
+        btnCreateFolder.innerHTML = '<span>Creating Drive Folder...</span>';
+
+        try {
+          const res = await fetch('/api/upload/create-folder', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Upload-Passcode': state.passcode
+            },
+            body: JSON.stringify({
+              galleryName: name,
+              category,
+              shootDate,
+              description: notes
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to create folder');
+
+          state.activeFolderId = data.folderId;
+          state.activeFolderName = data.folderName;
+
+          activeFolderStatus.style.display = 'inline-flex';
+          activeFolderNameEl.textContent = data.folderName;
+
+          showToast(data.alreadyExisted ? `Folder "${data.folderName}" selected` : `Folder "${data.folderName}" created in Drive!`);
+          return data.folderId;
+        } catch (err) {
+          alert('Folder Creation Error: ' + err.message);
+          return null;
+        } finally {
+          btnCreateFolder.disabled = false;
+          btnCreateFolder.innerHTML = '<span>Create Folder in Google Drive</span>';
+        }
+      }
+
+      btnCreateFolder.addEventListener('click', createGalleryFolder);
+
+      // 3. File Queue Management
+      function addFilesToQueue(fileList) {
+        if (!fileList || fileList.length === 0) return;
+
+        let addedCount = 0;
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          // Exclude hidden OS metadata files
+          if (file.name.startsWith('.') || file.name.startsWith('Thumbs.db')) continue;
+
+          const item = {
+            id: 'file_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+            file: file,
+            path: file.webkitRelativePath || file.name,
+            size: file.size,
+            status: 'queued', // 'queued', 'uploading', 'paused', 'success', 'failed'
+            progress: 0,
+            uploadedBytes: 0,
+            sessionUrl: null,
+            errorMsg: null,
+            xhr: null,
+            retries: 0
+          };
+          state.queue.push(item);
+          addedCount++;
+        }
+
+        if (addedCount > 0) {
+          renderQueue();
+          updateTotalProgress();
+          progressDock.classList.add('active');
+          queueSection.style.display = 'block';
+          showToast(`Added ${addedCount} file${addedCount > 1 ? 's' : ''} to queue`);
+        }
+      }
+
+      // Drag and Drop Handlers
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+
+      dropzone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer && e.dataTransfer.files) {
+          addFilesToQueue(e.dataTransfer.files);
+        }
+      });
+
+      dropzone.addEventListener('click', (e) => {
+        if (e.target.closest('#btnBrowseFolder')) return;
+        fileInput.click();
+      });
+
+      btnBrowseFiles.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+
+      btnBrowseFolder.addEventListener('click', (e) => {
+        e.stopPropagation();
+        folderInput.click();
+      });
+
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files) {
+          addFilesToQueue(fileInput.files);
+          fileInput.value = '';
+        }
+      });
+
+      folderInput.addEventListener('change', () => {
+        if (folderInput.files) {
+          addFilesToQueue(folderInput.files);
+          folderInput.value = '';
+        }
+      });
+
+      // Render Queue UI
+      function renderQueue() {
+        queueBadge.textContent = `${state.queue.length} item${state.queue.length === 1 ? '' : 's'}`;
+        queueList.innerHTML = '';
+
+        state.queue.forEach((item, index) => {
+          const row = document.createElement('div');
+          row.className = `queue-item ${item.status}`;
+          row.id = `itemRow_${item.id}`;
+
+          let ext = item.file.name.split('.').pop().toUpperCase();
+          let icon = '📄';
+          if (['JPG', 'JPEG', 'PNG', 'WEBP', 'GIF'].includes(ext)) icon = '🖼️';
+          else if (['MP4', 'MOV', 'MKV', 'AVI', 'M4V'].includes(ext)) icon = '🎬';
+          else if (['CR2', 'CR3', 'NEF', 'ARW', 'DNG', 'RAF'].includes(ext)) icon = '📷';
+          else if (['ZIP', 'RAR', '7Z', 'TAR'].includes(ext)) icon = '📦';
+
+          let statusDisplay = 'Queued';
+          if (item.status === 'uploading') statusDisplay = `${Math.round(item.progress)}%`;
+          else if (item.status === 'success') statusDisplay = '✓ Completed';
+          else if (item.status === 'failed') statusDisplay = `Failed: ${item.errorMsg || 'Network error'}`;
+          else if (item.status === 'paused') statusDisplay = 'Paused';
+
+          row.innerHTML = `
+            <div class="item-main-row">
+              <div class="item-file-info">
+                <div class="item-file-icon">${icon}</div>
+                <div class="item-names-wrap">
+                  <div class="item-filename" title="${item.path}">${item.path}</div>
+                  <div class="item-filemeta">${formatBytes(item.size)} · ${ext}</div>
+                </div>
+              </div>
+              <div class="item-status-col">
+                <span class="item-status-text ${item.status}" id="statusTxt_${item.id}">${statusDisplay}</span>
+                ${item.status === 'failed' ? `
+                  <button type="button" class="btn-item-action retry" title="Retry this upload" onclick="window.PortalEngine.retryFile('${item.id}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                  </button>
+                ` : ''}
+                ${(item.status === 'queued' || item.status === 'failed') ? `
+                  <button type="button" class="btn-item-action" title="Remove from queue" onclick="window.PortalEngine.removeFile('${item.id}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+            <div class="item-progress-track">
+              <div class="item-progress-fill" id="fill_${item.id}" style="width: ${item.progress}%;"></div>
+            </div>
+          `;
+          queueList.appendChild(row);
+        });
+
+        // Update secondary buttons
+        const hasCompleted = state.queue.some(i => i.status === 'success');
+        const hasFailed = state.queue.some(i => i.status === 'failed');
+        btnClearCompleted.style.display = hasCompleted ? 'inline-block' : 'none';
+        btnRetryFailed.style.display = hasFailed ? 'inline-block' : 'none';
+      }
+
+      function updateTotalProgress() {
+        const totalBytes = state.queue.reduce((acc, cur) => acc + cur.size, 0);
+        const uploadedBytes = state.queue.reduce((acc, cur) => {
+          if (cur.status === 'success') return acc + cur.size;
+          return acc + (cur.uploadedBytes || 0);
+        }, 0);
+
+        const pct = totalBytes > 0 ? Math.min(100, Math.round((uploadedBytes / totalBytes) * 100)) : 0;
+        totalPercentEl.textContent = `${pct}%`;
+        totalProgressFill.style.width = `${pct}%`;
+        totalUploadedBytesEl.textContent = formatBytes(uploadedBytes);
+        totalAllBytesEl.textContent = formatBytes(totalBytes);
+
+        const completedCount = state.queue.filter(i => i.status === 'success').length;
+        totalFileCountsEl.textContent = `${completedCount} of ${state.queue.length} files completed`;
+
+        if (state.isUploading) {
+          btnPauseResume.style.display = 'inline-block';
+          btnPauseResume.textContent = state.isPaused ? 'Resume' : 'Pause';
+          btnStartUpload.disabled = true;
+          btnStartUploadText.textContent = 'Uploading...';
+        } else {
+          btnStartUpload.disabled = false;
+          btnStartUploadText.textContent = 'Start Upload';
+        }
+      }
+
+      // 4. Large-File Resumable Upload Pipeline (Direct to Google Drive)
+      async function processNextUploads() {
+        if (!state.isUploading || state.isPaused) return;
+
+        while (state.activeUploadCount < state.maxConcurrency) {
+          const nextItem = state.queue.find(i => i.status === 'queued');
+          if (!nextItem) break;
+
+          state.activeUploadCount++;
+          uploadSingleFile(nextItem);
+        }
+
+        if (state.activeUploadCount === 0 && !state.queue.some(i => i.status === 'queued')) {
+          state.isUploading = false;
+          updateTotalProgress();
+          const failures = state.queue.filter(i => i.status === 'failed').length;
+          if (failures === 0 && state.queue.length > 0) {
+            showToast('🎉 All files uploaded successfully to Google Drive!', 6000);
+          } else if (failures > 0) {
+            showToast(`Upload completed with ${failures} failure(s). Click Retry Failed.`, 6000);
+          }
+        }
+      }
+
+      async function uploadSingleFile(item) {
+        item.status = 'uploading';
+        updateItemRow(item);
+
+        try {
+          // 1. Ensure target gallery folder exists
+          let targetFolderId = state.activeFolderId;
+          if (!targetFolderId) {
+            targetFolderId = await createGalleryFolder();
+            if (!targetFolderId) {
+              throw new Error('Gallery folder must be created before uploading files.');
+            }
+          }
+
+          // 2. Request Resumable Session URL from server
+          if (!item.sessionUrl) {
+            const initRes = await fetch('/api/upload/initiate', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Upload-Passcode': state.passcode
+              },
+              body: JSON.stringify({
+                fileName: item.file.name,
+                fileSize: item.file.size,
+                fileType: item.file.type || 'application/octet-stream',
+                parentFolderId: targetFolderId
+              })
+            });
+
+            const initData = await initRes.json();
+            if (!initRes.ok || !initData.sessionUrl) {
+              throw new Error(initData.error || 'Failed to obtain Google Drive resumable session.');
+            }
+            item.sessionUrl = initData.sessionUrl;
+          }
+
+          // 3. Upload File Chunks Direct to Google Drive
+          await streamChunksToGoogle(item);
+
+        } catch (err) {
+          console.error(`Upload error on ${item.file.name}:`, err);
+          item.status = 'failed';
+          item.errorMsg = err.message || 'Upload failed';
+          updateItemRow(item);
+        } finally {
+          state.activeUploadCount--;
+          processNextUploads();
+        }
+      }
+
+      /**
+       * Stream chunks directly to Google Drive resumable session URL
+       */
+      function streamChunksToGoogle(item) {
+        return new Promise((resolve, reject) => {
+          let startByte = item.uploadedBytes || 0;
+          const totalSize = item.size;
+
+          // Handle 0-byte file edge case
+          if (totalSize === 0) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', item.sessionUrl, true);
+            xhr.setRequestHeader('Content-Range', 'bytes */0');
+            xhr.onload = () => {
+              item.status = 'success';
+              item.progress = 100;
+              item.uploadedBytes = 0;
+              updateItemRow(item);
+              resolve();
+            };
+            xhr.onerror = () => reject(new Error('Network error on 0-byte upload'));
+            xhr.send();
+            return;
+          }
+
+          function uploadNextChunk() {
+            if (item.status === 'paused' || !state.isUploading) {
+              return resolve();
+            }
+
+            const endByte = Math.min(startByte + state.chunkSize, totalSize);
+            const chunk = item.file.slice(startByte, endByte);
+
+            const xhr = new XMLHttpRequest();
+            item.xhr = xhr;
+
+            xhr.open('PUT', item.sessionUrl, true);
+            xhr.setRequestHeader('Content-Range', `bytes ${startByte}-${endByte - 1}/${totalSize}`);
+            xhr.setRequestHeader('Content-Type', item.file.type || 'application/octet-stream');
+
+            xhr.upload.onprogress = (e) => {
+              if (e.lengthComputable) {
+                const currentChunkBytes = e.loaded;
+                item.uploadedBytes = startByte + currentChunkBytes;
+                item.progress = (item.uploadedBytes / totalSize) * 100;
+                updateItemRow(item);
+                updateTotalProgress();
+              }
+            };
+
+            xhr.onload = () => {
+              item.xhr = null;
+
+              // Google Drive returns 308 Resume Incomplete when chunk is received and more remain
+              if (xhr.status === 308) {
+                const rangeHeader = xhr.getResponseHeader('Range');
+                if (rangeHeader) {
+                  const m = rangeHeader.match(/bytes=0-(\d+)/);
+                  if (m && m[1]) {
+                    startByte = parseInt(m[1], 10) + 1;
+                  } else {
+                    startByte = endByte;
+                  }
+                } else {
+                  startByte = endByte;
+                }
+                item.uploadedBytes = startByte;
+                item.progress = (startByte / totalSize) * 100;
+                updateItemRow(item);
+                updateTotalProgress();
+
+                uploadNextChunk();
+              } else if (xhr.status === 200 || xhr.status === 201) {
+                // Completed!
+                item.status = 'success';
+                item.progress = 100;
+                item.uploadedBytes = totalSize;
+                updateItemRow(item);
+                updateTotalProgress();
+                resolve();
+              } else if (xhr.status === 404 || xhr.status === 410) {
+                // Session expired: reset sessionUrl to get a new one
+                item.sessionUrl = null;
+                reject(new Error('Google Drive upload session expired. Click retry.'));
+              } else {
+                reject(new Error(`Google Drive returned HTTP ${xhr.status}: ${xhr.statusText}`));
+              }
+            };
+
+            xhr.onerror = () => {
+              item.xhr = null;
+              // Check if Google Drive already completed or partially received the file
+              const statusXhr = new XMLHttpRequest();
+              statusXhr.open('PUT', item.sessionUrl, true);
+              statusXhr.setRequestHeader('Content-Range', `bytes */${totalSize}`);
+              statusXhr.onload = () => {
+                if (statusXhr.status === 200 || statusXhr.status === 201) {
+                  item.status = 'success';
+                  item.progress = 100;
+                  item.uploadedBytes = totalSize;
+                  updateItemRow(item);
+                  updateTotalProgress();
+                  return resolve();
+                } else if (statusXhr.status === 308) {
+                  const rangeHeader = statusXhr.getResponseHeader('Range');
+                  if (rangeHeader) {
+                    const m = rangeHeader.match(/bytes=0-(\d+)/);
+                    if (m && m[1]) {
+                      startByte = parseInt(m[1], 10) + 1;
+                      item.uploadedBytes = startByte;
+                      item.progress = (startByte / totalSize) * 100;
+                      updateItemRow(item);
+                      updateTotalProgress();
+                    }
+                  }
+                  if (item.retries < 4) {
+                    item.retries++;
+                    return setTimeout(uploadNextChunk, 1500 * item.retries);
+                  }
+                }
+                fallbackRetry();
+              };
+              statusXhr.onerror = () => fallbackRetry();
+              statusXhr.send();
+
+              function fallbackRetry() {
+                if (item.retries < 3) {
+                  item.retries++;
+                  console.log(`Retrying chunk for ${item.file.name} (attempt ${item.retries})...`);
+                  setTimeout(uploadNextChunk, 1500 * item.retries);
+                } else {
+                  reject(new Error('Network connection interrupted.'));
+                }
+              }
+            };
+
+            xhr.send(chunk);
+          }
+
+          uploadNextChunk();
+        });
+      }
+
+      function updateItemRow(item) {
+        const fill = document.getElementById(`fill_${item.id}`);
+        const statusTxt = document.getElementById(`statusTxt_${item.id}`);
+        const row = document.getElementById(`itemRow_${item.id}`);
+
+        if (fill) fill.style.width = `${item.progress}%`;
+        if (statusTxt) {
+          statusTxt.className = `item-status-text ${item.status}`;
+          if (item.status === 'uploading') statusTxt.textContent = `${Math.round(item.progress)}%`;
+          else if (item.status === 'success') statusTxt.textContent = '✓ Completed';
+          else if (item.status === 'failed') statusTxt.textContent = `Failed: ${item.errorMsg || 'Error'}`;
+          else if (item.status === 'paused') statusTxt.textContent = 'Paused';
+        }
+        if (row) {
+          row.className = `queue-item ${item.status}`;
+        }
+      }
+
+      // Upload Controls
+      btnStartUpload.addEventListener('click', async () => {
+        if (state.queue.length === 0) {
+          alert('Please add files or folders to upload first.');
+          return;
+        }
+
+        // If no active gallery folder yet, prompt or create one
+        if (!state.activeFolderId) {
+          const folderId = await createGalleryFolder();
+          if (!folderId) return;
+        }
+
+        state.isUploading = true;
+        state.isPaused = false;
+        updateTotalProgress();
+        processNextUploads();
+      });
+
+      btnPauseResume.addEventListener('click', () => {
+        if (!state.isUploading) return;
+        state.isPaused = !state.isPaused;
+        btnPauseResume.textContent = state.isPaused ? 'Resume' : 'Pause';
+
+        if (state.isPaused) {
+          // Abort active XHRs cleanly without losing uploaded range
+          state.queue.forEach(item => {
+            if (item.status === 'uploading' && item.xhr) {
+              item.xhr.abort();
+              item.xhr = null;
+              item.status = 'paused';
+              updateItemRow(item);
+            }
+          });
+          state.activeUploadCount = 0;
+          showToast('⏸ Upload paused. Progress saved.');
+        } else {
+          state.queue.forEach(item => {
+            if (item.status === 'paused') {
+              item.status = 'queued';
+              updateItemRow(item);
+            }
+          });
+          showToast('▶ Resuming uploads...');
+          processNextUploads();
+        }
+      });
+
+      btnCancelAll.addEventListener('click', () => {
+        if (!confirm('Cancel all pending and active uploads?')) return;
+        state.isUploading = false;
+        state.queue.forEach(item => {
+          if (item.xhr) {
+            item.xhr.abort();
+            item.xhr = null;
+          }
+        });
+        state.queue = [];
+        state.activeUploadCount = 0;
+        renderQueue();
+        updateTotalProgress();
+        progressDock.classList.remove('active');
+        queueSection.style.display = 'none';
+        showToast('Uploads cancelled');
+      });
+
+      btnClearCompleted.addEventListener('click', () => {
+        state.queue = state.queue.filter(i => i.status !== 'success');
+        renderQueue();
+        updateTotalProgress();
+        if (state.queue.length === 0) {
+          progressDock.classList.remove('active');
+          queueSection.style.display = 'none';
+        }
+      });
+
+      btnRetryFailed.addEventListener('click', () => {
+        state.queue.forEach(item => {
+          if (item.status === 'failed') {
+            item.status = 'queued';
+            item.errorMsg = null;
+            item.retries = 0;
+            updateItemRow(item);
+          }
+        });
+        renderQueue();
+        state.isUploading = true;
+        state.isPaused = false;
+        updateTotalProgress();
+        processNextUploads();
+      });
+
+      // Expose helpers for inline onclick handlers
+      window.PortalEngine = {
+        removeFile: (id) => {
+          state.queue = state.queue.filter(i => i.id !== id);
+          renderQueue();
+          updateTotalProgress();
+          if (state.queue.length === 0) {
+            progressDock.classList.remove('active');
+            queueSection.style.display = 'none';
+          }
+        },
+        retryFile: (id) => {
+          const item = state.queue.find(i => i.id === id);
+          if (item) {
+            item.status = 'queued';
+            item.errorMsg = null;
+            item.retries = 0;
+            updateItemRow(item);
+            if (!state.isUploading) {
+              state.isUploading = true;
+              state.isPaused = false;
+              updateTotalProgress();
+              processNextUploads();
+            }
+          }
+        }
+      };
+
+      // Initialize
+      checkConfig();
+      handleOAuthCallback();
+
+    })();
+  </script>
+
+</body>
+
+</html>
