@@ -3,6 +3,7 @@ const {
   sendJson,
   verifyPasscode,
   getDestinationFolderId,
+  validateParentFolder,
   getAccessToken,
   checkRateLimit,
   sanitizeFileName
@@ -42,12 +43,16 @@ module.exports = async function handler(req, res) {
       return sendJson(res, 400, { error: 'Gallery / shoot name is required.' });
     }
 
-    // Compose consistent folder name: e.g. "Wedding — Julian & Elena" or "Julian & Elena"
-    const folderTitle = category && category !== 'Other' && category !== 'General'
+    // If creating a top-level shoot folder, include category if selected.
+    // If creating a nested subfolder inside a shoot, keep the exact subfolder name.
+    const isSubfolder = Boolean(body.parentFolderId);
+    const folderTitle = (!isSubfolder && category && category !== 'Other' && category !== 'General')
       ? `${category} — ${galleryName}`
       : galleryName;
 
-    const parentFolderId = getDestinationFolderId();
+    const parentFolderId = body.parentFolderId
+      ? await validateParentFolder(body.parentFolderId)
+      : getDestinationFolderId();
     const accessToken = await getAccessToken();
 
     // 1. Check if folder already exists inside destination to prevent duplicates

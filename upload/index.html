@@ -437,34 +437,35 @@
       flex-wrap: wrap;
     }
 
-    .btn-browse {
-      background: var(--text-primary, #ffffff);
+    .btn-browse-folder {
+      background: var(--accent-gold, #d8be97);
       color: #070b08;
       border: none;
-      padding: 11px 24px;
+      padding: 13px 28px;
       border-radius: var(--radius-full, 9999px);
-      font-weight: 600;
-      font-size: 14px;
+      font-weight: 700;
+      font-size: 14.5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(216, 190, 151, 0.28);
+      transition: all 0.2s ease;
     }
 
-    .btn-browse:hover {
-      opacity: 0.92;
+    .btn-browse-folder:hover {
+      filter: brightness(1.1);
       transform: translateY(-1px);
     }
 
-    .btn-browse-folder {
+    .btn-browse {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #fff;
-      padding: 11px 22px;
+      color: #ffffff;
+      padding: 12px 22px;
       border-radius: var(--radius-full, 9999px);
       font-weight: 500;
-      font-size: 14px;
+      font-size: 13.5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -472,9 +473,9 @@
       transition: all 0.2s ease;
     }
 
-    .btn-browse-folder:hover {
+    .btn-browse:hover {
       background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
     }
 
     .dropzone-formats-hint {
@@ -941,26 +942,28 @@
       </div>
     </section>
 
-    <!-- File Selection & Drag-and-Drop Area -->
+    <!-- Folder Selection & Drag-and-Drop Area -->
     <section class="dropzone-card" id="dropzone">
       <div class="dropzone-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          <line x1="12" y1="11" x2="12" y2="17"/>
+          <line x1="9" y1="14" x2="15" y2="14"/>
         </svg>
       </div>
 
-      <h3 class="dropzone-title">Drag &amp; Drop Photography &amp; Video Files</h3>
-      <p class="dropzone-desc">Select individual files or drag an entire folder from your computer</p>
+      <h3 class="dropzone-title">Drop Your Shoot Folder Here</h3>
+      <p class="dropzone-desc">Select an entire shoot folder from your computer. A matching folder will automatically be created in Google Drive with all media uploaded inside it.</p>
 
       <div class="dropzone-buttons">
-        <button type="button" class="btn-browse" id="btnBrowseFiles">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Browse Files</span>
+        <button type="button" class="btn-browse-folder" id="btnBrowseFolder">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Select Shoot Folder</span>
         </button>
 
-        <button type="button" class="btn-browse-folder" id="btnBrowseFolder">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          <span>Select Entire Folder</span>
+        <button type="button" class="btn-browse" id="btnBrowseFiles">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          <span>or Browse Loose Files</span>
         </button>
       </div>
 
@@ -969,8 +972,8 @@
       </p>
 
       <!-- Hidden Native File Inputs -->
-      <input type="file" id="fileInput" multiple style="display:none;" />
       <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none;" />
+      <input type="file" id="fileInput" multiple style="display:none;" />
     </section>
 
     <!-- Progress & Overall Controls Summary Dock -->
@@ -1316,9 +1319,33 @@
 
       btnCreateFolder.addEventListener('click', createGalleryFolder);
 
-      // 3. File Queue Management
+      // 3. File Queue Management & Folder Detection
+      state.detectedFolder = '';
+      state.subfolderCache = {};
+
       function addFilesToQueue(fileList) {
         if (!fileList || fileList.length === 0) return;
+
+        let detectedRootFolder = null;
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          if (file.webkitRelativePath) {
+            const parts = file.webkitRelativePath.split('/');
+            if (parts.length > 1 && parts[0]) {
+              detectedRootFolder = parts[0];
+              break;
+            }
+          }
+        }
+
+        if (detectedRootFolder) {
+          state.detectedFolder = detectedRootFolder;
+          galleryNameInput.value = detectedRootFolder;
+          state.activeFolderId = null;
+          state.subfolderCache = {};
+          activeFolderStatus.style.display = 'none';
+          showToast(`📁 Selected Shoot Folder: "${detectedRootFolder}"`);
+        }
 
         let addedCount = 0;
         for (let i = 0; i < fileList.length; i++) {
@@ -1348,8 +1375,60 @@
           updateTotalProgress();
           progressDock.classList.add('active');
           queueSection.style.display = 'block';
-          showToast(`Added ${addedCount} file${addedCount > 1 ? 's' : ''} to queue`);
+          if (!detectedRootFolder) {
+            showToast(`Added ${addedCount} file${addedCount > 1 ? 's' : ''} to queue`);
+          }
         }
+      }
+
+      // Recursive folder traversal for dropped folders
+      async function getFilesFromDataTransfer(dataTransfer) {
+        const files = [];
+        const items = dataTransfer.items;
+        if (items && items.length > 0 && items[0].webkitGetAsEntry) {
+          for (let i = 0; i < items.length; i++) {
+            const entry = items[i].webkitGetAsEntry();
+            if (entry) {
+              await traverseEntry(entry, '', files);
+            }
+          }
+          if (files.length > 0) return files;
+        }
+        return Array.from(dataTransfer.files || []);
+      }
+
+      function traverseEntry(entry, pathPrefix, output) {
+        return new Promise((resolve) => {
+          if (entry.isFile) {
+            entry.file((file) => {
+              try {
+                Object.defineProperty(file, 'webkitRelativePath', {
+                  value: pathPrefix + file.name,
+                  configurable: true
+                });
+              } catch (_) {}
+              output.push(file);
+              resolve();
+            }, () => resolve());
+          } else if (entry.isDirectory) {
+            const dirReader = entry.createReader();
+            const readEntries = () => {
+              dirReader.readEntries(async (entries) => {
+                if (!entries || entries.length === 0) {
+                  resolve();
+                } else {
+                  for (const sub of entries) {
+                    await traverseEntry(sub, pathPrefix + entry.name + '/', output);
+                  }
+                  readEntries();
+                }
+              }, () => resolve());
+            };
+            readEntries();
+          } else {
+            resolve();
+          }
+        });
       }
 
       // Drag and Drop Handlers
@@ -1363,27 +1442,30 @@
         dropzone.classList.remove('dragover');
       });
 
-      dropzone.addEventListener('drop', (e) => {
+      dropzone.addEventListener('drop', async (e) => {
         e.preventDefault();
         dropzone.classList.remove('dragover');
-        if (e.dataTransfer && e.dataTransfer.files) {
-          addFilesToQueue(e.dataTransfer.files);
+        if (e.dataTransfer) {
+          const files = await getFilesFromDataTransfer(e.dataTransfer);
+          if (files && files.length > 0) {
+            addFilesToQueue(files);
+          }
         }
       });
 
       dropzone.addEventListener('click', (e) => {
-        if (e.target.closest('#btnBrowseFolder')) return;
-        fileInput.click();
-      });
-
-      btnBrowseFiles.addEventListener('click', (e) => {
-        e.stopPropagation();
-        fileInput.click();
+        if (e.target.closest('#btnBrowseFiles')) return;
+        folderInput.click();
       });
 
       btnBrowseFolder.addEventListener('click', (e) => {
         e.stopPropagation();
         folderInput.click();
+      });
+
+      btnBrowseFiles.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
       });
 
       fileInput.addEventListener('change', () => {
@@ -1480,11 +1562,70 @@
           btnPauseResume.style.display = 'inline-block';
           btnPauseResume.textContent = state.isPaused ? 'Resume' : 'Pause';
           btnStartUpload.disabled = true;
-          btnStartUploadText.textContent = 'Uploading...';
         } else {
           btnStartUpload.disabled = false;
-          btnStartUploadText.textContent = 'Start Upload';
+          const targetName = galleryNameInput.value.trim() || state.detectedFolder;
+          if (targetName) {
+            btnStartUploadText.textContent = `Upload "${targetName}" to Google Drive`;
+          } else {
+            btnStartUploadText.textContent = 'Upload Folder to Google Drive';
+          }
         }
+      }
+
+      galleryNameInput.addEventListener('input', updateTotalProgress);
+
+      // Resolves target folder for an item, creating subfolders if present in path
+      async function resolveTargetFolderForItem(item) {
+        let rootFolderId = state.activeFolderId;
+        if (!rootFolderId) {
+          rootFolderId = await createGalleryFolder();
+          if (!rootFolderId) throw new Error('Shoot folder could not be created in Google Drive.');
+        }
+
+        const relativePath = item.path || item.file.name;
+        const parts = relativePath.split('/');
+        if (parts.length <= 2) {
+          return rootFolderId;
+        }
+
+        let currentParentId = rootFolderId;
+        let cumulativePath = parts[0];
+
+        for (let i = 1; i < parts.length - 1; i++) {
+          const subDirName = parts[i];
+          cumulativePath += '/' + subDirName;
+
+          if (state.subfolderCache[cumulativePath]) {
+            currentParentId = state.subfolderCache[cumulativePath];
+            continue;
+          }
+
+          try {
+            const res = await fetch('/api/upload/create-folder', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Upload-Passcode': state.passcode
+              },
+              body: JSON.stringify({
+                galleryName: subDirName,
+                parentFolderId: currentParentId
+              })
+            });
+            const data = await res.json();
+            if (res.ok && data.folderId) {
+              state.subfolderCache[cumulativePath] = data.folderId;
+              currentParentId = data.folderId;
+            } else {
+              break;
+            }
+          } catch (_) {
+            break;
+          }
+        }
+
+        return currentParentId;
       }
 
       // 4. Large-File Resumable Upload Pipeline (Direct to Google Drive)
@@ -1504,7 +1645,7 @@
           updateTotalProgress();
           const failures = state.queue.filter(i => i.status === 'failed').length;
           if (failures === 0 && state.queue.length > 0) {
-            showToast('🎉 All files uploaded successfully to Google Drive!', 6000);
+            showToast(`🎉 Shoot folder and all ${state.queue.length} files successfully uploaded!`, 7000);
           } else if (failures > 0) {
             showToast(`Upload completed with ${failures} failure(s). Click Retry Failed.`, 6000);
           }
@@ -1516,13 +1657,10 @@
         updateItemRow(item);
 
         try {
-          // 1. Ensure target gallery folder exists
-          let targetFolderId = state.activeFolderId;
+          // 1. Resolve target folder in Google Drive (supports nested subfolders)
+          let targetFolderId = await resolveTargetFolderForItem(item);
           if (!targetFolderId) {
-            targetFolderId = await createGalleryFolder();
-            if (!targetFolderId) {
-              throw new Error('Gallery folder must be created before uploading files.');
-            }
+            throw new Error('Gallery folder must be created before uploading files.');
           }
 
           // 2. Request Resumable Session URL from server
