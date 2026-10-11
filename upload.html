@@ -943,8 +943,8 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-radius: var(--radius-card, 18px);
-      padding: 22px;
-      transition: border-color 0.25s, box-shadow 0.25s;
+      padding: 18px 22px;
+      transition: all 0.25s ease;
     }
 
     .shoot-card:hover {
@@ -958,6 +958,16 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .shoot-card.is-open {
+      padding: 22px;
+    }
+
+    .shoot-card.is-open .shoot-card-header {
       padding-bottom: 16px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       margin-bottom: 18px;
@@ -968,6 +978,49 @@
       align-items: center;
       gap: 14px;
       min-width: 0;
+      flex: 1;
+    }
+
+    .shoot-toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .shoot-card:hover .shoot-toggle-pill {
+      background: rgba(216, 190, 151, 0.12);
+      border-color: rgba(216, 190, 151, 0.3);
+      color: var(--accent-gold, #d8be97);
+    }
+
+    .shoot-chevron-icon {
+      transition: transform 0.25s ease;
+    }
+
+    .shoot-card.is-open .shoot-chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .shoot-media-container {
+      display: none;
+      animation: fadeInFolder 0.25s ease-out;
+    }
+
+    .shoot-card.is-open .shoot-media-container {
+      display: block;
+    }
+
+    @keyframes fadeInFolder {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .shoot-folder-icon {
@@ -1506,6 +1559,10 @@
         </div>
 
         <div class="workspace-actions">
+          <button type="button" class="btn-workspace-action" id="btnToggleAllShoots" title="Open or close all shoot folders">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <span id="btnToggleAllText">Open All</span>
+          </button>
           <button type="button" class="btn-workspace-action" id="btnRefreshWorkspace" title="Refresh files from Google Drive">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             <span>Sync Workspace</span>
@@ -2722,7 +2779,7 @@
           const remaining = getTimeRemaining(shoot.createdAt);
 
           card.innerHTML = `
-            <div class="shoot-card-header">
+            <div class="shoot-card-header" onclick="window.PortalEngine.toggleShoot('${shoot.folderId}')">
               <div class="shoot-meta-wrap">
                 <div class="shoot-folder-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
@@ -2731,6 +2788,10 @@
                   <div class="shoot-title-row">
                     <h3 class="shoot-folder-title">${escapeHtml(shoot.folderName)}</h3>
                     <span class="shoot-time-badge" id="badge_${shoot.folderId}">${remaining.text}</span>
+                    <span class="shoot-toggle-pill" id="togglePill_${shoot.folderId}">
+                      <span id="toggleTxt_${shoot.folderId}">Open Folder</span>
+                      <svg class="shoot-chevron-icon" id="chevron_${shoot.folderId}" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
                   </div>
                   <div class="shoot-submeta">
                     <span>Created ${formatTimeAgo(shoot.createdAt)}</span>
@@ -2740,18 +2801,18 @@
                 </div>
               </div>
 
-              <div class="shoot-header-actions">
-                <button type="button" class="btn-add-media" onclick="window.PortalEngine.promptAddMedia('${shoot.folderId}', '${escapeHtml(shoot.folderName)}')">
+              <div class="shoot-header-actions" onclick="event.stopPropagation()">
+                <button type="button" class="btn-add-media" onclick="event.stopPropagation(); window.PortalEngine.promptAddMedia('${shoot.folderId}', '${escapeHtml(shoot.folderName)}')">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   <span>+ Add Media</span>
                 </button>
-                <a href="https://drive.google.com/drive/folders/${shoot.folderId}" target="_blank" rel="noopener noreferrer" class="btn-shoot-drive" title="Open this folder directly in Google Drive">
+                <a href="https://drive.google.com/drive/folders/${shoot.folderId}" target="_blank" rel="noopener noreferrer" class="btn-shoot-drive" onclick="event.stopPropagation()" title="Open this folder directly in Google Drive">
                   <span>Drive ↗</span>
                 </a>
-                <button type="button" class="btn-shoot-refresh" title="Reload media list" onclick="window.PortalEngine.refreshShoot('${shoot.folderId}')">
+                <button type="button" class="btn-shoot-refresh" title="Reload media list" onclick="event.stopPropagation(); window.PortalEngine.refreshShoot('${shoot.folderId}')">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/></svg>
                 </button>
-                <button type="button" class="btn-shoot-dismiss" title="Dismiss shoot from recent workspace" onclick="window.PortalEngine.dismissShoot('${shoot.folderId}')">✕</button>
+                <button type="button" class="btn-shoot-dismiss" title="Dismiss shoot from recent workspace" onclick="event.stopPropagation(); window.PortalEngine.dismissShoot('${shoot.folderId}')">✕</button>
               </div>
             </div>
 
@@ -2958,6 +3019,31 @@
         });
       }
 
+      const btnToggleAllShoots = document.getElementById('btnToggleAllShoots');
+      const btnToggleAllText = document.getElementById('btnToggleAllText');
+      let allShootsOpen = false;
+
+      if (btnToggleAllShoots) {
+        btnToggleAllShoots.addEventListener('click', () => {
+          allShootsOpen = !allShootsOpen;
+          const cards = document.querySelectorAll('.shoot-card');
+          cards.forEach(card => {
+            const folderId = card.id.replace('shootCard_', '');
+            const toggleTxt = document.getElementById(`toggleTxt_${folderId}`);
+            if (allShootsOpen) {
+              card.classList.add('is-open');
+              if (toggleTxt) toggleTxt.textContent = 'Close Folder';
+            } else {
+              card.classList.remove('is-open');
+              if (toggleTxt) toggleTxt.textContent = 'Open Folder';
+            }
+          });
+          if (btnToggleAllText) {
+            btnToggleAllText.textContent = allShootsOpen ? 'Close All' : 'Open All';
+          }
+        });
+      }
+
       if (btnRefreshWorkspace) {
         btnRefreshWorkspace.addEventListener('click', () => {
           btnRefreshWorkspace.disabled = true;
@@ -3010,9 +3096,38 @@
             }
           }
         },
-        promptAddMedia: (folderId, folderName) => promptAddMedia(folderId, folderName),
+        toggleShoot: (folderId) => {
+          const card = document.getElementById(`shootCard_${folderId}`);
+          const toggleTxt = document.getElementById(`toggleTxt_${folderId}`);
+          if (!card) return;
+          const isOpen = card.classList.contains('is-open');
+          if (isOpen) {
+            card.classList.remove('is-open');
+            if (toggleTxt) toggleTxt.textContent = 'Open Folder';
+          } else {
+            card.classList.add('is-open');
+            if (toggleTxt) toggleTxt.textContent = 'Close Folder';
+          }
+        },
+        openShoot: (folderId) => {
+          const card = document.getElementById(`shootCard_${folderId}`);
+          const toggleTxt = document.getElementById(`toggleTxt_${folderId}`);
+          if (card) {
+            card.classList.add('is-open');
+            if (toggleTxt) toggleTxt.textContent = 'Close Folder';
+          }
+        },
+        promptAddMedia: (folderId, folderName) => {
+          if (window.PortalEngine && window.PortalEngine.openShoot) {
+            window.PortalEngine.openShoot(folderId);
+          }
+          promptAddMedia(folderId, folderName);
+        },
         refreshShoot: (folderId) => {
           showToast('Refreshing folder files...');
+          if (window.PortalEngine && window.PortalEngine.openShoot) {
+            window.PortalEngine.openShoot(folderId);
+          }
           loadShootFiles(folderId);
         },
         deleteMedia: (fileId, fileName, folderId) => deleteMedia(fileId, fileName, folderId),
