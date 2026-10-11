@@ -364,25 +364,77 @@
     return cols.map(c => c.items);
   }
 
+  let activeMasonryRenderId = 0;
   function renderMasonry(photosToRender) {
     if (!galleryGrid) return;
     galleryGrid.innerHTML = "";
 
+    const renderId = ++activeMasonryRenderId;
     const numCols = getColumnCount();
     const columns = distributeIntoColumns(photosToRender, numCols);
 
+    const colElements = [];
     columns.forEach((colItems, colIdx) => {
       const colDiv = document.createElement("div");
       colDiv.className = "gallery-masonry-col";
       colDiv.setAttribute("data-col", colIdx);
-
-      colItems.forEach(({ item, originalIndex }) => {
-        const card = createFullImageCard(item, originalIndex);
-        colDiv.appendChild(card);
-      });
-
       galleryGrid.appendChild(colDiv);
+      colElements.push(colDiv);
     });
+
+    // Render initial viewport batch (16 cards) instantly, stream rest smoothly across idle/animation frames
+    const initialBatch = 16;
+    let cardCount = 0;
+
+    for (let colIdx = 0; colIdx < numCols; colIdx++) {
+      const itemsInCol = columns[colIdx];
+      const slice = itemsInCol.slice(0, Math.ceil(initialBatch / numCols));
+      slice.forEach(({ item, originalIndex }) => {
+        const card = createFullImageCard(item, originalIndex);
+        colElements[colIdx].appendChild(card);
+        cardCount++;
+      });
+    }
+
+    if (cardCount < photosToRender.length) {
+      const remainingByCol = columns.map(col => col.slice(Math.ceil(initialBatch / numCols)));
+      let colProgress = 0;
+
+      function renderRemaining() {
+        if (renderId !== activeMasonryRenderId) return; // Discard if new render was requested
+
+        const batchPerFrame = 6;
+        let addedThisFrame = 0;
+
+        for (let i = 0; i < batchPerFrame && colProgress < photosToRender.length; i++) {
+          for (let c = 0; c < numCols; c++) {
+            if (remainingByCol[c].length > 0) {
+              const { item, originalIndex } = remainingByCol[c].shift();
+              const card = createFullImageCard(item, originalIndex);
+              colElements[c].appendChild(card);
+              addedThisFrame++;
+              colProgress++;
+              break;
+            }
+          }
+        }
+
+        const hasRemaining = remainingByCol.some(col => col.length > 0);
+        if (hasRemaining && renderId === activeMasonryRenderId) {
+          if ("requestIdleCallback" in window) {
+            requestIdleCallback(renderRemaining, { timeout: 80 });
+          } else {
+            requestAnimationFrame(renderRemaining);
+          }
+        }
+      }
+
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(renderRemaining, { timeout: 80 });
+      } else {
+        requestAnimationFrame(renderRemaining);
+      }
+    }
   }
 
   function createFullImageCard(photo, globalIdx) {

@@ -197,34 +197,127 @@
   });
 
   /* ==========================================================================
-     3. Animated Video Integration & Drag-and-Drop
+     3. Media Integration & Drag-and-Drop
      ========================================================================== */
   function loadVideoBlob(file) {
-    if (!file || !file.type.startsWith("video/")) {
-      showToast("Please provide a valid video file (.mp4 or .webm)");
+    if (!file) return;
+
+    const bgImage = document.getElementById("heroBgImage");
+    const heroVideo = document.getElementById("heroVideo");
+
+    if (file.type.startsWith("image/")) {
+      const fileUrl = URL.createObjectURL(file);
+      if (bgImage) bgImage.src = fileUrl;
+      const label = document.getElementById("videoStatusLabel");
+      if (label) label.textContent = `Custom: ${file.name.slice(0, 14)}...`;
+      showToast(`📸 Background Image "${file.name}" Active!`);
       return;
     }
 
-    try {
+    if (file.type.startsWith("video/")) {
       const fileUrl = URL.createObjectURL(file);
-      heroVideo.src = fileUrl;
-      heroVideo.load();
-      heroVideo.play().catch(() => { });
-
+      if (heroVideo) {
+        heroVideo.src = fileUrl;
+        heroVideo.load();
+        heroVideo.play().catch(() => { });
+      }
       const label = document.getElementById("videoStatusLabel");
       if (label) label.textContent = `Custom: ${file.name.slice(0, 14)}...`;
-
       showToast(`🎬 Animated Video "${file.name}" Active!`);
-    } catch (err) {
-      console.error("Video load error:", err);
-      showToast("Failed to preview video.");
+      return;
     }
+
+    showToast("Please provide an image (.jpg, .webp, .png) or video (.mp4)");
   }
 
   /* ==========================================================================
-     Robust Background Video Autoplay Engine (Mobile iOS / Android Ready)
+     4. Cinema Hero Background Parallax & Progressive Optical Scroll Blur Engine
+     (Dynamic scale zoom-in and progressive optical blur on scroll)
+     ========================================================================== */
+  function initHeroScrollBlurEffect() {
+    const bgImage = document.getElementById("heroBgImage");
+    if (!bgImage) return;
+
+    let ticking = false;
+    let lastScrollY = -1;
+
+    function updateParallax() {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (scrollY === lastScrollY) {
+        ticking = false;
+        return;
+      }
+      lastScrollY = scrollY;
+
+      // Responsive viewport height
+      const vh = window.innerHeight || 850;
+      // Normalizes scroll progress across the hero section (0 at top, 1.0 when scrolled past hero)
+      const progress = Math.min(1.5, Math.max(0, scrollY / (vh * 0.75)));
+
+      const isLowRam = document.documentElement.classList.contains("low-ram-mode");
+
+      if (isLowRam) {
+        // Low-RAM / Eco Mode: hardware scale & gentle optical blur without leaving viewport
+        if (scrollY <= 8) {
+          bgImage.style.transform = "scale(1.02) translate3d(0, 0, 0)";
+          bgImage.style.filter = "blur(0px) brightness(1) contrast(1.02)";
+          bgImage.style.opacity = "1";
+        } else {
+          const scale = (1.02 + Math.min(progress, 1) * 0.06).toFixed(3);
+          const blurAmount = (Math.min(progress, 1) * 8).toFixed(1);
+          bgImage.style.transform = `scale(${scale}) translate3d(0, 0, 0)`;
+          bgImage.style.filter = `blur(${blurAmount}px) brightness(1) contrast(1.02)`;
+          bgImage.style.opacity = "1";
+        }
+      } else {
+        // High-Fidelity Mode: Smooth optical depth blur & subtle cinematic zoom-in
+        if (scrollY <= 8) {
+          bgImage.style.transform = "scale(1.02) translate3d(0, 0, 0)";
+          bgImage.style.filter = "blur(0px) brightness(1) contrast(1.02)";
+          bgImage.style.opacity = "1";
+        } else {
+          // Subtle zoom into the Canon DSLR camera body and lens
+          const scale = (1.02 + progress * 0.1).toFixed(3);
+          // Progressive creamy optical blur: 0px at top up to 16px as user scrolls down
+          const blurAmount = (Math.min(progress, 1) * 16).toFixed(1);
+
+          bgImage.style.transform = `scale(${scale}) translate3d(0, 0, 0)`;
+          bgImage.style.filter = `blur(${blurAmount}px) brightness(1) contrast(1.02)`;
+          bgImage.style.opacity = "1";
+        }
+      }
+
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(updateParallax);
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+
+    // Also re-check when low-ram mode is toggled
+    const btnLowRam = document.getElementById("btnLowRamToggle");
+    if (btnLowRam) {
+      btnLowRam.addEventListener("click", () => {
+        lastScrollY = -1;
+        onScroll();
+      });
+    }
+
+    // Initial render
+    updateParallax();
+  }
+
+  /* ==========================================================================
+     Robust Background Video Autoplay Engine (Fallback when video is active)
      ========================================================================== */
   function initHeroVideoAutoplay() {
+    const heroVideo = document.getElementById("heroVideo");
     if (!heroVideo) return;
 
     heroVideo.muted = true;
@@ -611,7 +704,8 @@
         location: "📍 Seville & Andalusia, Spain",
         date: "Summer Solstice 2026",
         badge: "Spain Edition · Vol. 01",
-        img: "/public/spread_1.jpg",
+        img: "public/spread_1.webp",
+        backupImg: "public/spread_1.jpg",
         transcript:
           "\"Sunsets, sangria (mom approved), and enough wrong turns to make Google Maps cry. Moving to Spain with the family was a full-on adventure—proof that even fluent Spanish can't save you from tourist brain.\"",
         tags: ["#TravelJournal", "#SpainMemories", "#Editorial", "#RooftopSunsets"],
@@ -622,7 +716,8 @@
         location: "📍 Costa Brava & Tossa de Mar Castle",
         date: "July 14, 2026",
         badge: "Coastal Expedition · Vol. 02",
-        img: "/public/spread_2.jpg",
+        img: "public/spread_2.webp",
+        backupImg: "public/spread_2.jpg",
         transcript:
           "\"35mm Photobooth strips and sea breeze. Except one castle was my pick: cue a 2-hour hike in the blazing sun, with my entire family questioning my life choices—only to find out there was a direct bus.\"",
         tags: ["#CastleHike", "#35mmFilm", "#Photobooth", "#Mediterranean"],
@@ -633,7 +728,8 @@
         location: "📍 Parque de María Luisa, Seville",
         date: "July 20, 2026",
         badge: "Nostalgia · Vol. 03",
-        img: "/public/spread_3.jpg",
+        img: "public/spread_3.webp",
+        backupImg: "public/spread_3.jpg",
         transcript:
           "\"Golden afternoon shade under blooming jacaranda trees. Filming family laughter on the vintage handycam monitor. Golden hour light filtering through purple petals.\"",
         tags: ["#Handycam", "#FamilyPortraits", "#Jacaranda", "#GoldenHour"],
@@ -644,7 +740,8 @@
         location: "📍 Málaga Cathedral Courtyard",
         date: "July 28, 2026",
         badge: "Sanctuary · Vol. 04",
-        img: "/public/spread_4.jpg",
+        img: "public/spread_4.webp",
+        backupImg: "public/spread_4.jpg",
         transcript:
           "\"A sundress, a cathedral, and maybe a hint of sunstroke! Soaring limestone arches whispering centuries of Andalusian history.\"",
         tags: ["#CathedralArches", "#Málaga", "#GothicArchitecture", "#SundressSeason"],
@@ -655,7 +752,8 @@
         location: "📍 Castillo de Colomares",
         date: "August 3, 2026",
         badge: "High Altitude · Vol. 05",
-        img: "/public/spread_5.jpg",
+        img: "public/spread_5.webp",
+        backupImg: "public/spread_5.jpg",
         transcript:
           "\"Leaning on mom... because even sightseeing has a stamina limit! Looking out dramatically from a castle tower, because main character energy requires altitude.\"",
         tags: ["#MainCharacterEnergy", "#Colomares", "#CastleViews", "#Wanderlust"],
@@ -666,7 +764,8 @@
         location: "📍 Sierra Nevada Foothills",
         date: "August 11, 2026",
         badge: "Terra · Vol. 06",
-        img: "/public/spread_6.jpg",
+        img: "public/spread_6.webp",
+        backupImg: "public/spread_6.jpg",
         transcript:
           "\"Lord, I'm here in an olive field, sweaty and sunburnt. If this doesn't impress someone's mom, I don't know what will. 200-year-old olive trees stretching toward the Mediterranean horizon.\"",
         tags: ["#OliveGroves", "#Andalusia", "#BotanicalEarth", "#SummerHeat"],
@@ -677,7 +776,8 @@
         location: "📍 Nerja Balcón de Europa",
         date: "August 19, 2026",
         badge: "Coastline · Vol. 07",
-        img: "/public/spread_7.jpg",
+        img: "public/spread_7.webp",
+        backupImg: "public/spread_7.jpg",
         transcript:
           "\"Scaled the cliffs, conquered the castle... now where's my gelato? Sitting on the sun-warmed whitewashed terrace watching turquoise waves crash.\"",
         tags: ["#Nerja", "#BalconDeEuropa", "#TurquoiseSea", "#GelatoHunt"],
@@ -688,7 +788,8 @@
         location: "📍 Barrio Santa Cruz, Seville",
         date: "August 26, 2026",
         badge: "Duende · Vol. 08",
-        img: "/public/spread_8.jpg",
+        img: "public/spread_8.webp",
+        backupImg: "public/spread_8.jpg",
         transcript:
           "\"Cobblestone alleys scented with sweet orange blossoms. Floating polaroid prints, rhythmic flamenco heels echoing in the plaza, and tapas till midnight.\"",
         tags: ["#Flamenco", "#SevilleNights", "#Polaroids", "#OrangeBlossom"],
@@ -1519,7 +1620,8 @@
       {
         id: "01",
         name: "Editorial Portraiture",
-        img: "public/images/studio_showcase_1.jpg",
+        img: "public/images/studio_showcase_1.webp",
+        backupImg: "public/images/studio_showcase_1.jpg",
         impactTitle: "98% Natural Light Ratio",
         impactDesc: "Every portrait session is sculpted utilizing organic sunlight and architectural reflections to capture timeless authentic character without harsh artificial glare.",
         quoteAvatar: "public/images/avatar_director.jpg",
@@ -1529,7 +1631,8 @@
       {
         id: "02",
         name: "Architectural & Spatial Synthesis",
-        img: "public/images/studio_showcase_2.jpg",
+        img: "public/images/studio_showcase_2.webp",
+        backupImg: "public/images/studio_showcase_2.jpg",
         impactTitle: "100% Medium Format Precision",
         impactDesc: "Crafted on 120mm film and 100MP digital backs, balancing monolithic brutalist structures with delicate human presence and shadow interplay.",
         quoteAvatar: "public/images/avatar_client.jpg",
@@ -1539,7 +1642,8 @@
       {
         id: "03",
         name: "Haute Couture & Commercial Art",
-        img: "public/images/studio_showcase_3.jpg",
+        img: "public/images/studio_showcase_3.webp",
+        backupImg: "public/images/studio_showcase_3.jpg",
         impactTitle: "Zero Artificial Manipulation",
         impactDesc: "Pure optical glass, physical diffusion filtration, and tailored set illumination producing rich chiaroscuro and museum-grade tactile finishes.",
         quoteAvatar: "public/images/avatar_director.jpg",
@@ -1553,6 +1657,7 @@
 
     // Elements
     const mainImg = document.getElementById("showcaseMainImg");
+    const mainSource = document.getElementById("showcaseMainSource");
     const badgeNum = document.getElementById("showcaseBadgeNum");
     const badgeText = document.getElementById("showcaseBadgeText");
     const impactTitle = document.getElementById("impactTitle");
@@ -1575,7 +1680,10 @@
           btn.setAttribute("data-index", i);
           btn.setAttribute("title", `Switch to Discipline ${d.id}: ${d.name}`);
           btn.innerHTML = `
-            <img src="${d.img}" alt="${d.name}" />
+            <picture>
+              <source srcset="${d.img}" type="image/webp">
+              <img src="${d.img}" alt="${d.name}" loading="lazy" decoding="async" onerror="if(!this.dataset.triedBackup){this.dataset.triedBackup='1';this.src='${d.backupImg}';}" />
+            </picture>
             <span class="thumb-index-tag">${d.id}</span>
           `;
           btn.addEventListener("click", () => {
@@ -1602,7 +1710,29 @@
         }
       });
 
-      // Morphing Squeeze-Collapse and Spring-Expand Animation (faithfully matches video)
+      function applyData() {
+        if (mainImg) {
+          mainImg.src = data.img;
+          mainImg.onerror = function () {
+            if (!this.dataset.triedBackup) {
+              this.dataset.triedBackup = "1";
+              this.src = data.backupImg;
+            }
+          };
+        }
+        if (mainSource) mainSource.srcset = data.img;
+        if (badgeNum) badgeNum.textContent = data.id;
+        if (badgeText) badgeText.textContent = data.name;
+        if (impactTitle) impactTitle.textContent = data.impactTitle;
+        if (impactDesc) impactDesc.textContent = data.impactDesc;
+        if (quoteAvatar) quoteAvatar.src = data.quoteAvatar;
+        if (quoteBody) quoteBody.textContent = data.quoteText;
+        if (quoteAuthor) quoteAuthor.textContent = data.quoteAuthor;
+
+        renderThumbnails(index);
+      }
+
+      // Morphing Squeeze-Collapse and Spring-Expand Animation
       if (withTransition) {
         const morphCards = [
           document.getElementById("showcaseImpactCard"),
@@ -1622,16 +1752,7 @@
 
         // 2. At peak of collapse, swap data
         setTimeout(() => {
-          if (mainImg) mainImg.src = data.img;
-          if (badgeNum) badgeNum.textContent = data.id;
-          if (badgeText) badgeText.textContent = data.name;
-          if (impactTitle) impactTitle.textContent = data.impactTitle;
-          if (impactDesc) impactDesc.textContent = data.impactDesc;
-          if (quoteAvatar) quoteAvatar.src = data.quoteAvatar;
-          if (quoteBody) quoteBody.textContent = data.quoteText;
-          if (quoteAuthor) quoteAuthor.textContent = data.quoteAuthor;
-
-          renderThumbnails(index);
+          applyData();
 
           // 3. Spring expand cards back to full size
           morphCards.forEach((c) => {
@@ -1649,15 +1770,7 @@
           }, 450);
         }, 240);
       } else {
-        if (mainImg) mainImg.src = data.img;
-        if (badgeNum) badgeNum.textContent = data.id;
-        if (badgeText) badgeText.textContent = data.name;
-        if (impactTitle) impactTitle.textContent = data.impactTitle;
-        if (impactDesc) impactDesc.textContent = data.impactDesc;
-        if (quoteAvatar) quoteAvatar.src = data.quoteAvatar;
-        if (quoteBody) quoteBody.textContent = data.quoteText;
-        if (quoteAuthor) quoteAuthor.textContent = data.quoteAuthor;
-        renderThumbnails(index);
+        applyData();
       }
     }
 
@@ -1707,13 +1820,16 @@
       });
     }
 
-    // Auto-slide Timer
+    // Auto-slide Timer (Low-RAM & Visibility Aware)
     function startAutoSlide() {
       stopAutoSlide();
+      if (document.documentElement.classList.contains("low-ram-mode") || document.hidden) {
+        return;
+      }
       autoSlideTimer = setInterval(() => {
         const nextIndex = (currentIndex + 1) % disciplines.length;
         renderDiscipline(nextIndex, true);
-      }, 6500);
+      }, 7500);
     }
 
     function stopAutoSlide() {
@@ -1728,7 +1844,19 @@
     }
 
     showcaseSection.addEventListener("mouseenter", stopAutoSlide);
-    showcaseSection.addEventListener("mouseleave", startAutoSlide);
+    showcaseSection.addEventListener("mouseleave", () => {
+      if (showcaseSection.classList.contains("is-assembled")) {
+        startAutoSlide();
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopAutoSlide();
+      } else if (showcaseSection.classList.contains("is-assembled")) {
+        startAutoSlide();
+      }
+    });
 
     // Mobile touch swipe gestures for Section 4 main card
     const mainCard = document.getElementById("showcaseMainCard");
@@ -2109,10 +2237,69 @@
     route();
   }
 
+  /* ==========================================================================
+     Low-RAM & Hardware Eco Engine
+     - Auto-detects device capabilities (RAM <= 4GB, CPU <= 4, mobile, low-battery)
+     - Dynamic user toggle with persistence
+     - Pauses offscreen elements, lowers render overhead
+     ========================================================================== */
+  function initLowRamEngine() {
+    const btnToggle = document.getElementById("btnLowRamToggle");
+    const badge = document.getElementById("lowRamBadge");
+
+    const isLowSpecHardware = Boolean(
+      (navigator.deviceMemory && navigator.deviceMemory <= 1) ||
+      (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    );
+
+    const savedPref = localStorage.getItem("framehaus_low_ram");
+    let isLowRamActive = savedPref !== null ? savedPref === "true" : isLowSpecHardware;
+
+    function applyLowRamMode(active) {
+      isLowRamActive = active;
+      if (active) {
+        document.documentElement.classList.add("low-ram-mode");
+        if (badge) badge.style.display = "inline-block";
+        if (btnToggle) btnToggle.classList.add("eco-active");
+        if (typeof window._stopShowcaseAutoSlide === "function") {
+          window._stopShowcaseAutoSlide();
+        }
+      } else {
+        document.documentElement.classList.remove("low-ram-mode");
+        if (badge) badge.style.display = "none";
+        if (btnToggle) btnToggle.classList.remove("eco-active");
+        const s4 = document.getElementById("section4");
+        if (s4 && s4.classList.contains("is-assembled") && typeof window._startShowcaseAutoSlide === "function") {
+          window._startShowcaseAutoSlide();
+        }
+      }
+      try {
+        localStorage.setItem("framehaus_low_ram", String(active));
+      } catch (_) {}
+    }
+
+    applyLowRamMode(isLowRamActive);
+
+    if (btnToggle) {
+      btnToggle.addEventListener("click", () => {
+        applyLowRamMode(!isLowRamActive);
+        showToast(
+          isLowRamActive
+            ? "⚡ Eco / Low RAM Mode Active (Smooth 60fps, Min Memory)"
+            : "✦ High-Fidelity Glass Mode Active"
+        );
+      });
+    }
+  }
+
   // Initialize on DOMContentLoaded and immediately
   initHeroVideoAutoplay();
+  initHeroScrollBlurEffect();
+  initLowRamEngine();
   window.addEventListener("DOMContentLoaded", () => {
     initHeroVideoAutoplay();
+    initHeroScrollBlurEffect();
+    initLowRamEngine();
     initAmbientCanvas();
     initJournalGallery();
     initStudioShowcaseSlider();

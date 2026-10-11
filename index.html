@@ -20,8 +20,8 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <!-- Preload Critical Above-The-Fold Poster -->
-  <link rel="preload" as="image" href="public/images/glowinn-bg.jpg" fetchpriority="high">
+  <!-- Preload Critical Above-The-Fold Hero Background -->
+  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp" fetchpriority="high">
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="studio-gallery/gallery.css">
@@ -35,19 +35,23 @@
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
       </svg>
-      <h3>Drop Your Studio Video Here</h3>
-      <p>Will instantly preview your studio background animation (MP4 / WebM)</p>
+      <h3>Drop Your Studio Media Here</h3>
+      <p>Will instantly preview your studio background photograph or video</p>
     </div>
   </div>
 
-  <!-- Background Animated Video Layer -->
-  <div class="video-background-wrap">
-    <video id="heroVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" poster="/public/images/glowinn-bg.jpg"
-      class="bg-video-element">
-      <source src="/public/videos/bg-video.mp4" type="video/mp4">
-      <source src="public/videos/bg-video.mp4" type="video/mp4">
-      <!-- Fallback image automatically displayed if video does not load -->
-    </video>
+  <!-- Hero Background Media Layer (Cinema DSLR Camera on Floor with Parallax & Scroll Blur) -->
+  <div class="hero-background-wrap video-background-wrap" id="heroBackgroundWrap">
+    <picture class="hero-bg-picture">
+      <source srcset="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp">
+      <img id="heroBgImage"
+           src="public/DSLR_camera_resting_on_floor_2K_20261008105949.jpg"
+           alt="Canon 5D Mark IV DSLR Camera Resting in Atelier Studio"
+           class="hero-bg-image bg-video-element"
+           loading="eager"
+           fetchpriority="high"
+           decoding="async" />
+    </picture>
 
     <!-- Cinematic Lighting & Vignette Overlays -->
     <div class="video-overlay-gradient"></div>
@@ -235,6 +239,14 @@
             <line x1="8" y1="23" x2="16" y2="23" />
           </svg>
         </button>
+
+        <!-- Eco / Low-RAM Mode Switcher -->
+        <button class="toolbar-icon-btn" id="btnLowRamToggle" title="Toggle Low-RAM & Battery Saver Mode" style="position:relative;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          <span class="btn-micro-badge" id="lowRamBadge" style="display:none;position:absolute;top:-5px;right:-5px;font-size:8px;line-height:1;background:#2ed573;color:#0b0f14;border-radius:4px;padding:2px 3px;font-weight:700;">ECO</span>
+        </button>
       </div>
     </aside>
 
@@ -313,7 +325,10 @@
           <!-- Spread 1 -->
           <div class="journal-card" data-index="0" data-id="1">
             <div class="journal-book-spread">
-              <img src="/public/spread_1.jpg" alt="18 Year Old Dream Life: Spain Edition" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_1.jpg';}" />
+              <picture>
+                <source srcset="public/spread_1.webp" type="image/webp">
+                <img src="public/spread_1.webp" alt="18 Year Old Dream Life: Spain Edition" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_1.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -324,7 +339,10 @@
           <!-- Spread 2 -->
           <div class="journal-card" data-index="1" data-id="2">
             <div class="journal-book-spread">
-              <img src="/public/spread_2.jpg" alt="Exploring Historical Sites Like True Adventurers" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_2.jpg';}" />
+              <picture>
+                <source srcset="public/spread_2.webp" type="image/webp">
+                <img src="public/spread_2.webp" alt="Exploring Historical Sites Like True Adventurers" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_2.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -335,7 +353,10 @@
           <!-- Spread 3 -->
           <div class="journal-card" data-index="2" data-id="3">
             <div class="journal-book-spread">
-              <img src="/public/spread_3.jpg" alt="Camcorder Memories in the Park" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_3.jpg';}" />
+              <picture>
+                <source srcset="public/spread_3.webp" type="image/webp">
+                <img src="public/spread_3.webp" alt="Camcorder Memories in the Park" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_3.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -346,7 +367,10 @@
           <!-- Spread 4 -->
           <div class="journal-card" data-index="3" data-id="4">
             <div class="journal-book-spread">
-              <img src="/public/spread_4.jpg" alt="Cathedral Arches &amp; Solitude" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_4.jpg';}" />
+              <picture>
+                <source srcset="public/spread_4.webp" type="image/webp">
+                <img src="public/spread_4.webp" alt="Cathedral Arches &amp; Solitude" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_4.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -357,7 +381,10 @@
           <!-- Spread 5 -->
           <div class="journal-card" data-index="4" data-id="5">
             <div class="journal-book-spread">
-              <img src="/public/spread_5.jpg" alt="Looking Out Dramatically from a Castle" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_5.jpg';}" />
+              <picture>
+                <source srcset="public/spread_5.webp" type="image/webp">
+                <img src="public/spread_5.webp" alt="Looking Out Dramatically from a Castle" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_5.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -368,7 +395,10 @@
           <!-- Spread 6 -->
           <div class="journal-card" data-index="5" data-id="6">
             <div class="journal-book-spread">
-              <img src="/public/spread_6.jpg" alt="Olive Fields &amp; Ancient Groves" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_6.jpg';}" />
+              <picture>
+                <source srcset="public/spread_6.webp" type="image/webp">
+                <img src="public/spread_6.webp" alt="Olive Fields &amp; Ancient Groves" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_6.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -379,7 +409,10 @@
           <!-- Spread 7 -->
           <div class="journal-card" data-index="6" data-id="7">
             <div class="journal-book-spread">
-              <img src="/public/spread_7.jpg" alt="Sun Doodles &amp; Seaside Terrace" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_7.jpg';}" />
+              <picture>
+                <source srcset="public/spread_7.webp" type="image/webp">
+                <img src="public/spread_7.webp" alt="Sun Doodles &amp; Seaside Terrace" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_7.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -390,7 +423,10 @@
           <!-- Spread 8 -->
           <div class="journal-card" data-index="7" data-id="8">
             <div class="journal-book-spread">
-              <img src="/public/spread_8.jpg" alt="Streets of Seville &amp; Flamenco Soul" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_8.jpg';}" />
+              <picture>
+                <source srcset="public/spread_8.webp" type="image/webp">
+                <img src="public/spread_8.webp" alt="Streets of Seville &amp; Flamenco Soul" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_8.jpg';}" />
+              </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
               <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
@@ -495,7 +531,7 @@
             <div class="s3-team-avatars">
               <img src="public/images/avatar_director.jpg" alt="Julian Vane" class="team-avatar av-1" loading="lazy" decoding="async" />
               <img src="public/images/avatar_client.jpg" alt="Elena Rostova" class="team-avatar av-2" loading="lazy" decoding="async" />
-              <img src="public/images/studio_showcase_1.jpg" alt="Marcus Sterling" class="team-avatar av-3" loading="lazy" decoding="async" />
+              <img src="public/images/studio_showcase_1.webp" alt="Marcus Sterling" class="team-avatar av-3" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_1.jpg';}" />
             </div>
             <button class="s3-team-label-btn" id="btnS3Team">
               <span>Our Team</span>
@@ -566,8 +602,8 @@
       <!-- Row 1: Left Glide -->
       <div class="marquee-row row-1">
         <div class="marquee-track track-left">
-          <span class="marquee-item"><span class="marquee-text">Editorial Fashion Campaigns</span><img src="public/images/studio_showcase_1.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Natural Chiaroscuro</span><img src="public/images/studio_showcase_2.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Stories Worth Remembering</span><span class="marquee-icon-symbol">✦</span><span class="marquee-text">High-End Studio Production</span><img src="public/images/studio_showcase_3.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /></span>
-          <span class="marquee-item"><span class="marquee-text">Editorial Fashion Campaigns</span><img src="public/images/studio_showcase_1.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Natural Chiaroscuro</span><img src="public/images/studio_showcase_2.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Stories Worth Remembering</span><span class="marquee-icon-symbol">✦</span><span class="marquee-text">High-End Studio Production</span><img src="public/images/studio_showcase_3.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /></span>
+          <span class="marquee-item"><span class="marquee-text">Editorial Fashion Campaigns</span><img src="public/images/studio_showcase_1.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_1.jpg';}" /><span class="marquee-text">Natural Chiaroscuro</span><img src="public/images/studio_showcase_2.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_2.jpg';}" /><span class="marquee-text">Stories Worth Remembering</span><span class="marquee-icon-symbol">✦</span><span class="marquee-text">High-End Studio Production</span><img src="public/images/studio_showcase_3.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_3.jpg';}" /></span>
+          <span class="marquee-item"><span class="marquee-text">Editorial Fashion Campaigns</span><img src="public/images/studio_showcase_1.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_1.jpg';}" /><span class="marquee-text">Natural Chiaroscuro</span><img src="public/images/studio_showcase_2.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_2.jpg';}" /><span class="marquee-text">Stories Worth Remembering</span><span class="marquee-icon-symbol">✦</span><span class="marquee-text">High-End Studio Production</span><img src="public/images/studio_showcase_3.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_3.jpg';}" /></span>
         </div>
       </div>
 
@@ -582,8 +618,8 @@
       <!-- Row 3: Left Glide with Symbols and Capsules -->
       <div class="marquee-row row-3">
         <div class="marquee-track track-left">
-          <span class="marquee-item"><span class="marquee-text">Zero Artificial Manipulation</span><img src="public/images/studio_showcase_2.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Cinematic Color Grading</span><span class="marquee-icon-symbol">⟳</span><span class="marquee-text">Curated Global Portfolio</span><img src="public/images/studio_showcase_3.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Bespoke Editorial Atmosphere</span></span>
-          <span class="marquee-item"><span class="marquee-text">Zero Artificial Manipulation</span><img src="public/images/studio_showcase_2.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Cinematic Color Grading</span><span class="marquee-icon-symbol">⟳</span><span class="marquee-text">Curated Global Portfolio</span><img src="public/images/studio_showcase_3.jpg" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" /><span class="marquee-text">Bespoke Editorial Atmosphere</span></span>
+          <span class="marquee-item"><span class="marquee-text">Zero Artificial Manipulation</span><img src="public/images/studio_showcase_2.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_2.jpg';}" /><span class="marquee-text">Cinematic Color Grading</span><span class="marquee-icon-symbol">⟳</span><span class="marquee-text">Curated Global Portfolio</span><img src="public/images/studio_showcase_3.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_3.jpg';}" /><span class="marquee-text">Bespoke Editorial Atmosphere</span></span>
+          <span class="marquee-item"><span class="marquee-text">Zero Artificial Manipulation</span><img src="public/images/studio_showcase_2.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_2.jpg';}" /><span class="marquee-text">Cinematic Color Grading</span><span class="marquee-icon-symbol">⟳</span><span class="marquee-text">Curated Global Portfolio</span><img src="public/images/studio_showcase_3.webp" alt="" class="marquee-capsule-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_3.jpg';}" /><span class="marquee-text">Bespoke Editorial Atmosphere</span></span>
         </div>
       </div>
     </div>
@@ -623,7 +659,10 @@
 
         <!-- Signature Notched Architectural Image Card (matches video) -->
         <div class="showcase-main-card" id="showcaseMainCard">
-          <img id="showcaseMainImg" src="/public/images/studio_showcase_1.jpg" alt="Studio Discipline Showcase" class="showcase-card-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_1.jpg';}" />
+          <picture>
+            <source id="showcaseMainSource" srcset="public/images/studio_showcase_1.webp" type="image/webp">
+            <img id="showcaseMainImg" src="public/images/studio_showcase_1.webp" alt="Studio Discipline Showcase" class="showcase-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_1.jpg';}" />
+          </picture>
           <div class="showcase-card-sheen"></div>
           <div class="showcase-card-badge" id="showcaseCardBadge">
             <span class="badge-num" id="showcaseBadgeNum">01</span>
@@ -660,11 +699,17 @@
         <!-- Capsule Thumbnail Previews (matches video) -->
         <div class="showcase-thumbnails-row showcase-morph-card" id="showcaseThumbnailsRow">
           <button class="capsule-thumbnail" data-index="1" title="Switch to Discipline 02">
-            <img src="/public/images/studio_showcase_2.jpg" alt="Discipline 02" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_2.jpg';}" />
+            <picture>
+              <source srcset="public/images/studio_showcase_2.webp" type="image/webp">
+              <img src="public/images/studio_showcase_2.webp" alt="Discipline 02" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_2.jpg';}" />
+            </picture>
             <span class="thumb-index-tag">02</span>
           </button>
           <button class="capsule-thumbnail" data-index="2" title="Switch to Discipline 03">
-            <img src="/public/images/studio_showcase_3.jpg" alt="Discipline 03" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_3.jpg';}" />
+            <picture>
+              <source srcset="public/images/studio_showcase_3.webp" type="image/webp">
+              <img src="public/images/studio_showcase_3.webp" alt="Discipline 03" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/studio_showcase_3.jpg';}" />
+            </picture>
             <span class="thumb-index-tag">03</span>
           </button>
         </div>
@@ -731,7 +776,10 @@
           <!-- 01: Weddings (Active by default with yellow/gold accent matching reference Card 1) -->
           <article class="experience-card is-active" data-service="Weddings">
             <div class="exp-card-media">
-              <img src="/public/images/experience_weddings.jpg" alt="Weddings — FRAMEHAUS Atelier" class="exp-card-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_weddings.jpg';}" />
+              <picture>
+                <source srcset="public/images/experience_weddings.webp" type="image/webp">
+                <img src="public/images/experience_weddings.webp" alt="Weddings — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_weddings.jpg';}" />
+              </picture>
               <div class="exp-card-sheen"></div>
             </div>
             <div class="exp-card-info">
@@ -750,7 +798,10 @@
           <!-- 02: Pre-Weddings -->
           <article class="experience-card" data-service="Pre-Weddings">
             <div class="exp-card-media">
-              <img src="/public/images/experience_preweddings.jpg" alt="Pre-Weddings — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_preweddings.jpg';}" />
+              <picture>
+                <source srcset="public/images/experience_preweddings.webp" type="image/webp">
+                <img src="public/images/experience_preweddings.webp" alt="Pre-Weddings — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_preweddings.jpg';}" />
+              </picture>
               <div class="exp-card-sheen"></div>
             </div>
             <div class="exp-card-info">
@@ -769,7 +820,10 @@
           <!-- 03: Portraits -->
           <article class="experience-card" data-service="Portraits">
             <div class="exp-card-media">
-              <img src="/public/images/experience_portraits.jpg" alt="Editorial Portraits — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_portraits.jpg';}" />
+              <picture>
+                <source srcset="public/images/experience_portraits.webp" type="image/webp">
+                <img src="public/images/experience_portraits.webp" alt="Editorial Portraits — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_portraits.jpg';}" />
+              </picture>
               <div class="exp-card-sheen"></div>
             </div>
             <div class="exp-card-info">
@@ -788,7 +842,10 @@
           <!-- 04: Maternity -->
           <article class="experience-card" data-service="Maternity">
             <div class="exp-card-media">
-              <img src="/public/images/experience_maternity.jpg" alt="Maternity — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_maternity.jpg';}" />
+              <picture>
+                <source srcset="public/images/experience_maternity.webp" type="image/webp">
+                <img src="public/images/experience_maternity.webp" alt="Maternity — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_maternity.jpg';}" />
+              </picture>
               <div class="exp-card-sheen"></div>
             </div>
             <div class="exp-card-info">
@@ -807,7 +864,10 @@
           <!-- 05: Family / Baby -->
           <article class="experience-card" data-service="Family / Baby">
             <div class="exp-card-media">
-              <img src="/public/images/experience_family.jpg" alt="Family and Baby — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_family.jpg';}" />
+              <picture>
+                <source srcset="public/images/experience_family.webp" type="image/webp">
+                <img src="public/images/experience_family.webp" alt="Family and Baby — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_family.jpg';}" />
+              </picture>
               <div class="exp-card-sheen"></div>
             </div>
             <div class="exp-card-info">
@@ -826,7 +886,10 @@
           <!-- 06: Commercial / Product -->
           <article class="experience-card" data-service="Commercial / Product">
             <div class="exp-card-media">
-              <img src="/public/images/experience_commercial.jpg" alt="Commercial and Product — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_commercial.jpg';}" />
+              <picture>
+                <source srcset="public/images/experience_commercial.webp" type="image/webp">
+                <img src="public/images/experience_commercial.webp" alt="Commercial and Product — FRAMEHAUS Atelier" class="exp-card-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/experience_commercial.jpg';}" />
+              </picture>
               <div class="exp-card-sheen"></div>
             </div>
             <div class="exp-card-info">
