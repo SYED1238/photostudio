@@ -74,12 +74,12 @@ module.exports = async function handler(req, res) {
       success: true,
       fileId,
       fileName: fileInfo.name,
-      message: `File "${fileInfo.name}" removed from Google Drive.`
+      message: `File "${fileInfo.name}" removed from Auralis Vault.`
     });
 
   } catch (err) {
     return sendJson(res, 500, {
-      error: err.message || 'Internal error deleting file from Google Drive'
+      error: err.message || 'Internal error deleting file from Auralis Vault'
     });
   }
 };

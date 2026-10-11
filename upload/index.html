@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload Files — FRAMEHAUS Atelier Studio Vault</title>
   <meta name="description"
-    content="Upload and organize large photography and videography shoots directly into FRAMEHAUS Google Drive Vault with high-speed resumable uploads.">
+    content="Upload and organize large photography and videography shoots directly into FRAMEHAUS Auralis Cloud Vault with high-speed resumable uploads.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml"
@@ -1344,6 +1344,220 @@
       padding: 26px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     }
+
+    /* In-Portal Media Preview Lightbox Modal */
+    .media-preview-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 100000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .preview-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 7, 5, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .preview-modal-dialog {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 960px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      background: #0d1310;
+      border: 1px solid rgba(216, 190, 151, 0.28);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(216, 190, 151, 0.08);
+      overflow: hidden;
+      animation: previewFadeIn 0.22s ease-out;
+    }
+
+    @keyframes previewFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .preview-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 22px;
+      background: rgba(18, 25, 21, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .preview-vault-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-gold, #d8be97);
+      margin-bottom: 4px;
+    }
+
+    .preview-modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 580px;
+    }
+
+    .preview-modal-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .preview-size-tag {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .btn-preview-close {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      transition: all 0.2s;
+    }
+
+    .btn-preview-close:hover {
+      background: rgba(255, 71, 87, 0.3);
+      border-color: #ff4757;
+      color: #fff;
+      transform: scale(1.08);
+    }
+
+    .preview-modal-body {
+      flex: 1;
+      min-height: 280px;
+      max-height: calc(85vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #070b09;
+      overflow: auto;
+      padding: 24px;
+    }
+
+    .preview-media-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .preview-loading-spinner {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--accent-gold, #d8be97);
+    }
+
+    .preview-stage-img {
+      max-width: 100%;
+      max-height: calc(85vh - 170px);
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .preview-asset-card {
+      text-align: center;
+      padding: 30px 20px;
+      max-width: 480px;
+    }
+
+    .preview-asset-icon {
+      font-size: 54px;
+      margin-bottom: 14px;
+    }
+
+    .preview-asset-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .preview-asset-desc {
+      font-size: 13.5px;
+      color: var(--accent-gold, #d8be97);
+      margin-bottom: 16px;
+    }
+
+    .preview-asset-specs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .preview-spec-pill {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .preview-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 22px;
+      background: rgba(18, 25, 21, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .preview-meta-divider {
+      margin: 0 8px;
+      color: rgba(255, 255, 255, 0.25);
+    }
   </style>
 </head>
 
@@ -1375,10 +1589,10 @@
 
     <!-- Page Title & Description -->
     <section class="upload-intro">
-      <div class="upload-badge">Google Drive Direct Portal</div>
+      <div class="upload-badge">Auralis Dedicated Cloud Vault</div>
       <h1 class="upload-title">Upload Files</h1>
       <p class="upload-subtitle">
-        Upload and organize high-resolution wedding shoots, RAW galleries, and cinema video archives directly into Google Drive.
+        Upload and organize high-resolution wedding shoots, RAW galleries, and cinema video archives directly into Auralis Servers.
       </p>
     </section>
 
@@ -1391,15 +1605,15 @@
           </svg>
         </div>
         <div>
-          <div class="dest-label">Configured Destination</div>
-          <div class="dest-name" id="destinationName">FRAMEHAUS Studio Vault</div>
+          <div class="dest-label">Connected Storage Cluster</div>
+          <div class="dest-name" id="destinationName">AURALIS Cloud Vault</div>
         </div>
       </div>
 
       <div id="statusContainer">
         <div class="dest-status-badge status-connected" id="statusBadge">
           <span class="status-dot"></span>
-          <span id="statusText">Checking Google Drive Connection...</span>
+          <span id="statusText">Connecting to Auralis Servers...</span>
         </div>
       </div>
     </section>
@@ -1422,7 +1636,7 @@
         <span>📁 Gallery &amp; Shoot Information</span>
       </div>
       <p class="section-hint">
-        Create a dedicated Google Drive folder for this shoot. All uploaded files will be stored cleanly inside this gallery.
+        Create a dedicated folder on Auralis servers for this shoot. All uploaded files will be stored cleanly inside this gallery vault.
       </p>
 
       <div class="gallery-form-grid">
@@ -1458,7 +1672,7 @@
 
       <div class="gallery-action-row">
         <button type="button" class="btn-create-folder" id="btnCreateFolder">
-          <span>Create Folder in Google Drive</span>
+          <span>Create Folder in Auralis Vault</span>
         </button>
 
         <div class="folder-status-pill" id="activeFolderStatus" style="display:none;">
@@ -1479,7 +1693,7 @@
       </div>
 
       <h3 class="dropzone-title">Drop Your Shoot Folder Here</h3>
-      <p class="dropzone-desc">Select an entire shoot folder from your computer. A matching folder will automatically be created in Google Drive with all media uploaded inside it.</p>
+      <p class="dropzone-desc">Select an entire shoot folder from your computer. A matching folder will automatically be created on Auralis servers with all media uploaded inside it.</p>
 
       <div class="dropzone-buttons">
         <button type="button" class="btn-browse-folder" id="btnBrowseFolder">
@@ -1494,7 +1708,7 @@
       </div>
 
       <p class="dropzone-formats-hint">
-        Direct Google Drive resumable streaming supports unlimited gigabytes. Compatible with RAW (.cr2, .cr3, .nef, .arw, .dng), JPEG, PNG, ProRes/MP4, and ZIP archives.
+        Direct high-speed streaming pipeline supports unlimited gigabytes. Compatible with RAW (.cr2, .cr3, .nef, .arw, .dng), JPEG, PNG, ProRes/MP4, and ZIP archives.
       </p>
 
       <!-- Hidden Native File Inputs -->
@@ -1518,10 +1732,10 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             <span id="btnStartUploadText">Start Upload</span>
           </button>
-          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-dock-secondary" id="btnDockOpenDrive" style="display:none;color:#d8be97;border-color:rgba(216,190,151,0.35);text-decoration:none;align-items:center;gap:6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            <span>Open in Drive ↗</span>
-          </a>
+          <button type="button" class="btn-dock-secondary" id="btnDockOpenWorkspace" style="display:none;color:#d8be97;border-color:rgba(216,190,151,0.35);align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>View in Workspace ↓</span>
+          </button>
           <button type="button" class="btn-dock-secondary" id="btnPauseResume" style="display:none;">Pause</button>
           <button type="button" class="btn-dock-secondary" id="btnCancelAll">Cancel All</button>
           <button type="button" class="btn-dock-secondary" id="btnClearCompleted" style="display:none;">Clear Completed</button>
@@ -1554,7 +1768,7 @@
           </div>
           <h2 class="workspace-title">Active Shoots &amp; Uploaded Media</h2>
           <p class="workspace-subtitle">
-            Shoots uploaded within the last 24 hours remain accessible here. You can view high-resolution files in Google Drive, add more media into shoot folders, or delete files.
+            Shoots uploaded within the last 24 hours remain accessible here on Auralis servers. You can preview high-resolution files, add more media into shoot folders, or delete files.
           </p>
         </div>
 
@@ -1563,7 +1777,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             <span id="btnToggleAllText">Open All</span>
           </button>
-          <button type="button" class="btn-workspace-action" id="btnRefreshWorkspace" title="Refresh files from Google Drive">
+          <button type="button" class="btn-workspace-action" id="btnRefreshWorkspace" title="Refresh files from Auralis servers">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             <span>Sync Workspace</span>
           </button>
@@ -1575,11 +1789,41 @@
         <div class="workspace-empty-card" id="workspaceLoadingCard">
           <div class="workspace-empty-icon">⏳</div>
           <h4 class="workspace-empty-title">Loading 24-Hour Workspace...</h4>
-          <p class="workspace-empty-desc">Checking recent shoot folders in Google Drive.</p>
+          <p class="workspace-empty-desc">Connecting to Auralis servers and verifying recent shoot folders.</p>
         </div>
       </div>
     </section>
 
+  </div>
+
+  <!-- In-Portal Media Preview Lightbox Modal -->
+  <div class="media-preview-modal" id="mediaPreviewModal" style="display:none;">
+    <div class="preview-backdrop" id="previewBackdrop"></div>
+    <div class="preview-modal-dialog">
+      <div class="preview-modal-header">
+        <div>
+          <div class="preview-vault-badge">
+            <span class="status-dot"></span>
+            <span>Auralis Studio Vault</span>
+          </div>
+          <h3 class="preview-modal-title" id="previewModalTitle">Media Preview</h3>
+        </div>
+        <div class="preview-modal-controls">
+          <span class="preview-size-tag" id="previewModalSize">0 MB</span>
+          <button type="button" class="btn-preview-close" id="btnClosePreviewModal" title="Close Preview (Esc)">&times;</button>
+        </div>
+      </div>
+      <div class="preview-modal-body" id="previewModalBody">
+        <!-- Rendered preview image or media canvas -->
+      </div>
+      <div class="preview-modal-footer">
+        <div>
+          <span>Server Cluster: <strong>Auralis Dedicated Storage</strong></span>
+          <span class="preview-meta-divider">•</span>
+          <span>Status: <strong>Online &amp; Preserved</strong></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Add Media to Shoot Folder Choice Modal -->
@@ -1594,7 +1838,7 @@
       </div>
 
       <p style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:20px;line-height:1.45;">
-        Choose whether you want to upload a whole subfolder or browse loose photo &amp; video files into this Google Drive folder:
+        Choose whether you want to upload a whole subfolder or browse loose photo &amp; video files into this Auralis folder:
       </p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -1611,13 +1855,13 @@
     </div>
   </div>
 
-  <!-- Setup Guidance Modal (For initial Google Drive OAuth configuration) -->
+  <!-- Setup Guidance Modal (For initial Server Authentication configuration) -->
   <div class="setup-modal" id="setupModal">
     <div class="setup-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
         <div>
           <span class="upload-badge">Admin Configuration</span>
-          <h2 style="font-size:22px;margin-top:6px;">Google Drive Integration Setup</h2>
+          <h2 style="font-size:22px;margin-top:6px;">Auralis Cloud Storage Server Configuration</h2>
         </div>
         <button type="button" id="btnCloseSetup" style="background:transparent;border:none;color:#fff;font-size:24px;cursor:pointer;">&times;</button>
       </div>
@@ -1625,9 +1869,9 @@
       <div class="setup-step">
         <div class="step-badge">1</div>
         <div>
-          <h4 style="font-size:15px;margin-bottom:4px;">Google Cloud OAuth Credentials</h4>
+          <h4 style="font-size:15px;margin-bottom:4px;">Auralis Cloud Storage Authentication</h4>
           <p style="font-size:13px;color:rgba(255,255,255,0.65);">
-            Google Drive API and OAuth 2.0 Web Client configured. Authorized Redirect URI:
+            Cloud Storage Service API and OAuth 2.0 Web Client configured. Authorized Redirect URI:
           </p>
           <div class="code-badge" id="oauthRedirectUriCode">https://photostudio.auralisstudio.xyz/api/auth/google/callback</div>
         </div>
@@ -1636,12 +1880,12 @@
       <div class="setup-step">
         <div class="step-badge">2</div>
         <div>
-          <h4 style="font-size:15px;margin-bottom:4px;">Authorize Your Google Account</h4>
+          <h4 style="font-size:15px;margin-bottom:4px;">Authorize Your Account</h4>
           <p style="font-size:13px;color:rgba(255,255,255,0.65);">
-            Click below to open the Google consent screen. Authorize your Google account with Drive permissions to retrieve your <code>GOOGLE_REFRESH_TOKEN</code>:
+            Click below to open the server consent screen. Authorize your account with storage permissions to retrieve your <code>GOOGLE_REFRESH_TOKEN</code>:
           </p>
           <button type="button" id="btnStartOAuthFlow" class="btn-dock-cta" style="margin-top:10px;">
-            <span>Authorize Google Account ↗</span>
+            <span>Authorize Cloud Storage ↗</span>
           </button>
           <div id="oauthTokenDisplay" style="display:none;margin-top:12px;"></div>
         </div>
@@ -1671,7 +1915,7 @@
   </div>
 
   <!-- =========================================================================
-       Lightweight Client-Side Resumable Upload Engine (Direct to Google Drive)
+       Lightweight Client-Side Resumable Upload Engine (Auralis Streaming Pipeline)
        ========================================================================= -->
   <script>
     (function () {
@@ -1722,7 +1966,7 @@
       const totalFileCountsEl = document.getElementById('totalFileCounts');
       const btnStartUpload = document.getElementById('btnStartUpload');
       const btnStartUploadText = document.getElementById('btnStartUploadText');
-      const btnDockOpenDrive = document.getElementById('btnDockOpenDrive');
+      const btnDockOpenWorkspace = document.getElementById('btnDockOpenWorkspace');
       const btnPauseResume = document.getElementById('btnPauseResume');
       const btnCancelAll = document.getElementById('btnCancelAll');
       const btnClearCompleted = document.getElementById('btnClearCompleted');
@@ -1765,7 +2009,7 @@
 
           state.configured = data.configured;
           state.hasPasscode = data.hasPasscode;
-          destinationNameEl.textContent = data.destinationName || 'FRAMEHAUS Studio Vault';
+          destinationNameEl.textContent = data.destinationName || 'AURALIS Cloud Vault';
 
           if (data.hasPasscode && !state.passcode) {
             passcodeGate.style.display = 'flex';
@@ -1775,12 +2019,15 @@
 
           if (data.configured) {
             statusBadge.className = 'dest-status-badge status-connected';
-            statusText.textContent = 'Connected to Google Drive';
+            statusText.textContent = 'Connected to Auralis Servers';
+            statusBadge.title = 'Auralis Storage Server Pipeline Active · Studio Vault Online';
+            statusBadge.style.cursor = 'default';
+            statusBadge.onclick = null;
           } else {
             statusBadge.className = 'dest-status-badge status-setup-needed';
-            statusText.textContent = `Setup Required (${data.missingVars.join(', ')})`;
+            statusText.textContent = `Auralis Setup Required (${data.missingVars.join(', ')})`;
             statusBadge.style.cursor = 'pointer';
-            statusBadge.title = 'Click to open Google Drive setup guide';
+            statusBadge.title = 'Click to open configuration guide';
             statusBadge.onclick = openSetupModal;
           }
         } catch (err) {
@@ -1874,7 +2121,7 @@
         const notes = galleryNotesInput.value.trim();
 
         btnCreateFolder.disabled = true;
-        btnCreateFolder.innerHTML = '<span>Creating Drive Folder...</span>';
+        btnCreateFolder.innerHTML = '<span>Creating Vault Folder...</span>';
 
         try {
           const res = await fetch('/api/upload/create-folder', {
@@ -1901,7 +2148,7 @@
           activeFolderNameEl.textContent = data.folderName;
 
           saveLocalShoot(data.folderId, data.folderName);
-          showToast(data.alreadyExisted ? `Folder "${data.folderName}" selected` : `Folder "${data.folderName}" created in Drive!`);
+          showToast(data.alreadyExisted ? `Folder "${data.folderName}" selected` : `Folder "${data.folderName}" created in Auralis Vault!`);
           loadWorkspace();
           return data.folderId;
         } catch (err) {
@@ -1909,7 +2156,7 @@
           return null;
         } finally {
           btnCreateFolder.disabled = false;
-          btnCreateFolder.innerHTML = '<span>Create Folder in Google Drive</span>';
+          btnCreateFolder.innerHTML = '<span>Create Folder in Auralis Vault</span>';
         }
       }
 
@@ -1975,7 +2222,7 @@
             showToast(`Added ${addedCount} file${addedCount > 1 ? 's' : ''} to queue`);
           }
 
-          // Instantly begin uploading to Google Drive as soon as folder is selected
+          // Instantly begin uploading to Auralis servers as soon as folder is selected
           startUploadProcess();
         }
       }
@@ -2162,7 +2409,7 @@
           btnCancelAll.style.display = 'inline-block';
           btnClearCompleted.style.display = 'none';
           btnRetryFailed.style.display = 'none';
-          if (btnDockOpenDrive) btnDockOpenDrive.style.display = 'none';
+          if (btnDockOpenWorkspace) btnDockOpenWorkspace.style.display = 'none';
 
           btnStartUpload.disabled = true;
           btnStartUpload.classList.remove('all-complete');
@@ -2171,19 +2418,32 @@
             <span id="btnStartUploadText">Uploading (${completedCount}/${state.queue.length})...</span>
           `;
         } else if (allCompleted) {
-          // When all files have finished uploading to Google Drive
+          // When all files have finished uploading to Auralis servers
           btnPauseResume.style.display = 'none';
           btnCancelAll.style.display = 'none';
           btnRetryFailed.style.display = 'none';
 
-          if (btnDockOpenDrive) {
-            const targetFolder = state.activeFolderId;
-            if (targetFolder) {
-              btnDockOpenDrive.href = `https://drive.google.com/drive/folders/${targetFolder}`;
-              btnDockOpenDrive.style.display = 'inline-flex';
-            } else {
-              btnDockOpenDrive.style.display = 'none';
-            }
+          if (btnDockOpenWorkspace) {
+            btnDockOpenWorkspace.style.display = 'inline-flex';
+            btnDockOpenWorkspace.onclick = () => {
+              const targetFolder = state.activeFolderId;
+              const wsEl = document.getElementById('workspaceSection');
+              if (wsEl) {
+                wsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+              if (targetFolder && window.PortalEngine) {
+                window.PortalEngine.openShoot(targetFolder);
+                const targetCard = document.getElementById(`shootCard_${targetFolder}`);
+                if (targetCard) {
+                  targetCard.style.outline = '2px solid rgba(216, 190, 151, 0.8)';
+                  targetCard.style.boxShadow = '0 0 25px rgba(216, 190, 151, 0.3)';
+                  setTimeout(() => {
+                    targetCard.style.outline = '';
+                    targetCard.style.boxShadow = '';
+                  }, 2500);
+                }
+              }
+            };
           }
 
           btnClearCompleted.style.display = 'inline-block';
@@ -2193,7 +2453,7 @@
           btnStartUpload.classList.add('all-complete');
           btnStartUpload.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span id="btnStartUploadText">Upload Complete (${completedCount} Files in Drive)</span>
+            <span id="btnStartUploadText">✓ Upload Complete (${completedCount} Files in Vault)</span>
           `;
         } else if (failedCount > 0 && pendingCount === 0) {
           // Finished with failures
@@ -2202,7 +2462,7 @@
           btnClearCompleted.style.display = completedCount > 0 ? 'inline-block' : 'none';
           btnClearCompleted.textContent = 'Clear Completed';
           btnRetryFailed.style.display = 'inline-block';
-          if (btnDockOpenDrive) btnDockOpenDrive.style.display = 'none';
+          if (btnDockOpenWorkspace) btnDockOpenWorkspace.style.display = 'none';
 
           btnStartUpload.disabled = false;
           btnStartUpload.classList.remove('all-complete');
@@ -2217,14 +2477,14 @@
           btnClearCompleted.style.display = completedCount > 0 ? 'inline-block' : 'none';
           btnClearCompleted.textContent = 'Clear Completed';
           btnRetryFailed.style.display = 'none';
-          if (btnDockOpenDrive) btnDockOpenDrive.style.display = 'none';
+          if (btnDockOpenWorkspace) btnDockOpenWorkspace.style.display = 'none';
 
           btnStartUpload.disabled = state.queue.length === 0;
           btnStartUpload.classList.remove('all-complete');
           const targetName = galleryNameInput.value.trim() || state.detectedFolder;
           btnStartUpload.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <span id="btnStartUploadText">${targetName ? `Upload "${targetName}" to Google Drive` : 'Upload Folder to Google Drive'}</span>
+            <span id="btnStartUploadText">${targetName ? `Upload "${targetName}" to Auralis Servers` : 'Upload Folder to Auralis Servers'}</span>
           `;
         }
       }
@@ -2236,7 +2496,7 @@
         let rootFolderId = state.activeFolderId;
         if (!rootFolderId) {
           rootFolderId = await createGalleryFolder();
-          if (!rootFolderId) throw new Error('Shoot folder could not be created in Google Drive.');
+          if (!rootFolderId) throw new Error('Shoot folder could not be created on Auralis servers.');
         }
 
         const relativePath = item.path || item.file.name;
@@ -2284,7 +2544,7 @@
         return currentParentId;
       }
 
-      // 4. Large-File Resumable Upload Pipeline (Direct to Google Drive)
+      // 4. Large-File Resumable Upload Pipeline (Auralis Streaming Pipeline)
       async function processNextUploads() {
         if (!state.isUploading || state.isPaused) return;
 
@@ -2318,7 +2578,7 @@
         updateItemRow(item);
 
         try {
-          // 1. Resolve target folder in Google Drive (supports nested subfolders)
+          // 1. Resolve target folder on Auralis servers (supports nested subfolders)
           let targetFolderId = await resolveTargetFolderForItem(item);
           if (!targetFolderId) {
             throw new Error('Gallery folder must be created before uploading files.');
@@ -2342,12 +2602,12 @@
 
             const initData = await initRes.json();
             if (!initRes.ok || !initData.sessionUrl) {
-              throw new Error(initData.error || 'Failed to obtain Google Drive resumable session.');
+              throw new Error(initData.error || 'Failed to obtain Auralis streaming session.');
             }
             item.sessionUrl = initData.sessionUrl;
           }
 
-          // 3. Upload File Chunks Direct to Google Drive
+          // 3. Upload File Chunks Direct to Auralis Storage Pipeline
           await streamChunksToGoogle(item);
 
         } catch (err) {
@@ -2362,7 +2622,7 @@
       }
 
       /**
-       * Stream chunks directly to Google Drive resumable session URL
+       * Stream chunks directly to Auralis resumable session URL
        */
       function streamChunksToGoogle(item) {
         return new Promise((resolve, reject) => {
@@ -2414,7 +2674,7 @@
             xhr.onload = () => {
               item.xhr = null;
 
-              // Google Drive returns 308 Resume Incomplete when chunk is received and more remain
+              // Server returns 308 Resume Incomplete when chunk is received and more remain
               if (xhr.status === 308) {
                 const rangeHeader = xhr.getResponseHeader('Range');
                 if (rangeHeader) {
@@ -2444,15 +2704,15 @@
               } else if (xhr.status === 404 || xhr.status === 410) {
                 // Session expired: reset sessionUrl to get a new one
                 item.sessionUrl = null;
-                reject(new Error('Google Drive upload session expired. Click retry.'));
+                reject(new Error('Auralis upload stream timed out. Click retry.'));
               } else {
-                reject(new Error(`Google Drive returned HTTP ${xhr.status}: ${xhr.statusText}`));
+                reject(new Error(`Auralis server returned HTTP ${xhr.status}: ${xhr.statusText}`));
               }
             };
 
             xhr.onerror = () => {
               item.xhr = null;
-              // Check if Google Drive already completed or partially received the file
+              // Check if Auralis server already completed or partially received the file
               const statusXhr = new XMLHttpRequest();
               statusXhr.open('PUT', item.sessionUrl, true);
               statusXhr.setRequestHeader('Content-Range', `bytes */${totalSize}`);
@@ -2533,7 +2793,7 @@
           return;
         }
 
-        // Automatically create or verify gallery folder in Google Drive
+        // Automatically create or verify gallery folder in Auralis Vault
         if (!state.activeFolderId) {
           const folderId = await createGalleryFolder();
           if (!folderId) return;
@@ -2729,7 +2989,7 @@
 
         let shoots = getLocalShoots();
 
-        // Sync with Google Drive: automatically discover shoots created in the vault in the last 24h
+        // Sync with Auralis Vault: automatically discover shoots created in the vault in the last 24h
         try {
           const res = await fetch('/api/upload/list-files', {
             headers: { 'X-Upload-Passcode': state.passcode }
@@ -2749,7 +3009,7 @@
             }
           }
         } catch (e) {
-          console.warn('Could not sync workspace with Drive:', e);
+          console.warn('Could not sync workspace with Auralis Vault:', e);
         }
 
         renderWorkspace(shoots);
@@ -2806,9 +3066,6 @@
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   <span>+ Add Media</span>
                 </button>
-                <a href="https://drive.google.com/drive/folders/${shoot.folderId}" target="_blank" rel="noopener noreferrer" class="btn-shoot-drive" onclick="event.stopPropagation()" title="Open this folder directly in Google Drive">
-                  <span>Drive ↗</span>
-                </a>
                 <button type="button" class="btn-shoot-refresh" title="Reload media list" onclick="event.stopPropagation(); window.PortalEngine.refreshShoot('${shoot.folderId}')">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/></svg>
                 </button>
@@ -2818,7 +3075,7 @@
 
             <div class="shoot-media-container" id="mediaContainer_${shoot.folderId}">
               <div style="font-size:13px;color:rgba(255,255,255,0.5);padding:16px 0;">
-                <em>Loading media from Google Drive...</em>
+                <em>Loading media from Auralis servers...</em>
               </div>
             </div>
           `;
@@ -2877,12 +3134,11 @@
             else if (['ZIP', 'RAR', '7Z', 'TAR'].includes(ext)) icon = '📦';
             else if (isFolder) icon = '📁';
 
-            const driveLink = file.webViewLink || (isFolder ? `https://drive.google.com/drive/folders/${file.id}` : `https://drive.google.com/file/d/${file.id}/view`);
             const timeAgo = formatTimeAgo(file.createdTime);
             const sizeStr = isFolder ? 'Folder' : formatBytes(parseInt(file.size, 10) || 0);
 
             card.innerHTML = `
-              <div class="media-preview-wrap">
+              <div class="media-preview-wrap" style="cursor:pointer;" onclick="window.PortalEngine.previewMedia('${file.id}', '${escapeHtml(file.name)}', '${file.thumbnailLink || ''}', '${sizeStr}', '${ext}')">
                 ${file.thumbnailLink ? `
                   <img src="${file.thumbnailLink}" alt="${escapeHtml(file.name)}" class="media-thumbnail" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
                   <div class="media-icon-fallback" style="display:none;">${icon}</div>
@@ -2896,11 +3152,11 @@
                 <div class="media-meta">${sizeStr}${timeAgo ? ` · ${timeAgo}` : ''}</div>
               </div>
               <div class="media-actions-bar">
-                <a href="${driveLink}" target="_blank" rel="noopener noreferrer" class="btn-media-view" title="Open media in Google Drive">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  <span>Open ↗</span>
-                </a>
-                <button type="button" class="btn-media-delete" title="Delete media from Google Drive" onclick="window.PortalEngine.deleteMedia('${file.id}', '${escapeHtml(file.name)}', '${folderId}')">
+                <button type="button" class="btn-media-view" title="Preview asset in Auralis Vault" onclick="window.PortalEngine.previewMedia('${file.id}', '${escapeHtml(file.name)}', '${file.thumbnailLink || ''}', '${sizeStr}', '${ext}')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Preview</span>
+                </button>
+                <button type="button" class="btn-media-delete" title="Delete media from Auralis servers" onclick="window.PortalEngine.deleteMedia('${file.id}', '${escapeHtml(file.name)}', '${folderId}')">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                   <span>Delete</span>
                 </button>
@@ -2922,7 +3178,7 @@
       }
 
       async function deleteMedia(fileId, fileName, folderId) {
-        if (!confirm(`Are you sure you want to permanently delete "${fileName}" from Google Drive?`)) {
+        if (!confirm(`Are you sure you want to permanently delete "${fileName}" from Auralis servers?`)) {
           return;
         }
 
@@ -2948,7 +3204,7 @@
           if (card) {
             card.remove();
           }
-          showToast(`✓ Removed "${fileName}" from Google Drive`);
+          showToast(`✓ Removed "${fileName}" from Auralis Vault`);
 
           // Refresh folder stats
           loadShootFiles(folderId);
@@ -2982,6 +3238,115 @@
       if (btnCloseMediaPicker) {
         btnCloseMediaPicker.addEventListener('click', closeMediaPicker);
       }
+
+      // In-Portal Media Preview Lightbox Controls
+      const mediaPreviewModal = document.getElementById('mediaPreviewModal');
+      const btnClosePreviewModal = document.getElementById('btnClosePreviewModal');
+      const previewBackdrop = document.getElementById('previewBackdrop');
+
+      function previewMedia(fileId, fileName, thumbnailLink, sizeStr, ext) {
+        const modal = document.getElementById('mediaPreviewModal');
+        const titleEl = document.getElementById('previewModalTitle');
+        const sizeEl = document.getElementById('previewModalSize');
+        const bodyEl = document.getElementById('previewModalBody');
+        if (!modal || !bodyEl) return;
+
+        if (titleEl) titleEl.textContent = fileName;
+        if (sizeEl) sizeEl.textContent = `${ext} · ${sizeStr}`;
+
+        const isImage = ['JPG', 'JPEG', 'PNG', 'WEBP', 'GIF'].includes(ext);
+        const isVideo = ['MP4', 'MOV', 'MKV', 'AVI', 'M4V'].includes(ext);
+        const isRaw = ['CR2', 'CR3', 'NEF', 'ARW', 'DNG', 'RAF'].includes(ext);
+
+        let highResThumb = thumbnailLink ? thumbnailLink.replace(/=s\d+.*$/, '=s1600') : '';
+
+        if (isImage && highResThumb) {
+          bodyEl.innerHTML = `
+            <div class="preview-media-stage">
+              <div class="preview-loading-spinner" id="previewImgSpinner">
+                <svg class="spin-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                <span>Loading High-Resolution Asset...</span>
+              </div>
+              <img src="${highResThumb}" alt="${escapeHtml(fileName)}" class="preview-stage-img" onload="const sp=document.getElementById('previewImgSpinner');if(sp)sp.style.display='none';this.style.opacity='1';" onerror="this.src='${thumbnailLink}';const sp=document.getElementById('previewImgSpinner');if(sp)sp.style.display='none';this.style.opacity='1';" style="opacity:0;transition:opacity 0.3s ease;" />
+            </div>
+          `;
+        } else if (isVideo) {
+          bodyEl.innerHTML = `
+            <div class="preview-asset-card">
+              <div class="preview-asset-icon">🎬</div>
+              <h4 class="preview-asset-title">${escapeHtml(fileName)}</h4>
+              <p class="preview-asset-desc">High-Bitrate Cinema Video File</p>
+              <div class="preview-asset-specs">
+                <span class="preview-spec-pill">Format: ${ext}</span>
+                <span class="preview-spec-pill">Size: ${sizeStr}</span>
+                <span class="preview-spec-pill">Storage: Auralis Dedicated Vault</span>
+              </div>
+              <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:16px;">
+                Archived securely on Auralis servers. Direct playback streams available via post-production workspace.
+              </p>
+            </div>
+          `;
+        } else if (isRaw) {
+          bodyEl.innerHTML = `
+            <div class="preview-asset-card">
+              <div class="preview-asset-icon">📷</div>
+              <h4 class="preview-asset-title">${escapeHtml(fileName)}</h4>
+              <p class="preview-asset-desc">Uncompressed Studio RAW Asset</p>
+              <div class="preview-asset-specs">
+                <span class="preview-spec-pill">RAW Sensor: ${ext}</span>
+                <span class="preview-spec-pill">Size: ${sizeStr}</span>
+                <span class="preview-spec-pill">Pipeline: Auralis Resumable Storage</span>
+              </div>
+              ${thumbnailLink ? `
+                <div style="margin-top:18px;max-width:380px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
+                  <img src="${highResThumb}" alt="${escapeHtml(fileName)}" style="width:100%;height:auto;display:block;" />
+                </div>
+              ` : `
+                <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:16px;">
+                  Preserved in 14-bit RAW color depth without lossy compression. Ready for studio color grading.
+                </p>
+              `}
+            </div>
+          `;
+        } else {
+          bodyEl.innerHTML = `
+            <div class="preview-asset-card">
+              <div class="preview-asset-icon">📦</div>
+              <h4 class="preview-asset-title">${escapeHtml(fileName)}</h4>
+              <p class="preview-asset-desc">Archive Asset</p>
+              <div class="preview-asset-specs">
+                <span class="preview-spec-pill">Extension: ${ext}</span>
+                <span class="preview-spec-pill">Size: ${sizeStr}</span>
+                <span class="preview-spec-pill">Cluster: Auralis Dedicated Storage</span>
+              </div>
+            </div>
+          `;
+        }
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closePreviewModal() {
+        const modal = document.getElementById('mediaPreviewModal');
+        if (modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (btnClosePreviewModal) {
+        btnClosePreviewModal.addEventListener('click', closePreviewModal);
+      }
+      if (previewBackdrop) {
+        previewBackdrop.addEventListener('click', closePreviewModal);
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closePreviewModal();
+          closeMediaPicker();
+        }
+      });
 
       if (mediaPickerModal) {
         mediaPickerModal.addEventListener('click', (e) => {
@@ -3131,8 +3496,10 @@
           loadShootFiles(folderId);
         },
         deleteMedia: (fileId, fileName, folderId) => deleteMedia(fileId, fileName, folderId),
+        previewMedia: (fileId, fileName, thumb, size, ext) => previewMedia(fileId, fileName, thumb, size, ext),
+        closePreviewModal: () => closePreviewModal(),
         dismissShoot: (folderId) => {
-          if (confirm('Dismiss this shoot from your 24-hour workspace list? (Files remain safely in Google Drive)')) {
+          if (confirm('Dismiss this shoot from your 24-hour workspace list? (Files remain safely on Auralis servers)')) {
             removeLocalShoot(folderId);
             const card = document.getElementById(`shootCard_${folderId}`);
             if (card) card.remove();

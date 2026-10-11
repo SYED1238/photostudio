@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
   const clientId = process.env.GOOGLE_CLIENT_ID ? String(process.env.GOOGLE_CLIENT_ID).trim() : '';
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET ? String(process.env.GOOGLE_CLIENT_SECRET).trim() : '';
   const refreshToken = process.env.GOOGLE_REFRESH_TOKEN ? String(process.env.GOOGLE_REFRESH_TOKEN).trim() : '';
-  const destinationName = process.env.STUDIO_DESTINATION_NAME || 'FRAMEHAUS Studio Vault';
+  const destinationName = process.env.STUDIO_DESTINATION_NAME || 'AURALIS Cloud Vault';
   const hasPasscode = Boolean(process.env.UPLOAD_PASSCODE && String(process.env.UPLOAD_PASSCODE).trim());
 
   let cleanFolderId = '';

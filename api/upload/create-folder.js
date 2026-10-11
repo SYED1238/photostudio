@@ -121,12 +121,12 @@ module.exports = async function handler(req, res) {
       folderName: created.name,
       webViewLink: created.webViewLink || `https://drive.google.com/drive/folders/${created.id}`,
       alreadyExisted: false,
-      message: `Created gallery folder "${created.name}" in Google Drive`
+      message: `Created gallery folder "${created.name}" in Auralis Vault`
     });
 
   } catch (err) {
     return sendJson(res, 500, {
-      error: err.message || 'Internal error creating Google Drive gallery folder'
+      error: err.message || 'Internal error creating Auralis gallery folder'
     });
   }
 };
