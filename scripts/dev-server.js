@@ -50,7 +50,9 @@ const routePaths = {
   '/api/upload/create-folder': '../api/upload/create-folder',
   '/api/upload/oauth-auth-url': '../api/upload/oauth-auth-url',
   '/api/upload/oauth-callback': '../api/upload/oauth-callback',
-  '/api/auth/google/callback': '../api/auth/google/callback'
+  '/api/auth/google/callback': '../api/auth/google/callback',
+  '/api/upload/list-files': '../api/upload/list-files',
+  '/api/upload/delete-file': '../api/upload/delete-file'
 };
 
 const server = http.createServer(async (req, res) => {

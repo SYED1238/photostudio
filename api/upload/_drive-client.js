@@ -153,13 +153,21 @@ async function validateParentFolder(requestedFolderId) {
 
   try {
     const token = await getAccessToken();
-    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${requestedFolderId}?fields=id,parents,trashed`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (res.ok) {
+    let currentId = requestedFolderId;
+    for (let depth = 0; depth < 4; depth++) {
+      const res = await fetch(`https://www.googleapis.com/drive/v3/files/${currentId}?fields=id,parents,trashed`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) break;
       const data = await res.json();
-      if (!data.trashed && data.parents && data.parents.includes(rootDestinationId)) {
+      if (data.trashed) break;
+      if (data.parents && data.parents.includes(rootDestinationId)) {
         return requestedFolderId;
+      }
+      if (data.parents && data.parents[0]) {
+        currentId = data.parents[0];
+      } else {
+        break;
       }
     }
   } catch (err) {

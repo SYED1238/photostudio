@@ -818,6 +818,458 @@
       user-select: all;
       word-break: break-all;
     }
+
+    /* ==========================================================================
+       24-Hour Active Workspace & Media Manager Styles
+       ========================================================================== */
+    .workspace-section {
+      margin-top: 48px;
+      margin-bottom: 40px;
+    }
+
+    .workspace-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .workspace-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full, 9999px);
+      background: rgba(46, 213, 115, 0.12);
+      border: 1px solid rgba(46, 213, 115, 0.3);
+      color: #2ed573;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .live-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2ed573;
+      box-shadow: 0 0 10px #2ed573;
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .workspace-title {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .workspace-subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.6));
+      max-width: 640px;
+      line-height: 1.45;
+    }
+
+    .workspace-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-workspace-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-workspace-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .workspace-shoots-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Individual Shoot Card */
+    .shoot-card {
+      background: rgba(16, 22, 18, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-card, 18px);
+      padding: 22px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .shoot-card:hover {
+      border-color: rgba(216, 190, 151, 0.3);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .shoot-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 18px;
+    }
+
+    .shoot-meta-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .shoot-folder-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(216, 190, 151, 0.12);
+      border: 1px solid rgba(216, 190, 151, 0.25);
+      color: var(--accent-gold, #d8be97);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .shoot-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .shoot-folder-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .shoot-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: rgba(216, 190, 151, 0.12);
+      border: 1px solid rgba(216, 190, 151, 0.28);
+      color: var(--accent-gold, #d8be97);
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+
+    .shoot-submeta {
+      font-size: 12.5px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.55));
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 3px;
+      flex-wrap: wrap;
+    }
+
+    .shoot-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-add-media {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-gold, #d8be97);
+      color: #070b08;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-add-media:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-shoot-drive {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-shoot-drive:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .btn-shoot-refresh {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted, rgba(255, 255, 255, 0.6));
+      padding: 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-shoot-refresh:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-shoot-dismiss {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted, rgba(255, 255, 255, 0.45));
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-shoot-dismiss:hover {
+      color: #ff6b81;
+      border-color: rgba(255, 71, 87, 0.3);
+    }
+
+    /* Media Grid */
+    .shoot-media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .media-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, opacity 0.25s;
+    }
+
+    .media-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(216, 190, 151, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .media-preview-wrap {
+      position: relative;
+      width: 100%;
+      height: 125px;
+      background: #090e0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .media-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .media-card:hover .media-thumbnail {
+      transform: scale(1.05);
+    }
+
+    .media-icon-fallback {
+      font-size: 32px;
+      color: var(--accent-gold, #d8be97);
+    }
+
+    .media-type-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .media-info-body {
+      padding: 10px 12px 6px 12px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .media-name {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .media-meta {
+      font-size: 11px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.5));
+    }
+
+    .media-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 6px 12px 10px 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-media-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--accent-gold, #d8be97);
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(216, 190, 151, 0.08);
+      border: 1px solid rgba(216, 190, 151, 0.2);
+      transition: background 0.2s;
+    }
+
+    .btn-media-view:hover {
+      background: rgba(216, 190, 151, 0.18);
+    }
+
+    .btn-media-delete {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #ff6b81;
+      background: rgba(255, 71, 87, 0.08);
+      border: 1px solid rgba(255, 71, 87, 0.2);
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-media-delete:hover {
+      background: rgba(255, 71, 87, 0.2);
+      border-color: rgba(255, 71, 87, 0.4);
+    }
+
+    /* Empty state */
+    .workspace-empty-card {
+      background: rgba(16, 22, 18, 0.4);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      padding: 36px 20px;
+      text-align: center;
+    }
+
+    .workspace-empty-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .workspace-empty-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .workspace-empty-desc {
+      font-size: 13px;
+      color: var(--text-muted, rgba(255, 255, 255, 0.55));
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Add Media Modal / Choice Dialog */
+    .media-picker-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(16px);
+      z-index: 1050;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .media-picker-modal.open {
+      display: flex;
+    }
+
+    .media-picker-card {
+      background: #0d130f;
+      border: 1px solid rgba(216, 190, 151, 0.3);
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+      padding: 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
   </style>
 </head>
 
@@ -1014,6 +1466,67 @@
       <div class="queue-list" id="queueList"></div>
     </section>
 
+    <!-- 24-Hour Active Workspace Section -->
+    <section class="workspace-section" id="workspaceSection">
+      <div class="workspace-header-row">
+        <div>
+          <div class="workspace-badge">
+            <span class="live-pulse-dot"></span>
+            <span>24-Hour Active Workspace</span>
+          </div>
+          <h2 class="workspace-title">Active Shoots &amp; Uploaded Media</h2>
+          <p class="workspace-subtitle">
+            Shoots uploaded within the last 24 hours remain accessible here. You can view high-resolution files in Google Drive, add more media into shoot folders, or delete files.
+          </p>
+        </div>
+
+        <div class="workspace-actions">
+          <button type="button" class="btn-workspace-action" id="btnRefreshWorkspace" title="Refresh files from Google Drive">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <span>Sync Workspace</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Shoots Container -->
+      <div class="workspace-shoots-list" id="workspaceShootsList">
+        <div class="workspace-empty-card" id="workspaceLoadingCard">
+          <div class="workspace-empty-icon">⏳</div>
+          <h4 class="workspace-empty-title">Loading 24-Hour Workspace...</h4>
+          <p class="workspace-empty-desc">Checking recent shoot folders in Google Drive.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Add Media to Shoot Folder Choice Modal -->
+  <div class="media-picker-modal" id="mediaPickerModal">
+    <div class="media-picker-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <span class="upload-badge">Target Shoot Folder</span>
+          <h3 style="font-size:18px;font-weight:600;margin-top:6px;color:#fff;" id="pickerModalTargetName">Add Media</h3>
+        </div>
+        <button type="button" id="btnCloseMediaPicker" style="background:transparent;border:none;color:#fff;font-size:24px;cursor:pointer;">&times;</button>
+      </div>
+
+      <p style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:20px;line-height:1.45;">
+        Choose whether you want to upload a whole subfolder or browse loose photo &amp; video files into this Google Drive folder:
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <button type="button" class="btn-dock-cta" id="btnPickerFolder" style="justify-content:center;padding:14px;border-radius:14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Select Folder</span>
+        </button>
+
+        <button type="button" class="btn-dock-secondary" id="btnPickerFiles" style="justify-content:center;padding:14px;border-radius:14px;font-weight:600;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Select Files</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Setup Guidance Modal (For initial Google Drive OAuth configuration) -->
@@ -1304,7 +1817,9 @@
           activeFolderStatus.style.display = 'inline-flex';
           activeFolderNameEl.textContent = data.folderName;
 
+          saveLocalShoot(data.folderId, data.folderName);
           showToast(data.alreadyExisted ? `Folder "${data.folderName}" selected` : `Folder "${data.folderName}" created in Drive!`);
+          loadWorkspace();
           return data.folderId;
         } catch (err) {
           alert('Folder Creation Error: ' + err.message);
@@ -1645,10 +2160,15 @@
           state.isUploading = false;
           updateTotalProgress();
           const failures = state.queue.filter(i => i.status === 'failed').length;
+          const successes = state.queue.filter(i => i.status === 'success').length;
           if (failures === 0 && state.queue.length > 0) {
             showToast(`🎉 Shoot folder and all ${state.queue.length} files successfully uploaded!`, 7000);
           } else if (failures > 0) {
             showToast(`Upload completed with ${failures} failure(s). Click Retry Failed.`, 6000);
+          }
+          if (successes > 0 && state.activeFolderId) {
+            saveLocalShoot(state.activeFolderId, state.activeFolderName);
+            loadWorkspace();
           }
         }
       }
@@ -1955,6 +2475,415 @@
         processNextUploads();
       });
 
+      // =========================================================================
+      // 5. 24-Hour Active Workspace Engine (Media Access, Add, and Delete)
+      // =========================================================================
+      const workspaceSection = document.getElementById('workspaceSection');
+      const workspaceShootsList = document.getElementById('workspaceShootsList');
+      const btnRefreshWorkspace = document.getElementById('btnRefreshWorkspace');
+
+      const mediaPickerModal = document.getElementById('mediaPickerModal');
+      const pickerModalTargetName = document.getElementById('pickerModalTargetName');
+      const btnCloseMediaPicker = document.getElementById('btnCloseMediaPicker');
+      const btnPickerFolder = document.getElementById('btnPickerFolder');
+      const btnPickerFiles = document.getElementById('btnPickerFiles');
+
+      const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function getTimeRemaining(createdAt) {
+        const createdMs = new Date(createdAt).getTime();
+        if (isNaN(createdMs)) return { expired: false, text: '24h active' };
+        const expiresAt = createdMs + TWENTY_FOUR_HOURS_MS;
+        const diffMs = expiresAt - Date.now();
+        if (diffMs <= 0) return { expired: true, text: 'Expired' };
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        if (hours > 0) {
+          return { expired: false, text: `⏱️ ${hours}h ${minutes}m left` };
+        }
+        return { expired: false, text: `⏱️ ${minutes}m left` };
+      }
+
+      function formatTimeAgo(dateString) {
+        if (!dateString) return '';
+        const ms = Date.now() - new Date(dateString).getTime();
+        if (isNaN(ms)) return '';
+        const mins = Math.floor(ms / (60 * 1000));
+        if (mins < 1) return 'just now';
+        if (mins < 60) return `${mins}m ago`;
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return `${hrs}h ago`;
+        return `${Math.floor(hrs / 24)}d ago`;
+      }
+
+      function getLocalShoots() {
+        try {
+          const raw = localStorage.getItem('fh_active_shoots');
+          if (!raw) return [];
+          const list = JSON.parse(raw);
+          if (!Array.isArray(list)) return [];
+          // Purge expired shoots older than 24 hours
+          const valid = list.filter(item => {
+            const time = new Date(item.createdAt).getTime();
+            return !isNaN(time) && (Date.now() - time) < TWENTY_FOUR_HOURS_MS;
+          });
+          if (valid.length !== list.length) {
+            localStorage.setItem('fh_active_shoots', JSON.stringify(valid));
+          }
+          return valid;
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function saveLocalShoot(folderId, folderName, createdAt) {
+        if (!folderId) return;
+        const list = getLocalShoots();
+        const existingIdx = list.findIndex(s => s.folderId === folderId);
+        if (existingIdx >= 0) {
+          if (folderName) list[existingIdx].folderName = folderName;
+        } else {
+          list.unshift({
+            folderId,
+            folderName: folderName || 'Shoot Gallery',
+            createdAt: createdAt || new Date().toISOString()
+          });
+        }
+        localStorage.setItem('fh_active_shoots', JSON.stringify(list));
+      }
+
+      function removeLocalShoot(folderId) {
+        const list = getLocalShoots().filter(s => s.folderId !== folderId);
+        localStorage.setItem('fh_active_shoots', JSON.stringify(list));
+      }
+
+      async function loadWorkspace() {
+        if (!workspaceShootsList) return;
+
+        let shoots = getLocalShoots();
+
+        // Sync with Google Drive: automatically discover shoots created in the vault in the last 24h
+        try {
+          const res = await fetch('/api/upload/list-files', {
+            headers: { 'X-Upload-Passcode': state.passcode }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.files && Array.isArray(data.files)) {
+              data.files.forEach(item => {
+                if (item.mimeType === 'application/vnd.google-apps.folder') {
+                  const createdMs = new Date(item.createdTime).getTime();
+                  if (!isNaN(createdMs) && (Date.now() - createdMs) < TWENTY_FOUR_HOURS_MS) {
+                    saveLocalShoot(item.id, item.name, item.createdTime);
+                  }
+                }
+              });
+              shoots = getLocalShoots();
+            }
+          }
+        } catch (e) {
+          console.warn('Could not sync workspace with Drive:', e);
+        }
+
+        renderWorkspace(shoots);
+      }
+
+      function renderWorkspace(shoots) {
+        if (!workspaceShootsList) return;
+
+        if (!shoots || shoots.length === 0) {
+          workspaceShootsList.innerHTML = `
+            <div class="workspace-empty-card">
+              <div class="workspace-empty-icon">📁</div>
+              <h4 class="workspace-empty-title">No Active Shoots in the Last 24 Hours</h4>
+              <p class="workspace-empty-desc">
+                When you upload a shoot folder or files, it will appear here for 24 hours so you can easily access high-res media, add more photos &amp; videos into the folder, or delete files.
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        workspaceShootsList.innerHTML = '';
+        shoots.forEach(shoot => {
+          const card = document.createElement('div');
+          card.className = 'shoot-card';
+          card.id = `shootCard_${shoot.folderId}`;
+          const remaining = getTimeRemaining(shoot.createdAt);
+
+          card.innerHTML = `
+            <div class="shoot-card-header">
+              <div class="shoot-meta-wrap">
+                <div class="shoot-folder-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <div class="shoot-title-row">
+                    <h3 class="shoot-folder-title">${escapeHtml(shoot.folderName)}</h3>
+                    <span class="shoot-time-badge" id="badge_${shoot.folderId}">${remaining.text}</span>
+                  </div>
+                  <div class="shoot-submeta">
+                    <span>Created ${formatTimeAgo(shoot.createdAt)}</span>
+                    <span>·</span>
+                    <span id="statCount_${shoot.folderId}">Loading files...</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shoot-header-actions">
+                <button type="button" class="btn-add-media" onclick="window.PortalEngine.promptAddMedia('${shoot.folderId}', '${escapeHtml(shoot.folderName)}')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>+ Add Media</span>
+                </button>
+                <a href="https://drive.google.com/drive/folders/${shoot.folderId}" target="_blank" rel="noopener noreferrer" class="btn-shoot-drive" title="Open this folder directly in Google Drive">
+                  <span>Drive ↗</span>
+                </a>
+                <button type="button" class="btn-shoot-refresh" title="Reload media list" onclick="window.PortalEngine.refreshShoot('${shoot.folderId}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/></svg>
+                </button>
+                <button type="button" class="btn-shoot-dismiss" title="Dismiss shoot from recent workspace" onclick="window.PortalEngine.dismissShoot('${shoot.folderId}')">✕</button>
+              </div>
+            </div>
+
+            <div class="shoot-media-container" id="mediaContainer_${shoot.folderId}">
+              <div style="font-size:13px;color:rgba(255,255,255,0.5);padding:16px 0;">
+                <em>Loading media from Google Drive...</em>
+              </div>
+            </div>
+          `;
+
+          workspaceShootsList.appendChild(card);
+          loadShootFiles(shoot.folderId);
+        });
+      }
+
+      async function loadShootFiles(folderId) {
+        const container = document.getElementById(`mediaContainer_${folderId}`);
+        const statCount = document.getElementById(`statCount_${folderId}`);
+        if (!container) return;
+
+        try {
+          const res = await fetch(`/api/upload/list-files?folderId=${encodeURIComponent(folderId)}`, {
+            headers: { 'X-Upload-Passcode': state.passcode }
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to list files');
+
+          const files = data.files || [];
+          if (statCount) {
+            const totalBytes = files.reduce((acc, f) => acc + (parseInt(f.size, 10) || 0), 0);
+            statCount.textContent = `${files.length} item${files.length === 1 ? '' : 's'} · ${formatBytes(totalBytes)}`;
+          }
+
+          if (files.length === 0) {
+            container.innerHTML = `
+              <div style="text-align:center;padding:24px 16px;background:rgba(0,0,0,0.2);border-radius:12px;border:1px dashed rgba(255,255,255,0.08);">
+                <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:10px;">This shoot folder has no files yet.</p>
+                <button type="button" class="btn-add-media" onclick="window.PortalEngine.promptAddMedia('${folderId}', '')" style="margin:0 auto;">
+                  <span>+ Add First Media</span>
+                </button>
+              </div>
+            `;
+            return;
+          }
+
+          const grid = document.createElement('div');
+          grid.className = 'shoot-media-grid';
+
+          files.forEach(file => {
+            const card = document.createElement('div');
+            card.className = 'media-card';
+            card.id = `mediaCard_${file.id}`;
+
+            const isFolder = file.mimeType === 'application/vnd.google-apps.folder';
+            let ext = (file.name.split('.').pop() || '').toUpperCase();
+            if (isFolder) ext = 'FOLDER';
+
+            let icon = '📄';
+            if (['JPG', 'JPEG', 'PNG', 'WEBP', 'GIF'].includes(ext)) icon = '🖼️';
+            else if (['MP4', 'MOV', 'MKV', 'AVI', 'M4V'].includes(ext)) icon = '🎬';
+            else if (['CR2', 'CR3', 'NEF', 'ARW', 'DNG', 'RAF'].includes(ext)) icon = '📷';
+            else if (['ZIP', 'RAR', '7Z', 'TAR'].includes(ext)) icon = '📦';
+            else if (isFolder) icon = '📁';
+
+            const driveLink = file.webViewLink || (isFolder ? `https://drive.google.com/drive/folders/${file.id}` : `https://drive.google.com/file/d/${file.id}/view`);
+            const timeAgo = formatTimeAgo(file.createdTime);
+            const sizeStr = isFolder ? 'Folder' : formatBytes(parseInt(file.size, 10) || 0);
+
+            card.innerHTML = `
+              <div class="media-preview-wrap">
+                ${file.thumbnailLink ? `
+                  <img src="${file.thumbnailLink}" alt="${escapeHtml(file.name)}" class="media-thumbnail" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                  <div class="media-icon-fallback" style="display:none;">${icon}</div>
+                ` : `
+                  <div class="media-icon-fallback">${icon}</div>
+                `}
+                <span class="media-type-badge">${ext}</span>
+              </div>
+              <div class="media-info-body">
+                <div class="media-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div>
+                <div class="media-meta">${sizeStr}${timeAgo ? ` · ${timeAgo}` : ''}</div>
+              </div>
+              <div class="media-actions-bar">
+                <a href="${driveLink}" target="_blank" rel="noopener noreferrer" class="btn-media-view" title="Open media in Google Drive">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  <span>Open ↗</span>
+                </a>
+                <button type="button" class="btn-media-delete" title="Delete media from Google Drive" onclick="window.PortalEngine.deleteMedia('${file.id}', '${escapeHtml(file.name)}', '${folderId}')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  <span>Delete</span>
+                </button>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          container.innerHTML = '';
+          container.appendChild(grid);
+
+        } catch (err) {
+          container.innerHTML = `
+            <div style="font-size:12.5px;color:#ff6b81;padding:12px 0;">
+              Failed to load media: ${escapeHtml(err.message)}
+            </div>
+          `;
+        }
+      }
+
+      async function deleteMedia(fileId, fileName, folderId) {
+        if (!confirm(`Are you sure you want to permanently delete "${fileName}" from Google Drive?`)) {
+          return;
+        }
+
+        const card = document.getElementById(`mediaCard_${fileId}`);
+        if (card) {
+          card.style.opacity = '0.35';
+          card.style.pointerEvents = 'none';
+        }
+
+        try {
+          const res = await fetch('/api/upload/delete-file', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Upload-Passcode': state.passcode
+            },
+            body: JSON.stringify({ fileId })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to delete file');
+
+          if (card) {
+            card.remove();
+          }
+          showToast(`✓ Removed "${fileName}" from Google Drive`);
+
+          // Refresh folder stats
+          loadShootFiles(folderId);
+
+        } catch (err) {
+          alert('Delete error: ' + err.message);
+          if (card) {
+            card.style.opacity = '1';
+            card.style.pointerEvents = 'auto';
+          }
+        }
+      }
+
+      function promptAddMedia(folderId, folderName) {
+        state.pickerTargetFolderId = folderId;
+        state.pickerTargetFolderName = folderName;
+        if (pickerModalTargetName) {
+          pickerModalTargetName.textContent = folderName ? `Add Media to: ${folderName}` : 'Add Media';
+        }
+        if (mediaPickerModal) {
+          mediaPickerModal.classList.add('open');
+        }
+      }
+
+      function closeMediaPicker() {
+        if (mediaPickerModal) {
+          mediaPickerModal.classList.remove('open');
+        }
+      }
+
+      if (btnCloseMediaPicker) {
+        btnCloseMediaPicker.addEventListener('click', closeMediaPicker);
+      }
+
+      if (mediaPickerModal) {
+        mediaPickerModal.addEventListener('click', (e) => {
+          if (e.target === mediaPickerModal) closeMediaPicker();
+        });
+      }
+
+      if (btnPickerFolder) {
+        btnPickerFolder.addEventListener('click', () => {
+          closeMediaPicker();
+          if (state.pickerTargetFolderId) {
+            state.activeFolderId = state.pickerTargetFolderId;
+            state.activeFolderName = state.pickerTargetFolderName;
+            activeFolderStatus.style.display = 'inline-flex';
+            activeFolderNameEl.textContent = state.pickerTargetFolderName;
+            galleryNameInput.value = state.pickerTargetFolderName;
+            showToast(`Target locked: "${state.pickerTargetFolderName}"`);
+          }
+          folderInput.click();
+        });
+      }
+
+      if (btnPickerFiles) {
+        btnPickerFiles.addEventListener('click', () => {
+          closeMediaPicker();
+          if (state.pickerTargetFolderId) {
+            state.activeFolderId = state.pickerTargetFolderId;
+            state.activeFolderName = state.pickerTargetFolderName;
+            activeFolderStatus.style.display = 'inline-flex';
+            activeFolderNameEl.textContent = state.pickerTargetFolderName;
+            galleryNameInput.value = state.pickerTargetFolderName;
+            showToast(`Target locked: "${state.pickerTargetFolderName}"`);
+          }
+          fileInput.click();
+        });
+      }
+
+      if (btnRefreshWorkspace) {
+        btnRefreshWorkspace.addEventListener('click', () => {
+          btnRefreshWorkspace.disabled = true;
+          showToast('Syncing 24-hour workspace...');
+          loadWorkspace().finally(() => {
+            btnRefreshWorkspace.disabled = false;
+          });
+        });
+      }
+
+      // Periodic check every 60 seconds to update countdown badges and purge expired shoots
+      setInterval(() => {
+        const shoots = getLocalShoots();
+        shoots.forEach(shoot => {
+          const badge = document.getElementById(`badge_${shoot.folderId}`);
+          if (badge) {
+            const rem = getTimeRemaining(shoot.createdAt);
+            badge.textContent = rem.text;
+            if (rem.expired) {
+              const card = document.getElementById(`shootCard_${shoot.folderId}`);
+              if (card) card.remove();
+            }
+          }
+        });
+      }, 60000);
+
       // Expose helpers for inline onclick handlers
       window.PortalEngine = {
         removeFile: (id) => {
@@ -1980,12 +2909,27 @@
               processNextUploads();
             }
           }
+        },
+        promptAddMedia: (folderId, folderName) => promptAddMedia(folderId, folderName),
+        refreshShoot: (folderId) => {
+          showToast('Refreshing folder files...');
+          loadShootFiles(folderId);
+        },
+        deleteMedia: (fileId, fileName, folderId) => deleteMedia(fileId, fileName, folderId),
+        dismissShoot: (folderId) => {
+          if (confirm('Dismiss this shoot from your 24-hour workspace list? (Files remain safely in Google Drive)')) {
+            removeLocalShoot(folderId);
+            const card = document.getElementById(`shootCard_${folderId}`);
+            if (card) card.remove();
+            showToast('Shoot dismissed from workspace');
+          }
         }
       };
 
       // Initialize
       checkConfig();
       handleOAuthCallback();
+      loadWorkspace();
 
     })();
   </script>

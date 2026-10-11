@@ -63,6 +63,7 @@ module.exports = async function handler(req, res) {
 
   return sendJson(res, 200, {
     configured: isConfigured,
+    destinationFolderId: cleanFolderId,
     destinationName: verifiedFolderName ? `${destinationName} (${verifiedFolderName})` : destinationName,
     verifiedFolderName,
     folderIdConfigured: Boolean(cleanFolderId),
