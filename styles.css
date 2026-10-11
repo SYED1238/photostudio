@@ -1127,6 +1127,10 @@ body {
     justify-content: flex-start;
   }
 
+  .hero-bg-image {
+    object-position: center 60%;
+  }
+
   .nav-pill-group {
     display: none;
   }

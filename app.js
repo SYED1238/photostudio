@@ -696,103 +696,79 @@
     const journalSearchInput = document.getElementById("journalSearchInput");
     const journalSearchResults = document.getElementById("journalSearchResults");
 
-    // Spreads Database
+    // Spreads Database (Studio Stages & Production Bays)
     const spreads = [
       {
         id: 1,
-        title: "18 Year Old Dream Life: Spain Edition",
-        location: "📍 Seville & Andalusia, Spain",
-        date: "Summer Solstice 2026",
-        badge: "Spain Edition · Vol. 01",
-        img: "public/spread_1.webp",
-        backupImg: "public/spread_1.jpg",
+        title: "Studio Stage Alpha: Cyclorama & Lighting Rig",
+        location: "📍 Main Studio Floor · Cyc Stage A",
+        date: "Architectural & Commercial Bay",
+        badge: "Atelier · Studio 01",
+        img: "public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.webp",
+        backupImg: "public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.jpg",
         transcript:
-          "\"Sunsets, sangria (mom approved), and enough wrong turns to make Google Maps cry. Moving to Spain with the family was a full-on adventure—proof that even fluent Spanish can't save you from tourist brain.\"",
-        tags: ["#TravelJournal", "#SpainMemories", "#Editorial", "#RooftopSunsets"],
+          "\"Full cyclorama wall with overhead motorized truss lighting, high-output softboxes, and mobile tethering cart for seamless high-fashion and commercial production.\"",
+        tags: ["#CycWall", "#StudioRig", "#LightingGrid", "#FashionEditorial"],
       },
       {
         id: 2,
-        title: "Exploring Historical Sites Like True Adventurers",
-        location: "📍 Costa Brava & Tossa de Mar Castle",
-        date: "July 14, 2026",
-        badge: "Coastal Expedition · Vol. 02",
-        img: "public/spread_2.webp",
-        backupImg: "public/spread_2.jpg",
+        title: "Production Suite: Daylight & Tethered Master Station",
+        location: "📍 East Wing · Studio Suite B",
+        date: "High-End Portraiture & Video",
+        badge: "Editorial · Studio 02",
+        img: "public/images/2nd%20section/8234be4bbdd5c9678d6120b8eff904a2.webp",
+        backupImg: "public/images/2nd%20section/8234be4bbdd5c9678d6120b8eff904a2.jpg",
         transcript:
-          "\"35mm Photobooth strips and sea breeze. Except one castle was my pick: cue a 2-hour hike in the blazing sun, with my entire family questioning my life choices—only to find out there was a direct bus.\"",
-        tags: ["#CastleHike", "#35mmFilm", "#Photobooth", "#Mediterranean"],
+          "\"Equipped with Profoto modifiers, calibrated color-grading workstation, dual displays, illuminated hair & makeup vanity, and dedicated styling wardrobe.\"",
+        tags: ["#Profoto", "#TetheredCapture", "#EditorialLighting", "#VanityStation"],
       },
       {
         id: 3,
-        title: "Camcorder Memories in the Park",
-        location: "📍 Parque de María Luisa, Seville",
-        date: "July 20, 2026",
-        badge: "Nostalgia · Vol. 03",
-        img: "public/spread_3.webp",
-        backupImg: "public/spread_3.jpg",
+        title: "Industrial Loft Atelier: Multi-Bay Studio & Ring Light",
+        location: "📍 Mezzanine Loft · Studio Suite C",
+        date: "Multi-Camera & Campaign Rig",
+        badge: "Industrial · Studio 03",
+        img: "public/images/2nd%20section/8b10497d-6421-40f9-b548-68c0cb9e2d41.webp",
+        backupImg: "public/images/2nd%20section/8b10497d-6421-40f9-b548-68c0cb9e2d41.jpg",
         transcript:
-          "\"Golden afternoon shade under blooming jacaranda trees. Filming family laughter on the vintage handycam monitor. Golden hour light filtering through purple petals.\"",
-        tags: ["#Handycam", "#FamilyPortraits", "#Jacaranda", "#GoldenHour"],
+          "\"Double-height industrial ceilings with Broncolor power packs, high-CRI ring lights, seamless black and white paper pulls, and triple camera tripod staging.\"",
+        tags: ["#LoftStudio", "#Broncolor", "#MultiBay", "#IndustrialDesign"],
       },
       {
         id: 4,
-        title: "Cathedral Arches & Solitude",
-        location: "📍 Málaga Cathedral Courtyard",
-        date: "July 28, 2026",
-        badge: "Sanctuary · Vol. 04",
-        img: "public/spread_4.webp",
-        backupImg: "public/spread_4.jpg",
+        title: "Space Sound: Acoustic Lounge & Interview Set",
+        location: "📍 Acoustic Suite · Studio Suite D",
+        date: "Podcast & Audio-Visual Broadcast",
+        badge: "Acoustics · Studio 04",
+        img: "public/images/2nd%20section/a052fd83522ba067258495fd5e31c2b6.webp",
+        backupImg: "public/images/2nd%20section/a052fd83522ba067258495fd5e31c2b6.jpg",
         transcript:
-          "\"A sundress, a cathedral, and maybe a hint of sunstroke! Soaring limestone arches whispering centuries of Andalusian history.\"",
-        tags: ["#CathedralArches", "#Málaga", "#GothicArchitecture", "#SundressSeason"],
+          "\"Custom backlit halo soundstage with acoustic-treated micro-cement walls, broadcast condenser mics, mid-century boucle chairs, and studio audio monitors.\"",
+        tags: ["#SpaceSound", "#PodcastStudio", "#AcousticLounge", "#Broadcast"],
       },
       {
         id: 5,
-        title: "Looking Out Dramatically from a Castle",
-        location: "📍 Castillo de Colomares",
-        date: "August 3, 2026",
-        badge: "High Altitude · Vol. 05",
-        img: "public/spread_5.webp",
-        backupImg: "public/spread_5.jpg",
+        title: "Grand Atrium: Giant Octabox & Seamless Color Library",
+        location: "📍 Upper Atrium · Studio Suite E",
+        date: "Campaign & Haute Couture",
+        badge: "Commercial · Studio 05",
+        img: "public/images/2nd%20section/c77c0c69-bad7-419a-961f-c5e0043f0fd2.webp",
+        backupImg: "public/images/2nd%20section/c77c0c69-bad7-419a-961f-c5e0043f0fd2.jpg",
         transcript:
-          "\"Leaning on mom... because even sightseeing has a stamina limit! Looking out dramatically from a castle tower, because main character energy requires altitude.\"",
-        tags: ["#MainCharacterEnergy", "#Colomares", "#CastleViews", "#Wanderlust"],
+          "\"Expansive open-plan daylight studio featuring a PhaseOne mega octabox, continuous infinity curve, full spectrum seamless paper color library, and multi-cam setup.\"",
+        tags: ["#Octabox", "#PhaseOne", "#ColorBackdrops", "#InfinityCurve"],
       },
       {
         id: 6,
-        title: "Olive Fields & Ancient Groves",
-        location: "📍 Sierra Nevada Foothills",
-        date: "August 11, 2026",
-        badge: "Terra · Vol. 06",
-        img: "public/spread_6.webp",
-        backupImg: "public/spread_6.jpg",
+        title: "Daylight Loft: Panoramic North Light & Mobile DIT Cart",
+        location: "📍 West Gallery · Studio Suite F",
+        date: "Natural Light & Masterclass Bay",
+        badge: "Daylight · Studio 06",
+        img: "public/images/2nd%20section/e93bf7b9-2d8b-4713-8bfb-d5db3a648363.webp",
+        backupImg: "public/images/2nd%20section/e93bf7b9-2d8b-4713-8bfb-d5db3a648363.jpg",
         transcript:
-          "\"Lord, I'm here in an olive field, sweaty and sunburnt. If this doesn't impress someone's mom, I don't know what will. 200-year-old olive trees stretching toward the Mediterranean horizon.\"",
-        tags: ["#OliveGroves", "#Andalusia", "#BotanicalEarth", "#SummerHeat"],
-      },
-      {
-        id: 7,
-        title: "Sun Doodles & Seaside Terrace",
-        location: "📍 Nerja Balcón de Europa",
-        date: "August 19, 2026",
-        badge: "Coastline · Vol. 07",
-        img: "public/spread_7.webp",
-        backupImg: "public/spread_7.jpg",
-        transcript:
-          "\"Scaled the cliffs, conquered the castle... now where's my gelato? Sitting on the sun-warmed whitewashed terrace watching turquoise waves crash.\"",
-        tags: ["#Nerja", "#BalconDeEuropa", "#TurquoiseSea", "#GelatoHunt"],
-      },
-      {
-        id: 8,
-        title: "Streets of Seville & Flamenco Soul",
-        location: "📍 Barrio Santa Cruz, Seville",
-        date: "August 26, 2026",
-        badge: "Duende · Vol. 08",
-        img: "public/spread_8.webp",
-        backupImg: "public/spread_8.jpg",
-        transcript:
-          "\"Cobblestone alleys scented with sweet orange blossoms. Floating polaroid prints, rhythmic flamenco heels echoing in the plaza, and tapas till midnight.\"",
-        tags: ["#Flamenco", "#SevilleNights", "#Polaroids", "#OrangeBlossom"],
+          "\"Floor-to-ceiling industrial north-facing windows providing diffuse natural light, paired with Profoto strobes, continuous backdrop rolls, and mobile DIT Apple workstation.\"",
+        tags: ["#DaylightStudio", "#NorthLight", "#DITCart", "#CycStage"],
       },
     ];
 
@@ -1502,10 +1478,10 @@
             title: memTitle,
             location: memLocation,
             date: "Today",
-            badge: `Personal Entry · Vol. ${String(newId).padStart(2, "0")}`,
-            img: imgUrl || "public/spread_1.jpg",
+            badge: `Studio Entry · Vol. ${String(newId).padStart(2, "0")}`,
+            img: imgUrl || "public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.webp",
             transcript: `"${memNotes}"`,
-            tags: ["#PersonalMemory", "#JournalEntry", "#CapturedMoment"],
+            tags: ["#StudioSpace", "#ProductionBay", "#CreativeSession"],
           };
 
           spreads.push(newSpread);
@@ -1520,7 +1496,7 @@
               <img src="${newSpread.img}" alt="${newSpread.title}" class="journal-spread-img" />
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           `;
@@ -1528,12 +1504,12 @@
 
           // Update page count
           if (journalPageCountText) {
-            journalPageCountText.textContent = `${70 + spreads.length - 8} Captures`;
+            journalPageCountText.textContent = `${spreads.length} Studio Bays`;
           }
 
           renderDots();
           closeModal(modalAddMemory);
-          showToast(`✨ Capture "${memTitle}" appended to your Portfolio Archive!`);
+          showToast(`✨ Production Bay "${memTitle}" appended to your Studio Archive!`);
 
           // Jump straight to new card
           jumpToIndex(spreads.length - 1);
@@ -1544,8 +1520,8 @@
           reader.onload = (e) => insertSpread(e.target.result);
           reader.readAsDataURL(memFile.files[0]);
         } else {
-          // Use one of the existing beautiful spreads as sample
-          insertSpread("public/spread_1.jpg");
+          // Use one of the existing studio bays as sample
+          insertSpread("public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.webp");
         }
       },
       jumpToIndex,

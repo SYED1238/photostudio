@@ -8,6 +8,17 @@
   <title>FRAMEHAUS — Stories Worth Remembering | Premium Photography Studio</title>
   <meta name="description"
     content="From intimate portraits to cinematic campaigns, FRAMEHAUS creates photographs designed to be remembered. High-end editorial and commercial photography studio.">
+  <meta name="theme-color" content="#060907">
+
+  <!-- Open Graph & Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FRAMEHAUS — Stories Worth Remembering | Premium Photography Studio">
+  <meta property="og:description" content="From intimate portraits to cinematic campaigns, FRAMEHAUS creates photographs designed to be remembered.">
+  <meta property="og:image" content="public/DSLR_camera_resting_on_floor_2K_20261008105949.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FRAMEHAUS — Stories Worth Remembering">
+  <meta name="twitter:description" content="From intimate portraits to cinematic campaigns, FRAMEHAUS creates photographs designed to be remembered.">
+  <meta name="twitter:image" content="public/DSLR_camera_resting_on_floor_2K_20261008105949.jpg">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml"
@@ -20,8 +31,9 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <!-- Preload Critical Above-The-Fold Hero Background -->
-  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp" fetchpriority="high">
+  <!-- Preload Critical Above-The-Fold Hero Background (Responsive Mobile & Desktop) -->
+  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008110114.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="studio-gallery/gallery.css">
@@ -43,6 +55,11 @@
   <!-- Hero Background Media Layer (Cinema DSLR Camera on Floor with Parallax & Scroll Blur) -->
   <div class="hero-background-wrap video-background-wrap" id="heroBackgroundWrap">
     <picture class="hero-bg-picture">
+      <!-- Mobile Viewport (Portrait DSLR Camera on floor) -->
+      <source media="(max-width: 768px)" srcset="public/DSLR_camera_resting_on_floor_2K_20261008110114.webp" type="image/webp">
+      <source media="(max-width: 768px)" srcset="public/DSLR_camera_resting_on_floor_2K_20261008110114.jpg">
+
+      <!-- Desktop Viewport (Landscape DSLR Camera on floor) -->
       <source srcset="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp">
       <img id="heroBgImage"
            src="public/DSLR_camera_resting_on_floor_2K_20261008105949.jpg"
@@ -203,19 +220,20 @@
 
     <!-- Discreet Video Controller & Audio Ambience Floating Bar -->
     <aside class="floating-media-toolbar" id="mediaToolbar">
-      <!-- Video Status / Switcher -->
+      <!-- Studio Background Media Controller -->
       <div class="toolbar-pill">
-        <button class="toolbar-btn" id="btnVideoSettings" title="Video Background Options">
+        <button class="toolbar-btn" id="btnVideoSettings" title="Studio Background Media Options">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="5 3 19 12 5 21 5 3" />
+            <rect x="3" y="3" width="18" height="18" rx="3" />
+            <circle cx="12" cy="12" r="3.5" />
           </svg>
-          <span class="btn-label" id="videoStatusLabel">Animated BG Active</span>
+          <span class="btn-label" id="videoStatusLabel">Studio DSLR BG</span>
         </button>
 
-        <!-- Hidden File Input for Custom Video -->
-        <input type="file" id="videoFileInput" accept="video/mp4,video/webm" style="display:none">
+        <!-- Hidden File Input for Custom Background Image or Video -->
+        <input type="file" id="videoFileInput" accept="image/jpeg,image/webp,image/png,video/mp4,video/webm" style="display:none">
 
-        <button class="toolbar-icon-btn" id="btnUploadVideo" title="Choose your custom animated video file">
+        <button class="toolbar-icon-btn" id="btnUploadVideo" title="Upload custom studio background photo or video">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
           </svg>
@@ -289,7 +307,7 @@
             <path d="M12 20h9"/>
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
           </svg>
-          <span id="journalPageCountText">70 Captures</span>
+          <span id="journalPageCountText">6 Studio Bays</span>
         </div>
       </div>
 
@@ -322,114 +340,86 @@
       <!-- 3D Perspective Stage -->
       <div class="journal-3d-stage" id="journal3DStage">
         <div class="journal-3d-carousel" id="journal3DCarousel">
-          <!-- Spread 1 -->
+          <!-- Spread 1: Studio Stage Alpha -->
           <div class="journal-card" data-index="0" data-id="1">
             <div class="journal-book-spread">
               <picture>
-                <source srcset="public/spread_1.webp" type="image/webp">
-                <img src="public/spread_1.webp" alt="18 Year Old Dream Life: Spain Edition" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_1.jpg';}" />
+                <source srcset="public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.webp" type="image/webp">
+                <img src="public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.webp" alt="Studio Stage Alpha: Cyclorama &amp; Lighting Rig" class="journal-spread-img" loading="eager" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.jpg';}" />
               </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           </div>
 
-          <!-- Spread 2 -->
+          <!-- Spread 2: Production Suite -->
           <div class="journal-card" data-index="1" data-id="2">
             <div class="journal-book-spread">
               <picture>
-                <source srcset="public/spread_2.webp" type="image/webp">
-                <img src="public/spread_2.webp" alt="Exploring Historical Sites Like True Adventurers" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_2.jpg';}" />
+                <source srcset="public/images/2nd%20section/8234be4bbdd5c9678d6120b8eff904a2.webp" type="image/webp">
+                <img src="public/images/2nd%20section/8234be4bbdd5c9678d6120b8eff904a2.webp" alt="Production Suite: Daylight &amp; Tethered Master Station" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/8234be4bbdd5c9678d6120b8eff904a2.jpg';}" />
               </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           </div>
 
-          <!-- Spread 3 -->
+          <!-- Spread 3: Industrial Loft Atelier -->
           <div class="journal-card" data-index="2" data-id="3">
             <div class="journal-book-spread">
               <picture>
-                <source srcset="public/spread_3.webp" type="image/webp">
-                <img src="public/spread_3.webp" alt="Camcorder Memories in the Park" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_3.jpg';}" />
+                <source srcset="public/images/2nd%20section/8b10497d-6421-40f9-b548-68c0cb9e2d41.webp" type="image/webp">
+                <img src="public/images/2nd%20section/8b10497d-6421-40f9-b548-68c0cb9e2d41.webp" alt="Industrial Loft Atelier: Multi-Bay Studio &amp; Ring Light" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/8b10497d-6421-40f9-b548-68c0cb9e2d41.jpg';}" />
               </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           </div>
 
-          <!-- Spread 4 -->
+          <!-- Spread 4: Space Sound Acoustic Lounge -->
           <div class="journal-card" data-index="3" data-id="4">
             <div class="journal-book-spread">
               <picture>
-                <source srcset="public/spread_4.webp" type="image/webp">
-                <img src="public/spread_4.webp" alt="Cathedral Arches &amp; Solitude" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_4.jpg';}" />
+                <source srcset="public/images/2nd%20section/a052fd83522ba067258495fd5e31c2b6.webp" type="image/webp">
+                <img src="public/images/2nd%20section/a052fd83522ba067258495fd5e31c2b6.webp" alt="Space Sound: Acoustic Lounge &amp; Interview Set" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/a052fd83522ba067258495fd5e31c2b6.jpg';}" />
               </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           </div>
 
-          <!-- Spread 5 -->
+          <!-- Spread 5: Grand Atrium -->
           <div class="journal-card" data-index="4" data-id="5">
             <div class="journal-book-spread">
               <picture>
-                <source srcset="public/spread_5.webp" type="image/webp">
-                <img src="public/spread_5.webp" alt="Looking Out Dramatically from a Castle" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_5.jpg';}" />
+                <source srcset="public/images/2nd%20section/c77c0c69-bad7-419a-961f-c5e0043f0fd2.webp" type="image/webp">
+                <img src="public/images/2nd%20section/c77c0c69-bad7-419a-961f-c5e0043f0fd2.webp" alt="Grand Atrium: Giant Octabox &amp; Seamless Color Library" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/c77c0c69-bad7-419a-961f-c5e0043f0fd2.jpg';}" />
               </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           </div>
 
-          <!-- Spread 6 -->
+          <!-- Spread 6: Daylight Loft -->
           <div class="journal-card" data-index="5" data-id="6">
             <div class="journal-book-spread">
               <picture>
-                <source srcset="public/spread_6.webp" type="image/webp">
-                <img src="public/spread_6.webp" alt="Olive Fields &amp; Ancient Groves" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_6.jpg';}" />
+                <source srcset="public/images/2nd%20section/e93bf7b9-2d8b-4713-8bfb-d5db3a648363.webp" type="image/webp">
+                <img src="public/images/2nd%20section/e93bf7b9-2d8b-4713-8bfb-d5db3a648363.webp" alt="Daylight Loft: Panoramic North Light &amp; Mobile DIT Cart" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/e93bf7b9-2d8b-4713-8bfb-d5db3a648363.jpg';}" />
               </picture>
               <div class="journal-spine-gutter"></div>
               <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
-            </div>
-            <div class="journal-card-shadow"></div>
-          </div>
-
-          <!-- Spread 7 -->
-          <div class="journal-card" data-index="6" data-id="7">
-            <div class="journal-book-spread">
-              <picture>
-                <source srcset="public/spread_7.webp" type="image/webp">
-                <img src="public/spread_7.webp" alt="Sun Doodles &amp; Seaside Terrace" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_7.jpg';}" />
-              </picture>
-              <div class="journal-spine-gutter"></div>
-              <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
-            </div>
-            <div class="journal-card-shadow"></div>
-          </div>
-
-          <!-- Spread 8 -->
-          <div class="journal-card" data-index="7" data-id="8">
-            <div class="journal-book-spread">
-              <picture>
-                <source srcset="public/spread_8.webp" type="image/webp">
-                <img src="public/spread_8.webp" alt="Streets of Seville &amp; Flamenco Soul" class="journal-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/spread_8.jpg';}" />
-              </picture>
-              <div class="journal-spine-gutter"></div>
-              <div class="journal-card-sheen"></div>
-              <div class="journal-card-hover-tag">Open Spread &amp; Reading Notes</div>
+              <div class="journal-card-hover-tag">Inspect Stage &amp; Gear Specs</div>
             </div>
             <div class="journal-card-shadow"></div>
           </div>
@@ -447,8 +437,8 @@
     <!-- Mode 2: Grid Overview Stage -->
     <div class="journal-grid-stage" id="journalGridStage">
       <div class="journal-grid-header">
-        <h3>All Journal Spreads (70 Pages Archive)</h3>
-        <p>Select any spread below to jump into the 3D cylindrical gallery view.</p>
+        <h3>All Studio Stages &amp; Production Bays (6 Suites)</h3>
+        <p>Select any studio suite below to jump into the 3D cylindrical gallery view.</p>
       </div>
       <div class="journal-grid-items" id="journalGridItems"></div>
     </div>
@@ -486,7 +476,7 @@
     <div class="journal-active-meta-pill" id="journalActiveMetaPill">
       <span class="active-entry-num" id="activeEntryNum">01</span>
       <span class="active-entry-divider">/</span>
-      <span class="active-entry-title" id="activeEntryTitle">18 Year Old Dream Life: Spain Edition</span>
+      <span class="active-entry-title" id="activeEntryTitle">Studio Stage Alpha: Cyclorama &amp; Lighting Rig</span>
       <div class="journal-dots-track" id="journalDotsTrack"></div>
     </div>
   </section>
@@ -1232,7 +1222,7 @@
         <button type="button" class="lightbox-nav-btn lightbox-next" id="lightboxNext" title="Next Item">›</button>
 
         <div class="lightbox-media-container" id="lightboxMediaContainer">
-          <img id="lightboxImg" src="" alt="Studio Photo Preview" class="lightbox-image" referrerpolicy="no-referrer" />
+          <img id="lightboxImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Studio Photo Preview" class="lightbox-image" referrerpolicy="no-referrer" />
           <video id="lightboxVideo" class="lightbox-video" controls playsinline controlsList="nodownload noplaybackrate" style="display:none;"></video>
         </div>
 
@@ -1395,8 +1385,8 @@
     <div class="modal-sheet glass-sheet modal-dialog-narrow">
       <div class="sheet-header">
         <div>
-          <span class="sheet-badge">Video Integration</span>
-          <h2 class="sheet-title">Your Animated Video Background</h2>
+          <span class="sheet-badge">Media Integration</span>
+          <h2 class="sheet-title">Hero Background Media</h2>
         </div>
         <button class="modal-close-btn" data-close="modalVideoInfo">&times;</button>
       </div>
@@ -1405,9 +1395,8 @@
         <div class="info-step">
           <span class="step-num">01</span>
           <div>
-            <h4>Drop It Directly On This Page</h4>
-            <p>You can drag and drop your <code>.mp4</code> or <code>.webm</code> animated video file anywhere onto this
-              browser window to immediately test it live!</p>
+            <h4>Drop Media On This Page</h4>
+            <p>Drag and drop your high-resolution photo (<code>.jpg</code>, <code>.webp</code>, <code>.png</code>) or video (<code>.mp4</code>, <code>.webm</code>) anywhere onto this browser window to preview it live!</p>
           </div>
         </div>
 
@@ -1415,51 +1404,52 @@
           <span class="step-num">02</span>
           <div>
             <h4>Permanent Storage Path</h4>
-            <p>Save your video file to:</p>
-            <pre class="path-badge">public/videos/bg-video.mp4</pre>
-            <p class="sub-hint">The website will automatically load and loop it indefinitely with silky 60fps hardware
-              acceleration.</p>
+            <p>Place your default background in:</p>
+            <pre class="path-badge">public/DSLR_camera_resting_on_floor_2K_20261008105949.jpg</pre>
+            <p class="sub-hint">Or supply a video at <code>public/videos/bg-video.mp4</code> for automatic hardware-accelerated playback.</p>
           </div>
         </div>
 
         <div class="info-step">
           <span class="step-num">03</span>
           <div>
-            <h4>Choose File Now</h4>
+            <h4>Select Media File</h4>
             <button class="btn-select-file" onclick="document.getElementById('videoFileInput').click()">
-              Choose Video From Computer
+              Choose Photo or Video
             </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
   <!-- 5. Spread Reader / Fullscreen Lightbox Modal -->
   <div class="modal-backdrop" id="modalSpreadDetail" aria-hidden="true">
     <div class="modal-sheet glass-sheet journal-reader-sheet">
       <div class="sheet-header">
         <div>
-          <span class="sheet-badge" id="readerBadge">FRAMEHAUS · Selected Archive</span>
-          <h2 class="sheet-title" id="readerTitle">18 Year Old Dream Life: Spain Edition</h2>
+          <span class="sheet-badge" id="readerBadge">FRAMEHAUS · Atelier Studio 01</span>
+          <h2 class="sheet-title" id="readerTitle">Studio Stage Alpha: Cyclorama &amp; Lighting Rig</h2>
         </div>
         <button class="modal-close-btn" data-close="modalSpreadDetail">&times;</button>
       </div>
 
       <div class="reader-body">
         <div class="reader-spread-container">
-          <img id="readerSpreadImg" src="public/spread_1.jpg" alt="Journal Spread Preview" class="reader-spread-img" loading="lazy" decoding="async" />
+          <img id="readerSpreadImg" src="public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.webp" alt="Studio Stage Alpha" class="reader-spread-img" loading="lazy" decoding="async" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='public/images/2nd%20section/322af971fdfa08654ed5cde8ccc0b28d.jpg';}" />
           <div class="reader-spine-fold"></div>
         </div>
         <div class="reader-meta-pane">
           <div class="reader-info-card">
-            <h4 id="readerLocation">📍 Seville &amp; Andalusia, Spain</h4>
-            <p class="reader-date" id="readerDate">Summer Solstice 2026</p>
+            <h4 id="readerLocation">📍 Main Studio Floor · Cyc Stage A</h4>
+            <p class="reader-date" id="readerDate">Architectural &amp; Commercial Bay</p>
             <p class="reader-transcript" id="readerTranscript">
-              "Sunsets, sangria (mom approved), and enough wrong turns to make Google Maps cry. Moving to Spain with the family was a full-on adventure—proof that even fluent Spanish can't save you from tourist brain."
+              "Full cyclorama wall with overhead motorized truss lighting, high-output softboxes, and mobile tethering cart for seamless high-fashion and commercial production."
             </p>
             <div class="reader-tags" id="readerTags">
-              <span class="reader-tag">#Portraiture</span>
-              <span class="reader-tag">#Cinematic</span>
-              <span class="reader-tag">#Editorial</span>
+              <span class="reader-tag">#CycWall</span>
+              <span class="reader-tag">#StudioRig</span>
+              <span class="reader-tag">#LightingGrid</span>
+              <span class="reader-tag">#FashionEditorial</span>
             </div>
           </div>
           <div class="reader-actions">
