@@ -565,6 +565,27 @@
       box-shadow: none;
     }
 
+    .btn-dock-cta.all-complete {
+      background: rgba(46, 213, 115, 0.16) !important;
+      border: 1px solid rgba(46, 213, 115, 0.45) !important;
+      color: #2ed573 !important;
+      box-shadow: 0 4px 16px rgba(46, 213, 115, 0.25) !important;
+      cursor: default;
+      opacity: 1 !important;
+    }
+
+    .btn-dock-cta.all-complete:hover {
+      filter: none;
+      transform: none;
+    }
+
+    @keyframes spinIcon {
+      100% { transform: rotate(360deg); }
+    }
+    .spin-icon {
+      animation: spinIcon 1s linear infinite;
+    }
+
     .btn-dock-secondary {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.14);
@@ -1444,6 +1465,10 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             <span id="btnStartUploadText">Start Upload</span>
           </button>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-dock-secondary" id="btnDockOpenDrive" style="display:none;color:#d8be97;border-color:rgba(216,190,151,0.35);text-decoration:none;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>Open in Drive ↗</span>
+          </a>
           <button type="button" class="btn-dock-secondary" id="btnPauseResume" style="display:none;">Pause</button>
           <button type="button" class="btn-dock-secondary" id="btnCancelAll">Cancel All</button>
           <button type="button" class="btn-dock-secondary" id="btnClearCompleted" style="display:none;">Clear Completed</button>
@@ -1640,6 +1665,7 @@
       const totalFileCountsEl = document.getElementById('totalFileCounts');
       const btnStartUpload = document.getElementById('btnStartUpload');
       const btnStartUploadText = document.getElementById('btnStartUploadText');
+      const btnDockOpenDrive = document.getElementById('btnDockOpenDrive');
       const btnPauseResume = document.getElementById('btnPauseResume');
       const btnCancelAll = document.getElementById('btnCancelAll');
       const btnClearCompleted = document.getElementById('btnClearCompleted');
@@ -2051,11 +2077,6 @@
           queueList.appendChild(row);
         });
 
-        // Update secondary buttons
-        const hasCompleted = state.queue.some(i => i.status === 'success');
-        const hasFailed = state.queue.some(i => i.status === 'failed');
-        btnClearCompleted.style.display = hasCompleted ? 'inline-block' : 'none';
-        btnRetryFailed.style.display = hasFailed ? 'inline-block' : 'none';
       }
 
       function updateTotalProgress() {
@@ -2072,20 +2093,82 @@
         totalAllBytesEl.textContent = formatBytes(totalBytes);
 
         const completedCount = state.queue.filter(i => i.status === 'success').length;
+        const failedCount = state.queue.filter(i => i.status === 'failed').length;
+        const pendingCount = state.queue.filter(i => i.status === 'queued' || i.status === 'uploading').length;
+        const allCompleted = state.queue.length > 0 && completedCount === state.queue.length;
+
         totalFileCountsEl.textContent = `${completedCount} of ${state.queue.length} files completed`;
 
         if (state.isUploading) {
           btnPauseResume.style.display = 'inline-block';
           btnPauseResume.textContent = state.isPaused ? 'Resume' : 'Pause';
+          btnCancelAll.style.display = 'inline-block';
+          btnClearCompleted.style.display = 'none';
+          btnRetryFailed.style.display = 'none';
+          if (btnDockOpenDrive) btnDockOpenDrive.style.display = 'none';
+
           btnStartUpload.disabled = true;
-        } else {
-          btnStartUpload.disabled = false;
-          const targetName = galleryNameInput.value.trim() || state.detectedFolder;
-          if (targetName) {
-            btnStartUploadText.textContent = `Upload "${targetName}" to Google Drive`;
-          } else {
-            btnStartUploadText.textContent = 'Upload Folder to Google Drive';
+          btnStartUpload.classList.remove('all-complete');
+          btnStartUpload.innerHTML = `
+            <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <span id="btnStartUploadText">Uploading (${completedCount}/${state.queue.length})...</span>
+          `;
+        } else if (allCompleted) {
+          // When all files have finished uploading to Google Drive
+          btnPauseResume.style.display = 'none';
+          btnCancelAll.style.display = 'none';
+          btnRetryFailed.style.display = 'none';
+
+          if (btnDockOpenDrive) {
+            const targetFolder = state.activeFolderId;
+            if (targetFolder) {
+              btnDockOpenDrive.href = `https://drive.google.com/drive/folders/${targetFolder}`;
+              btnDockOpenDrive.style.display = 'inline-flex';
+            } else {
+              btnDockOpenDrive.style.display = 'none';
+            }
           }
+
+          btnClearCompleted.style.display = 'inline-block';
+          btnClearCompleted.textContent = 'Upload Another Shoot';
+
+          btnStartUpload.disabled = true;
+          btnStartUpload.classList.add('all-complete');
+          btnStartUpload.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="btnStartUploadText">Upload Complete (${completedCount} Files in Drive)</span>
+          `;
+        } else if (failedCount > 0 && pendingCount === 0) {
+          // Finished with failures
+          btnPauseResume.style.display = 'none';
+          btnCancelAll.style.display = 'inline-block';
+          btnClearCompleted.style.display = completedCount > 0 ? 'inline-block' : 'none';
+          btnClearCompleted.textContent = 'Clear Completed';
+          btnRetryFailed.style.display = 'inline-block';
+          if (btnDockOpenDrive) btnDockOpenDrive.style.display = 'none';
+
+          btnStartUpload.disabled = false;
+          btnStartUpload.classList.remove('all-complete');
+          btnStartUpload.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 9a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            <span id="btnStartUploadText">Retry ${failedCount} Failed File${failedCount > 1 ? 's' : ''}</span>
+          `;
+        } else {
+          // Queued or waiting to upload
+          btnPauseResume.style.display = 'none';
+          btnCancelAll.style.display = state.queue.length > 0 ? 'inline-block' : 'none';
+          btnClearCompleted.style.display = completedCount > 0 ? 'inline-block' : 'none';
+          btnClearCompleted.textContent = 'Clear Completed';
+          btnRetryFailed.style.display = 'none';
+          if (btnDockOpenDrive) btnDockOpenDrive.style.display = 'none';
+
+          btnStartUpload.disabled = state.queue.length === 0;
+          btnStartUpload.classList.remove('all-complete');
+          const targetName = galleryNameInput.value.trim() || state.detectedFolder;
+          btnStartUpload.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="btnStartUploadText">${targetName ? `Upload "${targetName}" to Google Drive` : 'Upload Folder to Google Drive'}</span>
+          `;
         }
       }
 
@@ -2388,6 +2471,11 @@
           return;
         }
 
+        const hasPending = state.queue.some(i => i.status === 'queued' || i.status === 'failed');
+        if (!hasPending) {
+          return;
+        }
+
         // Automatically create or verify gallery folder in Google Drive
         if (!state.activeFolderId) {
           const folderId = await createGalleryFolder();
@@ -2450,12 +2538,24 @@
       });
 
       btnClearCompleted.addEventListener('click', () => {
+        const wasAllComplete = state.queue.length > 0 && state.queue.every(i => i.status === 'success');
         state.queue = state.queue.filter(i => i.status !== 'success');
+        if (wasAllComplete) {
+          state.activeFolderId = null;
+          state.activeFolderName = '';
+          state.detectedFolder = '';
+          state.subfolderCache = {};
+          galleryNameInput.value = '';
+          activeFolderStatus.style.display = 'none';
+        }
         renderQueue();
         updateTotalProgress();
         if (state.queue.length === 0) {
           progressDock.classList.remove('active');
           queueSection.style.display = 'none';
+        }
+        if (wasAllComplete) {
+          folderInput.click();
         }
       });
 
