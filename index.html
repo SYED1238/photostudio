@@ -31,9 +31,8 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <!-- Preload Critical Above-The-Fold Hero Background (Responsive Mobile & Desktop) -->
-  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008110114.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
-  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
+  <!-- Preload Critical Above-The-Fold Hero Background -->
+  <link rel="preload" as="image" href="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp" fetchpriority="high">
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="studio-gallery/gallery.css">
@@ -55,11 +54,7 @@
   <!-- Hero Background Media Layer (Cinema DSLR Camera on Floor with Parallax & Scroll Blur) -->
   <div class="hero-background-wrap video-background-wrap" id="heroBackgroundWrap">
     <picture class="hero-bg-picture">
-      <!-- Mobile Viewport (Portrait DSLR Camera on floor) -->
-      <source media="(max-width: 768px)" srcset="public/DSLR_camera_resting_on_floor_2K_20261008110114.webp" type="image/webp">
-      <source media="(max-width: 768px)" srcset="public/DSLR_camera_resting_on_floor_2K_20261008110114.jpg">
-
-      <!-- Desktop Viewport (Landscape DSLR Camera on floor) -->
+      <!-- Universal Master Hero (DSLR Camera Resting on Atelier Floor) -->
       <source srcset="public/DSLR_camera_resting_on_floor_2K_20261008105949.webp" type="image/webp">
       <img id="heroBgImage"
            src="public/DSLR_camera_resting_on_floor_2K_20261008105949.jpg"
